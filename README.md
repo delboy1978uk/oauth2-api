@@ -27,3 +27,22 @@ make sure vendor/bin is in your $PATH environment variables. Run:
 migrant migrate
 ```
 This will create several tables used by the OAuth2 library.
+
+Set up Private &amp; Public keys
+------------------------------
+See instructions here: http://oauth2.thephpleague.com/installation/#generating-public-and-private-keys
+
+Test API Endpoint
+-----------------
+You can test your API is available by calling /ping
+```
+{"pong":"2017-03-21 13:44:49"}
+```
+
+Registering a Client
+--------------------
+Instructions will appear once I've built this!
+
+Command Line Tool
+-----------------
+We'll have a CLI tool soon too! Stay tuned!
