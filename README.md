@@ -11,12 +11,15 @@ composer create-project delboy1978uk/oauth2-api
 ```
 Apache setup
 ------------
+
 Ensure your vhost is configured to run on a secure SSL port 443 connection.
+
 Configure database credentials
 ------------------------------
 Create a database with utf8mb4_unicode_ci<br />
 Go into the config folder, add db connection credentials for Bone MVC to use.<br />
 Also, edit migrant-cfg.php, and put connection details in there too.<br />
+
 Run database migrations
 -----------------------
 make sure vendor/bin is in your $PATH environment variables. Run:
