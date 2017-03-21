@@ -31,6 +31,7 @@ This will create several tables used by the OAuth2 library.
 Set up Private &amp; Public keys
 ------------------------------
 See instructions here: http://oauth2.thephpleague.com/installation/#generating-public-and-private-keys
+Copy the keys to the data/keys/ directory.
 
 Test API Endpoint
 -----------------

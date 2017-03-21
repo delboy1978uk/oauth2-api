@@ -3,12 +3,13 @@
 namespace OAuth;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 /**
  * @Entity
  * @Table(name="Client")
  */
-class Client
+class Client implements ClientEntityInterface
 {
     /**
      * @var string $id
@@ -42,7 +43,8 @@ class Client
      */
     private $endPoints;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->endPoints = new ArrayCollection();
     }
 
@@ -135,4 +137,23 @@ class Client
         $this->endPoints = $endPoints;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentifier()
+    {
+        // TODO: Implement getIdentifier() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUri()
+    {
+        // TODO: Implement getRedirectUri() method.
+        return '/blah';
+    }
+
+
 }
