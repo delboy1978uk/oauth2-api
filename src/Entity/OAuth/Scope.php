@@ -3,6 +3,7 @@
 namespace OAuth;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 /**
  * @Entity
@@ -10,6 +11,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Scope
 {
+    use EntityTrait;
+
     /**
      * @var int $id
      * @Id
@@ -66,6 +69,7 @@ class Scope
     public function setId($id)
     {
         $this->id = $id;
+        $this->setIdentifier($id);
         return $this;
     }
 
