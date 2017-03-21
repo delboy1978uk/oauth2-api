@@ -1,6 +1,6 @@
 {
-    "name": "delboy1978uk/bonemvc",
-    "description": "Bone MVC Framework",
+    "name": "delboy1978uk/oauth2-api",
+    "description": "An OAuth2 API built using Bone MVC Framework and the Extraordinary League's OAuth2 Server",
     "authors": [
         {
             "name": "Derek McLean",
