@@ -2,90 +2,48 @@
 
 namespace OAuth;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
-/**
- * @Entity
- * @Table(name="Client")
- */
+
 class Client implements ClientEntityInterface
 {
-    /**
-     * @var string $id
-     * @Id
-     * @Column(type="string",length=40)
-     * @GeneratedValue
-     */
-    private $id;
 
     /**
-     * @var string $secret
-     * @Column(type="string",length=40)
+     * @var string
      */
-    private $secret;
+    protected $name;
 
     /**
-     * @var string $name
-     * @Column(type="string",length=255)
+     * @var string|string[]
      */
-    private $name;
+    protected $redirectUri;
 
     /**
-     * @var bool $autoApprove
-     * @Column(type="boolean")
+     * @var string
      */
-    private $autoApprove = false;
+    protected $identifier;
 
     /**
-     * @var ArrayCollection $endPoints
-     * @OneToMany(targetEntity="OAuth\EndPoint", mappedBy="clientId")
+     * @return mixed
      */
-    private $endPoints;
-
-    public function __construct()
+    public function getIdentifier()
     {
-        $this->endPoints = new ArrayCollection();
+        return $this->identifier;
     }
 
     /**
+     * @param mixed $identifier
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
+     * Get the client's name.
+     *
      * @return string
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     * @return Client
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecret()
-    {
-        return $this->secret;
-    }
-
-    /**
-     * @param string $secret
-     * @return Client
-     */
-    public function setSecret($secret)
-    {
-        $this->secret = $secret;
-        return $this;
-    }
-
-    /**
-     * @return string
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -93,67 +51,14 @@ class Client implements ClientEntityInterface
     }
 
     /**
-     * @param string $name
-     * @return Client
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAutoApprove()
-    {
-        return $this->autoApprove;
-    }
-
-    /**
-     * @param bool $autoApprove
-     * @return Client
-     */
-    public function setAutoApprove($autoApprove)
-    {
-        $this->autoApprove = $autoApprove;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEndPoints()
-    {
-        return $this->endPoints;
-    }
-
-    /**
-     * @param mixed $endPoints
-     * @return Client
-     */
-    public function setEndPoints($endPoints)
-    {
-        $this->endPoints = $endPoints;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIdentifier()
-    {
-        // TODO: Implement getIdentifier() method.
-    }
-
-    /**
-     * @return string
+     * Returns the registered redirect URI (as a string).
+     *
+     * Alternatively return an indexed array of redirect URIs.
+     *
+     * @return string|string[]
      */
     public function getRedirectUri()
     {
-        // TODO: Implement getRedirectUri() method.
-        return '/blah';
+        return $this->redirectUri;
     }
-
-
 }
