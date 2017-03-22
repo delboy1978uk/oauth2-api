@@ -8,6 +8,10 @@ use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
+/**
+ * @Entity
+ * @Table(name="AuthCode")
+ */
 class AuthCode implements AuthCodeEntityInterface
 {
 
@@ -22,7 +26,7 @@ class AuthCode implements AuthCodeEntityInterface
      * @ManyToMany(targetEntity="OAuth\Scope")
      * @JoinTable(name="AuthTokenScope",
      *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
-     *      inverseJoinColumns={@JoinColumn(name="authTokenId", referencedColumnName="identifier")}
+     *      inverseJoinColumns={@JoinColumn(name="authTokenId", referencedColumnName="identifier")})
      */
     protected $scopes;
 
@@ -34,7 +38,7 @@ class AuthCode implements AuthCodeEntityInterface
 
     /**
      * @var User
-     * @ManyToOne(targetEntity="OAuth\User")
+     * @OneToOne(targetEntity="OAuth\User")
      * @JoinColumn(name="client", referencedColumnName="id")
      */
     protected $userIdentifier;
@@ -91,13 +95,13 @@ class AuthCode implements AuthCodeEntityInterface
      */
     public function getScopes()
     {
-        return array_values($this->scopes);
+        return array_values($this->scopes->toArray());
     }
 
     /**
      * Get the token's expiry date time.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpiryDateTime()
     {

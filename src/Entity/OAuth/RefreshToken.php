@@ -7,6 +7,10 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
 
+/**
+ * @Entity
+ * @Table(name="RefreshToken")
+ */
 class RefreshToken implements RefreshTokenEntityInterface
 {
     use RefreshTokenTrait;
@@ -20,6 +24,8 @@ class RefreshToken implements RefreshTokenEntityInterface
 
     /**
      * @var AccessTokenEntityInterface
+     * @OneToOne(targetEntity="OAuth\AccessToken")
+     * @JoinColumn(name="accessToken", referencedColumnName="identifier")
      */
     protected $accessToken;
 

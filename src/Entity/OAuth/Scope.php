@@ -18,7 +18,7 @@ class Scope implements ScopeEntityInterface
     protected $identifier;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
     {
@@ -26,7 +26,7 @@ class Scope implements ScopeEntityInterface
     }
 
     /**
-     * @param mixed $identifier
+     * @param string $identifier
      */
     public function setIdentifier($identifier)
     {
@@ -34,7 +34,7 @@ class Scope implements ScopeEntityInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     function jsonSerialize()
     {

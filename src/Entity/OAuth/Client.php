@@ -31,7 +31,7 @@ class Client implements ClientEntityInterface
     protected $identifier;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
     {
@@ -39,7 +39,7 @@ class Client implements ClientEntityInterface
     }
 
     /**
-     * @param mixed $identifier
+     * @param string $identifier
      */
     public function setIdentifier($identifier)
     {
