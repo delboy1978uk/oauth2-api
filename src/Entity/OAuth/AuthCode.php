@@ -79,13 +79,13 @@ class AuthCode implements AuthCodeEntityInterface
     }
 
     /**
-     * Associate a scope with the token.
-     *
      * @param ScopeEntityInterface $scope
+     * @return $this
      */
     public function addScope(ScopeEntityInterface $scope)
     {
-        $this->scopes[$scope->getIdentifier()] = $scope;
+        $this->scopes->add($scope);
+        return $this;
     }
 
     /**
@@ -95,7 +95,7 @@ class AuthCode implements AuthCodeEntityInterface
      */
     public function getScopes()
     {
-        return array_values($this->scopes->toArray());
+        return $this->scopes->toArray();
     }
 
     /**
@@ -121,7 +121,7 @@ class AuthCode implements AuthCodeEntityInterface
     /**
      * Set the identifier of the user associated with the token.
      *
-     * @param string|int $identifier The identifier of the user
+     * @param User $identifier The identifier of the user
      */
     public function setUserIdentifier($identifier)
     {
@@ -131,7 +131,7 @@ class AuthCode implements AuthCodeEntityInterface
     /**
      * Get the token user's identifier.
      *
-     * @return string|int
+     * @return User
      */
     public function getUserIdentifier()
     {

@@ -34,7 +34,7 @@ class AccessToken implements AccessTokenEntityInterface
     protected $expiryDateTime;
 
     /**
-     * @var string
+     * @var User
      * @ManyToOne(targetEntity="OAuth\User")
      * @JoinColumn(name="userIdentifier", referencedColumnName="id")
      */
@@ -76,13 +76,13 @@ class AccessToken implements AccessTokenEntityInterface
     }
 
     /**
-     * Associate a scope with the token.
-     *
      * @param ScopeEntityInterface $scope
+     * @return $this
      */
     public function addScope(ScopeEntityInterface $scope)
     {
-        $this->scopes[$scope->getIdentifier()] = $scope;
+        $this->scopes->add($scope);
+        return $this;
     }
 
     /**
@@ -92,7 +92,7 @@ class AccessToken implements AccessTokenEntityInterface
      */
     public function getScopes()
     {
-        return array_values($this->scopes);
+        return $this->scopes->toArray();
     }
 
     /**
@@ -116,19 +116,19 @@ class AccessToken implements AccessTokenEntityInterface
     }
 
     /**
-     * Set the identifier of the user associated with the token.
-     *
-     * @param string|int $identifier The identifier of the user
+     * @param int|string $identifier
+     * @return $this
      */
     public function setUserIdentifier($identifier)
     {
         $this->userIdentifier = $identifier;
+        return $this;
     }
 
     /**
      * Get the token user's identifier.
      *
-     * @return string|int
+     * @return User
      */
     public function getUserIdentifier()
     {

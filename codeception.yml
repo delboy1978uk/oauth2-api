@@ -20,3 +20,4 @@ coverage:
     whitelist:
         include:
             - src/App/Controller/*
+            - src/Entity/OAuth/*
