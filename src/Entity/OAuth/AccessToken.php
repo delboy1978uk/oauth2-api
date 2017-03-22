@@ -60,7 +60,7 @@ class AccessToken implements AccessTokenEntityInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
     {
@@ -68,7 +68,7 @@ class AccessToken implements AccessTokenEntityInterface
     }
 
     /**
-     * @param mixed $identifier
+     * @param string $identifier
      */
     public function setIdentifier($identifier)
     {
@@ -116,7 +116,7 @@ class AccessToken implements AccessTokenEntityInterface
     }
 
     /**
-     * @param int|string $identifier
+     * @param User $identifier
      * @return $this
      */
     public function setUserIdentifier($identifier)
