@@ -11,6 +11,9 @@ namespace OAuth;
 use Del\Entity\User as UserEntity;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
+/**
+ * @MappedSuperclass
+ */
 class User extends UserEntity implements UserEntityInterface
 {
     /**

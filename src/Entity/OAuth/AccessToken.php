@@ -3,40 +3,61 @@
 namespace OAuth;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 
-
+/**
+* @Entity
+* @Table(name="AccessToken")
+*/
 class AccessToken implements AccessTokenEntityInterface
 {
     use AccessTokenTrait;
 
     /**
-     * @var ScopeEntityInterface[]
+     * @var ArrayCollection $scopes
+     * @ManyToMany(targetEntity="OAuth\Scope")
+     * @JoinTable(name="AccessTokenScope",
+     *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
+     *      inverseJoinColumns={@JoinColumn(name="accessTokenId", referencedColumnName="identifier")}
+     *      )
      */
-    protected $scopes = [];
+    protected $scopes;
 
     /**
      * @var DateTime
+     * @Column(type="date",nullable=true)
      */
     protected $expiryDateTime;
 
     /**
-     * @var string|int
+     * @var string
+     * @ManyToOne(targetEntity="OAuth\User")
+     * @JoinColumn(name="userIdentifier", referencedColumnName="id")
      */
     protected $userIdentifier;
 
     /**
      * @var ClientEntityInterface
+     * @ManyToOne(targetEntity="OAuth\Client")
+     * @JoinColumn(name="client", referencedColumnName="identifier")
      */
     protected $client;
 
     /**
      * @var string
+     * @Id
+     * @Column(type="string", length=40)
      */
     protected $identifier;
+
+    public function __construct()
+    {
+        $this->scopes = new ArrayCollection();
+    }
 
     /**
      * @return mixed

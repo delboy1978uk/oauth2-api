@@ -4,10 +4,16 @@ namespace OAuth;
 
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
+/**
+* @Entity
+* @Table(name="Scope")
+*/
 class Scope implements ScopeEntityInterface
 {
     /**
      * @var string
+     * @Id
+     * @Column(type="string", length=40)
      */
     protected $identifier;
 

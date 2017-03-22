@@ -4,22 +4,29 @@ namespace OAuth;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
-
+/**
+ * @Entity
+ * @Table(name="Client")
+ */
 class Client implements ClientEntityInterface
 {
 
     /**
      * @var string
+     * @Column(type="string", length=40)
      */
     protected $name;
 
     /**
      * @var string|string[]
+     * @Column(type="string", length=255)
      */
     protected $redirectUri;
 
     /**
      * @var string
+     * @Id
+     * @Column(type="string", length=40)
      */
     protected $identifier;
 
@@ -43,7 +50,6 @@ class Client implements ClientEntityInterface
      * Get the client's name.
      *
      * @return string
-     * @codeCoverageIgnore
      */
     public function getName()
     {

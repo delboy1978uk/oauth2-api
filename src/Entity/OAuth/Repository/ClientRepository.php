@@ -27,7 +27,7 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      */
     public function save(Client $client)
     {
-        if(!$client->getID()) {
+        if (!$client->getID()) {
             $this->_em->persist($client);
         }
         $this->_em->flush($client);
@@ -42,5 +42,4 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
         $this->_em->remove($client);
         $this->_em->flush($client);
     }
-
 }

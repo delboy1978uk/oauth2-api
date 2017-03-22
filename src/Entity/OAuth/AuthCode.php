@@ -3,6 +3,7 @@
 namespace OAuth;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -12,33 +13,50 @@ class AuthCode implements AuthCodeEntityInterface
 
     /**
      * @var null|string
+     * @Column(type="string", length=255, nullable=true)
      */
     protected $redirectUri;
 
     /**
-     * @var ScopeEntityInterface[]
+     * @var ArrayCollection $scopes
+     * @ManyToMany(targetEntity="OAuth\Scope")
+     * @JoinTable(name="AuthTokenScope",
+     *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
+     *      inverseJoinColumns={@JoinColumn(name="authTokenId", referencedColumnName="identifier")}
      */
-    protected $scopes = [];
+    protected $scopes;
 
     /**
-     * @var \DateTime
+     * @var DateTime
+     * @Column(type="date",nullable=true)
      */
     protected $expiryDateTime;
 
     /**
-     * @var string|int
+     * @var User
+     * @ManyToOne(targetEntity="OAuth\User")
+     * @JoinColumn(name="client", referencedColumnName="id")
      */
     protected $userIdentifier;
 
     /**
      * @var ClientEntityInterface
+     * @ManyToOne(targetEntity="OAuth\Client")
+     * @JoinColumn(name="client", referencedColumnName="identifier")
      */
     protected $client;
 
     /**
      * @var string
+     * @Id
+     * @Column(type="string", length=40)
      */
     protected $identifier;
+
+    public function __construct()
+    {
+        $this->scopes = new ArrayCollection();
+    }
 
     /**
      * @return mixed

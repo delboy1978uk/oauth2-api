@@ -13,6 +13,8 @@ class RefreshToken implements RefreshTokenEntityInterface
 
     /**
      * @var string
+     * @Id
+     * @Column(type="string", length=40)
      */
     protected $identifier;
 
@@ -22,7 +24,8 @@ class RefreshToken implements RefreshTokenEntityInterface
     protected $accessToken;
 
     /**
-     * @var \DateTime
+     * @var DateTime
+     * @Column(type="date",nullable=true)
      */
     protected $expiryDateTime;
 
