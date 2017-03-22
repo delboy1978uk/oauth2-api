@@ -72,7 +72,7 @@ class Client implements ClientEntityInterface
      * @param string $name
      * @return Client
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
         return $this;
