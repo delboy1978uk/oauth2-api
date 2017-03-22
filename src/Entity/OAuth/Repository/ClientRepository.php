@@ -27,7 +27,7 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      */
     public function save(Client $client)
     {
-        if (!$client->getID()) {
+        if (!$client->getIdentifier()) {
             $this->_em->persist($client);
         }
         $this->_em->flush($client);

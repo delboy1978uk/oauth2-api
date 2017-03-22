@@ -5,7 +5,7 @@ namespace OAuth;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="OAuth\Repository\ClientRepository")
  * @Table(name="Client")
  */
 class Client implements ClientEntityInterface

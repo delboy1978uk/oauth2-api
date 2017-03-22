@@ -10,7 +10,7 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 
 /**
-* @Entity
+* @Entity(repositoryClass="OAuth\Repository\AccessTokenRepository")
 * @Table(name="AccessToken")
 */
 class AccessToken implements AccessTokenEntityInterface

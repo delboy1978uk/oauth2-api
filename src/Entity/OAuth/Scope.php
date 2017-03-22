@@ -5,7 +5,7 @@ namespace OAuth;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
-* @Entity
+* @Entity(repositoryClass="OAuth\Repository\ScopeRepository")
 * @Table(name="Scope")
 */
 class Scope implements ScopeEntityInterface
