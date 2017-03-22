@@ -12,7 +12,7 @@ use Del\Entity\User as UserEntity;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
 /**
- * @MappedSuperclass
+ * @MappedSuperclass(repositoryClass="OAuth\Repository\UserRepository")
  */
 class User extends UserEntity implements UserEntityInterface
 {

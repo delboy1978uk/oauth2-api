@@ -9,5 +9,7 @@ composer.lock
 *.dev.php
 error_log
 vendor/*
-
+data/keys/*
+data/proxies/*
+data/cache/*
 tests/_output/*

@@ -18,7 +18,12 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
-        // TODO: Implement getClientEntity() method.
+        $qb = $this->createQueryBuilder('c');
+        $qb->where('c.identifier = :id');
+        $qb->setParameter('id', $clientIdentifier);
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return empty($result) ? null : $result[0];
     }
 
     /**

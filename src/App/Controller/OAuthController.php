@@ -5,14 +5,15 @@ namespace App\Controller;
 use Bone\Mvc\Controller;
 use DateInterval;
 use DateTime;
+use Del\Common\ContainerService;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\PasswordGrant;
-use OAuth2ServerExamples\Repositories\AccessTokenRepository;
+use OAuth\Repository\AccessTokenRepository;
 use OAuth\Repository\ClientRepository;
-use OAuth2ServerExamples\Repositories\RefreshTokenRepository;
-use OAuth2ServerExamples\Repositories\ScopeRepository;
-use OAuth2ServerExamples\Repositories\UserRepository;
+use OAuth\Repository\RefreshTokenRepository;
+use OAuth\Repository\ScopeRepository;
+use OAuth\Repository\UserRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,35 +24,44 @@ class OAuthController extends Controller
 
     public function init()
     {
-        $this->oauth2Server = function () {
-            // Setup the authorization server
-            $server = new AuthorizationServer(
-                new ClientRepository(),                 // instance of ClientRepositoryInterface
-                new AccessTokenRepository(),            // instance of AccessTokenRepositoryInterface
-                new ScopeRepository(),                  // instance of ScopeRepositoryInterface
-                'file://'.__DIR__.'/../private.key',    // path to private key
-                'file://'.__DIR__.'/../public.key'      // path to public key
-            );
+        $container = ContainerService::getInstance()->getContainer();
+        $clientRepository = $container['repository.Client'];
+        $accessTokenRepository = $container['repository.AccessToken'];
+        $scopeRepository = $container['repository.Scope'];
+        $userRepository = $container['repository.User'];
+        $refreshTokenRepository = $container['repository.RefreshToken'];
 
-            $grant = new PasswordGrant(
-                new UserRepository(),           // instance of UserRepositoryInterface
-                new RefreshTokenRepository()    // instance of RefreshTokenRepositoryInterface
-            );
+        // Setup the authorization server
+        $server = new AuthorizationServer($clientRepository, $accessTokenRepository, $scopeRepository,
+            'file://'.__DIR__.'/../private.key',    // path to private key
+            'file://'.__DIR__.'/../public.key'      // path to public key
+        );
 
-            $grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+        $grant = new PasswordGrant($userRepository, $refreshTokenRepository);
 
-            // Enable the password grant on the server with a token TTL of 1 hour
-            $server->enableGrantType(
-                $grant,
-                new DateInterval('PT1H') // access tokens will expire after 1 month
-            );
-            return $server;
-        };
+        $grant->setRefreshTokenTTL(new DateInterval('P1M')); // refresh tokens will expire after 1 month
+
+        // Enable the password grant on the server with a token TTL of 1 hour
+        $server->enableGrantType(
+            $grant,
+            new DateInterval('PT1H') // access tokens will expire after 1 month
+        );
+        $this->oauth2Server = $server;
     }
 
+
+    /**
+     * Sends a response with the time
+     */
     public function pingAction()
     {
         $date = new DateTime();
         $this->sendJsonResponse(['pong' => $date->format('Y-m-d H:i:s')]);
+    }
+
+
+    public function accessTokenAction()
+    {
+        $this->sendJsonResponse(['accessTokenRequested' => time()]);
     }
 }
