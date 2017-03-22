@@ -33,8 +33,8 @@ class OAuthController extends Controller
 
         // Setup the authorization server
         $server = new AuthorizationServer($clientRepository, $accessTokenRepository, $scopeRepository,
-            'file://'.__DIR__.'/../private.key',    // path to private key
-            'file://'.__DIR__.'/../public.key'      // path to public key
+            'file://'.APPLICATION_PATH.'/data/keys/private.key',    // path to private key
+            'file://'.APPLICATION_PATH.'/data/keys/public.key'      // path to public key
         );
 
         $grant = new PasswordGrant($userRepository, $refreshTokenRepository);
