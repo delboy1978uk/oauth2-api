@@ -63,7 +63,7 @@ class AuthCode implements AuthCodeEntityInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
     {
@@ -71,7 +71,7 @@ class AuthCode implements AuthCodeEntityInterface
     }
 
     /**
-     * @param mixed $identifier
+     * @param string $identifier
      */
     public function setIdentifier($identifier)
     {
