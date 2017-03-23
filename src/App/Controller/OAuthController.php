@@ -6,16 +6,13 @@ use Bone\Mvc\Controller;
 use DateInterval;
 use DateTime;
 use Del\Common\ContainerService;
+use Exception;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\PasswordGrant;
-use OAuth\Repository\AccessTokenRepository;
-use OAuth\Repository\ClientRepository;
-use OAuth\Repository\RefreshTokenRepository;
-use OAuth\Repository\ScopeRepository;
-use OAuth\Repository\UserRepository;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\SapiEmitter;
 
 class OAuthController extends Controller
 {
@@ -62,6 +59,32 @@ class OAuthController extends Controller
 
     public function accessTokenAction()
     {
-        $this->sendJsonResponse(['accessTokenRequested' => time()]);
+        /* @var AuthorizationServer $server */
+        $server = $this->oauth2Server;
+
+        $request = $this->getRequest();
+        $response = new Response();
+
+        try {
+            // Try to respond to the access token request
+            $response = $server->respondToAccessTokenRequest($request, $response);
+        } catch (OAuthServerException $exception) {
+            $response = $exception->generateHttpResponse($response);
+        } catch (Exception $exception) {
+            $body = $response->getBody();
+            $body->write($exception->getMessage());
+            $response = $response->withStatus(500)->withBody($body);
+        }
+        $this->sendResponse($response);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     */
+    public function sendResponse(ResponseInterface $response)
+    {
+        $emitter = new SapiEmitter();
+        $emitter->emit($response);
+        exit();
     }
 }

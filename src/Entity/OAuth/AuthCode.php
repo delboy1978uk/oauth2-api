@@ -9,7 +9,7 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="OAuth\Repository\AuthCodeRepository")
  * @Table(name="AuthCode")
  */
 class AuthCode implements AuthCodeEntityInterface
