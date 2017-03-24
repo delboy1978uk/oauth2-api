@@ -15,7 +15,12 @@ class ScopeRepository extends EntityRepository implements ScopeRepositoryInterfa
      */
     public function getScopeEntityByIdentifier($identifier)
     {
-        // TODO: Implement getScopeEntityByIdentifier() method.
+        $qb = $this->createQueryBuilder('s');
+        $qb->where('s.identifier = :id');
+        $qb->setParameter('id', $identifier);
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return empty($result) ? null : $result[0];
     }
 
     /**
@@ -28,5 +33,6 @@ class ScopeRepository extends EntityRepository implements ScopeRepositoryInterfa
     public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
     {
         // TODO: Implement finalizeScopes() method.
+        return $scopes; // until we figure out what we need to do in here
     }
 }
