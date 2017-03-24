@@ -35,8 +35,7 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var User
-     * @ManyToOne(targetEntity="OAuth\User")
-     * @JoinColumn(name="userIdentifier", referencedColumnName="id")
+     * @Column(type="integer", length=11)
      */
     protected $userIdentifier;
 
@@ -116,7 +115,7 @@ class AccessToken implements AccessTokenEntityInterface
     }
 
     /**
-     * @param User $identifier
+     * @param int $identifier
      * @return $this
      */
     public function setUserIdentifier($identifier)
@@ -128,7 +127,7 @@ class AccessToken implements AccessTokenEntityInterface
     /**
      * Get the token user's identifier.
      *
-     * @return User
+     * @return int
      */
     public function getUserIdentifier()
     {

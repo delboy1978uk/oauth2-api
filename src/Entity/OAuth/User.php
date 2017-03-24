@@ -17,7 +17,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
 class User extends UserEntity implements UserEntityInterface
 {
     /**
-     * @return int
+     * @return User
      */
     public function getIdentifier()
     {
