@@ -1,4 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-echo 'AYE.';
+define('APPLICATION_PATH', realpath('..'));
+
+require_once '../vendor/autoload.php';
+
+use BoneMvc\ConsoleApplication;
+use Del\Console\UserCommand;
+
+
+// Set up the Dependency Injection container
+require_once '../config/config.php';
+
+// Set up the application
+$app = new ConsoleApplication();
+
+$userCommand = new UserCommand();
+$app->add($userCommand);
+
+$app->run();

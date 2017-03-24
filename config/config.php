@@ -53,7 +53,7 @@ $credentials->setUser($user)
 
 $svc = ContainerService::getInstance();
 $svc->setDbCredentials($credentials);
-$svc->setProxyPath(APPLICATION_PATH.'/../data/proxies');
+$svc->setProxyPath(realpath(APPLICATION_PATH.'/data/proxies'));
 $svc->registerToContainer(new UserPackage());
 $svc->registerToContainer(new OAuthPackage());
 $svc->getContainer(); // Running this once after above setup creates the container for future use
