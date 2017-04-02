@@ -5,33 +5,42 @@ namespace OAuth\Repository;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use OAuth\RefreshToken;
 
 class RefreshTokenRepository extends EntityRepository implements RefreshTokenRepositoryInterface
 {
     /**
-     * @return mixed
+     * @return RefreshToken
      */
     public function getNewRefreshToken()
     {
-        // TODO: Implement getNewRefreshToken() method.
+        return new RefreshToken();
     }
 
     /**
      * @param RefreshTokenEntityInterface $refreshTokenEntity
-     * @return mixed
+     * @return RefreshTokenEntityInterface
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
-        // TODO: Implement persistNewRefreshToken() method.
+        $this->_em->persist($refreshTokenEntity);
+        $this->_em->flush();
+        return $refreshTokenEntity;
     }
 
     /**
      * @param string $tokenId
-     * @return mixed
+     * @return bool
      */
     public function revokeRefreshToken($tokenId)
     {
-        // TODO: Implement revokeRefreshToken() method.
+        $token = $this->_em->find('OAuth\Repository\RefreshToken', $tokenId);
+        if ($token instanceof RefreshTokenEntityInterface) {
+            $this->_em->remove($token);
+            $this->_em->flush();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -40,6 +49,10 @@ class RefreshTokenRepository extends EntityRepository implements RefreshTokenRep
      */
     public function isRefreshTokenRevoked($tokenId)
     {
-        // TODO: Implement isRefreshTokenRevoked() method.
+        $token = $this->_em->find('OAuth\Repository\RefreshToken', $tokenId);
+        if ($token instanceof RefreshTokenEntityInterface) {
+            return false;
+        }
+        return true;
     }
 }

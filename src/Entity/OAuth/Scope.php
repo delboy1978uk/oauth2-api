@@ -2,6 +2,7 @@
 
 namespace OAuth;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
@@ -16,6 +17,17 @@ class Scope implements ScopeEntityInterface
      * @Column(type="string", length=40)
      */
     protected $identifier;
+
+    /**
+     * @var ArrayCollection $accessTokens
+     * @ManyToMany(targetEntity="AccessToken", mappedBy="scopes")
+     */
+    protected $accessTokens;
+
+    public function __construct()
+    {
+        $this->accessTokens = new ArrayCollection();
+    }
 
     /**
      * @return string
