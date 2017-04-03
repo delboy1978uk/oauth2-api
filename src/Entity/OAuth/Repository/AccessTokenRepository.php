@@ -35,17 +35,12 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenRepos
     {
         return false; // Access token hasn't been revoked
     }
+
     /**
      * {@inheritdoc}
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
-        $accessToken = new AccessToken();
-        $accessToken->setClient($clientEntity);
-        foreach ($scopes as $scope) {
-            $accessToken->addScope($scope);
-        }
-        $accessToken->setUserIdentifier($userIdentifier);
-        return $accessToken;
+        return new AccessToken();
     }
 }
