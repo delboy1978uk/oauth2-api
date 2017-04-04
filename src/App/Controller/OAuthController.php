@@ -8,6 +8,7 @@ use Del\Common\ContainerService;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\RefreshToken;
+use OAuth2\Scope;
 use OAuth2\Server;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
@@ -44,6 +45,11 @@ class OAuthController extends Controller
         $server->addGrantType(new RefreshToken($refreshTokenRepository, [
             'always_issue_new_refresh_token' => true,
         ]));
+
+        $scope = new Scope(array(
+            'supported_scopes' => array('email', 'personal_details')
+        ));
+        $server->setScopeUtil($scope);
 
         $this->oauth2Server = $server;
     }

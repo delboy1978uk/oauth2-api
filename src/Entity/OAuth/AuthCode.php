@@ -275,10 +275,19 @@ class AuthCode
      */
     public static function fromArray($params)
     {
+        //die(var_dump($params));
+        $user = $params['user'];
+        $userId = ($user instanceof \OAuth\User) ? $user->getId() : null;
         $code = new self();
-        foreach ($params as $property => $value) {
-            $code->$property = $value;
-        }
+        $code->setCode($params['code'])
+            ->setClient($params['client'])
+            ->setClientId($params['client']->getId())
+            ->setUser($user)
+            ->setUserId($userId)
+            ->setRedirectUri($params['redirect_uri'])
+            ->setExpires($params['expires'])
+            ->setScope($params['scope'])
+        ;
         return $code;
     }
 }
