@@ -36,13 +36,17 @@ class AuthCodeRepository extends EntityRepository implements AuthorizationCodeIn
      */
     public function setAuthorizationCode($code, $clientIdentifier, $userEmail, $redirectUri, $expires, $scope = null)
     {
-        $client = $this->_em->getRepository('YourNamespace\Entity\OAuthClient')->findOneBy(array('client_identifier' => $clientIdentifier));
-        $user = $this->_em->getRepository('YourNamespace\Entity\OAuthUser')->findOneBy(['email' => $userEmail]);
+        $client = $this->_em->getRepository('OAuth\Client')->findOneBy(array('clientIdentifier' => $clientIdentifier));
+        $user = null;
+        if ($userEmail) {
+            $user = $this->_em->getRepository('OAuth\User')->findOneBy(['email' => $userEmail]);
+        }
         $date = new DateTime();
         $date->setTimestamp($expires);
         $authCode = AuthCode::fromArray([
             'code'           => $code,
             'client'         => $client,
+            'clientId'         => $client->getId(),
             'user'           => $user,
             'redirect_uri'   => $redirectUri,
             'expires'        => $date,

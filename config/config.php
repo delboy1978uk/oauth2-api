@@ -18,6 +18,16 @@ $config = array(
             'action' => 'access-token',
             'params' => array(),
         ),
+        '/resource' => array(
+            'controller' => 'resource',
+            'action' => 'resource',
+            'params' => array(),
+        ),
+        '/auth' => array(
+            'controller' => 'authorisation',
+            'action' => 'auth',
+            'params' => array(),
+        ),
     ),
     'db' => array(
             'host' => '127.0.0.1',
