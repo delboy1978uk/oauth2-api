@@ -3,162 +3,185 @@
 namespace OAuth;
 
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
  * @Entity(repositoryClass="OAuth\Repository\AuthCodeRepository")
- * @Table(name="AuthCode")
+ * @Table(name="AuthCode",uniqueConstraints={@UniqueConstraint(name="code_idx", columns={"code"})})
  */
-class AuthCode implements AuthCodeEntityInterface
+class AuthCode
 {
 
     /**
-     * @var null|string
-     * @Column(type="string", length=255, nullable=true)
+     * @var integer
+     * @Id
+     * @Column(type="integer", length=11)
+     * @GeneratedValue
      */
-    protected $redirectUri;
-
-    /**
-     * @var ArrayCollection $scopes
-     * @ManyToMany(targetEntity="OAuth\Scope")
-     * @JoinTable(name="AuthTokenScope",
-     *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
-     *      inverseJoinColumns={@JoinColumn(name="authTokenId", referencedColumnName="identifier")})
-     */
-    protected $scopes;
-
-    /**
-     * @var DateTime
-     * @Column(type="date",nullable=true)
-     */
-    protected $expiryDateTime;
-
-    /**
-     * @var User
-     * @OneToOne(targetEntity="OAuth\User")
-     * @JoinColumn(name="client", referencedColumnName="id")
-     */
-    protected $userIdentifier;
-
-    /**
-     * @var ClientEntityInterface
-     * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="client", referencedColumnName="identifier")
-     */
-    protected $client;
+    private $id;
 
     /**
      * @var string
-     * @Id
-     * @Column(type="string", length=40)
+     * @Column(type="string",length=40)
      */
-    protected $identifier;
+    private $code;
 
-    public function __construct()
+    /**
+     * @var int
+     * @Column(type="integer",length=11)
+     */
+    private $clientId;
+
+    /**
+     * @var string
+     * @Column(type="integer",length=11, nullable=true)
+     */
+    private $userId;
+
+    /**
+     * @var DateTime
+     * @Column(type="datetime")
+     */
+    private $expires;
+
+    /**
+     * @var string
+     * @Column(type="string",length=255)
+     */
+    private $redirectUri;
+
+    /**
+     * @var string
+     * @Column(type="string",length=50)
+     */
+    private $scope;
+
+    /**
+     * @var Client
+     * @ManyToOne(targetEntity="OAuth\Client")
+     * @JoinColumn(name="client", referencedColumnName="id")
+     */
+    private $client;
+
+    /**
+     * @var User
+     * @ManyToOne(targetEntity="OAuth\User")
+     * @JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
     {
-        $this->scopes = new ArrayCollection();
+        return $this->id;
     }
 
     /**
-     * @return string
+     * Set code
+     *
+     * @param string $code
+     * @return AuthCode
      */
-    public function getIdentifier()
+    public function setCode($code)
     {
-        return $this->identifier;
-    }
-
-    /**
-     * @param string $identifier
-     */
-    public function setIdentifier($identifier)
-    {
-        $this->identifier = $identifier;
-    }
-
-    /**
-     * @param ScopeEntityInterface $scope
-     * @return $this
-     */
-    public function addScope(ScopeEntityInterface $scope)
-    {
-        $this->scopes->add($scope);
+        $this->code = $code;
         return $this;
     }
 
     /**
-     * Return an array of scopes associated with the token.
+     * Get code
      *
-     * @return ScopeEntityInterface[]
+     * @return string
      */
-    public function getScopes()
+    public function getCode()
     {
-        return $this->scopes->toArray();
+        return $this->code;
     }
 
     /**
-     * Get the token's expiry date time.
+     * Set client_id
      *
-     * @return DateTime
+     * @param int $clientId
+     * @return AuthCode
      */
-    public function getExpiryDateTime()
+    public function setClientId($clientId)
     {
-        return $this->expiryDateTime;
+        $this->clientId = $clientId;
+        return $this;
     }
 
     /**
-     * Set the date time when the token expires.
+     * Get client_id
      *
-     * @param DateTime $dateTime
+     * @return int
      */
-    public function setExpiryDateTime(DateTime $dateTime)
+    public function getClientId()
     {
-        $this->expiryDateTime = $dateTime;
+        return $this->clientId;
     }
 
     /**
-     * Set the identifier of the user associated with the token.
+     * Set user_id
      *
-     * @param User $identifier The identifier of the user
+     * @param string $userId
+     * @return AuthCode
      */
-    public function setUserIdentifier($identifier)
+    public function setUserId($userId)
     {
-        $this->userIdentifier = $identifier;
+        $this->userId = $userId;
+        return $this;
     }
 
     /**
-     * Get the token user's identifier.
+     * Get user_identifier
      *
-     * @return User
+     * @return string
      */
-    public function getUserIdentifier()
+    public function getUserId()
     {
-        return $this->userIdentifier;
+        return $this->userId;
     }
 
     /**
-     * Get the client that the token was issued to.
+     * Set expires
      *
-     * @return ClientEntityInterface
+     * @param \DateTime $expires
+     * @return AuthCode
      */
-    public function getClient()
+    public function setExpires($expires)
     {
-        return $this->client;
+        $this->expires = $expires;
+        return $this;
     }
 
     /**
-     * Set the client that the token was issued to.
+     * Get expires
      *
-     * @param ClientEntityInterface $client
+     * @return \DateTime
      */
-    public function setClient(ClientEntityInterface $client)
+    public function getExpires()
     {
-        $this->client = $client;
+        return $this->expires;
     }
 
     /**
+     * Set redirect_uri
+     *
+     * @param string $redirectUri
+     * @return AuthCode
+     */
+    public function setRedirectUri($redirectUri)
+    {
+        $this->redirectUri = $redirectUri;
+        return $this;
+    }
+
+    /**
+     * Get redirect_uri
+     *
      * @return string
      */
     public function getRedirectUri()
@@ -167,10 +190,95 @@ class AuthCode implements AuthCodeEntityInterface
     }
 
     /**
-     * @param string $uri
+     * Set scope
+     *
+     * @param string $scope
+     * @return AuthCode
      */
-    public function setRedirectUri($uri)
+    public function setScope($scope)
     {
-        $this->redirectUri = $uri;
+        $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * Get scope
+     *
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * Set client
+     *
+     * @param Client $client
+     * @return AuthCode
+     */
+    public function setClient(Client $client = null)
+    {
+        $this->client = $client;
+        return $this;
+    }
+
+    /**
+     * Get client
+     *
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return AuthCode
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'code' => $this->code,
+            'client_id' => $this->clientId,
+            'user_id' => $this->userId,
+            'expires' => $this->expires,
+            'scope' => $this->scope,
+        ];
+    }
+
+    /**
+     * @param $params
+     * @return AuthCode
+     */
+    public static function fromArray($params)
+    {
+        $code = new self();
+        foreach ($params as $property => $value) {
+            $code->$property = $value;
+        }
+        return $code;
     }
 }

@@ -2,49 +2,66 @@
 
 namespace OAuth\Repository;
 
-use OAuth\Client;
 use Doctrine\ORM\EntityRepository;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use OAuth2\Storage\ClientCredentialsInterface;
 
-class ClientRepository extends EntityRepository implements ClientRepositoryInterface
+class ClientRepository extends EntityRepository implements ClientCredentialsInterface
 {
     /**
-     * @param string $clientIdentifier
-     * @param string $grantType
-     * @param null|string|null $clientSecret
-     * @param bool $mustValidateSecret
-     * @return ClientEntityInterface
+     * @param string $clientId
+     * @param string|null $clientSecret
+     * @return bool
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function checkClientCredentials($clientId, $clientSecret = null)
     {
-        $qb = $this->createQueryBuilder('c');
-        $qb->where('c.identifier = :id');
-        $qb->setParameter('id', $clientIdentifier);
-        $query = $qb->getQuery();
-        $result = $query->getResult();
-        return empty($result) ? null : $result[0];
+        $client = $this->findOneBy(['clientIdentifier' => $clientId]);
+        if ($client) {
+            return $client->verifyClientSecret($clientSecret);
+        }
+        return false;
     }
 
     /**
-     * @param Client $client
-     * @return Client
+     * @param $clientId
+     * @return bool
      */
-    public function save(Client $client)
+    public function isPublicClient($clientId)
     {
-        if (!$client->getIdentifier()) {
-            $this->_em->persist($client);
+        return false;
+    }
+
+    /**
+     * @param $clientId
+     * @return null|array
+     */
+    public function getClientDetails($clientId)
+    {
+        $client = $this->findOneBy(['clientIdentifier' => $clientId]);
+        if ($client) {
+            $client = $client->toArray();
         }
-        $this->_em->flush($client);
         return $client;
     }
 
     /**
-     * @param Client $client
+     * @param $client_id
+     * @return null
      */
-    public function delete(Client $client)
+    public function getClientScope($client_id)
     {
-        $this->_em->remove($client);
-        $this->_em->flush($client);
+        return null;
     }
+
+    /**
+     * @param $clientId
+     * @param $grantType
+     * @return bool
+     */
+    public function checkRestrictedGrantType($clientId, $grantType)
+    {
+        // we do not support different grant types per client in this example
+        return true;
+    }
+
+
 }

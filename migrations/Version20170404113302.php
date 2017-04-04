@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170322102936 extends AbstractMigration
+class Version20170404113302 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,11 +18,11 @@ class Version20170322102936 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE accesstoken ADD client VARCHAR(40) DEFAULT NULL, ADD userIdentifier INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE accesstoken ADD CONSTRAINT FK_B39617F5750FAC43 FOREIGN KEY (userIdentifier) REFERENCES User (id)');
-        $this->addSql('ALTER TABLE accesstoken ADD CONSTRAINT FK_B39617F5C7440455 FOREIGN KEY (client) REFERENCES Client (identifier)');
-        $this->addSql('CREATE INDEX IDX_B39617F5750FAC43 ON accesstoken (userIdentifier)');
+        $this->addSql('ALTER TABLE accesstoken ADD client INT DEFAULT NULL, ADD user INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE accesstoken ADD CONSTRAINT FK_B39617F5C7440455 FOREIGN KEY (client) REFERENCES Client (id)');
+        $this->addSql('ALTER TABLE accesstoken ADD CONSTRAINT FK_B39617F58D93D649 FOREIGN KEY (user) REFERENCES User (id)');
         $this->addSql('CREATE INDEX IDX_B39617F5C7440455 ON accesstoken (client)');
+        $this->addSql('CREATE INDEX IDX_B39617F58D93D649 ON accesstoken (user)');
     }
 
     /**
@@ -33,10 +33,10 @@ class Version20170322102936 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE AccessToken DROP FOREIGN KEY FK_B39617F5750FAC43');
         $this->addSql('ALTER TABLE AccessToken DROP FOREIGN KEY FK_B39617F5C7440455');
-        $this->addSql('DROP INDEX IDX_B39617F5750FAC43 ON AccessToken');
+        $this->addSql('ALTER TABLE AccessToken DROP FOREIGN KEY FK_B39617F58D93D649');
         $this->addSql('DROP INDEX IDX_B39617F5C7440455 ON AccessToken');
-        $this->addSql('ALTER TABLE AccessToken DROP client, DROP userIdentifier');
+        $this->addSql('DROP INDEX IDX_B39617F58D93D649 ON AccessToken');
+        $this->addSql('ALTER TABLE AccessToken DROP client, DROP user');
     }
 }

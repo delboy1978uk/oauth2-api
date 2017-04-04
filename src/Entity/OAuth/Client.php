@@ -2,89 +2,133 @@
 
 namespace OAuth;
 
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-
+use OAuth\Traits\EncryptableFieldEntity;
 /**
- * @Entity(repositoryClass="OAuth\Repository\ClientRepository")
- * @Table(name="Client")
+ * OAuthClient
+ * @entity(repositoryClass="OAuth\Repository\ClientRepository")
+ * @Table(name="Client",uniqueConstraints={@UniqueConstraint(name="identifier_idx", columns={"clientIdentifier"})})
  */
-class Client implements ClientEntityInterface
+class Client
 {
+    use EncryptableFieldEntity;
 
     /**
-     * @var string
-     * @Column(type="string", length=40)
-     */
-    protected $name;
-
-    /**
-     * @var string|string[]
-     * @Column(type="string", length=255)
-     */
-    protected $redirectUri;
-
-    /**
-     * @var string
+     * @var integer
      * @Id
-     * @Column(type="string", length=40)
+     * @Column(type="integer", length=11)
+     * @GeneratedValue
      */
-    protected $identifier;
+    private $id;
 
     /**
-     * @return string
+     * @var string
+     * @Column(type="string",length=50)
      */
-    public function getIdentifier()
+    private $clientIdentifier;
+
+    /**
+     * @var string
+     * @Column(type="string",length=20)
+     */
+    private $clientSecret;
+
+    /**
+     * @var string
+     * @Column(type="string")
+     */
+    private $redirectUri = '';
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
     {
-        return $this->identifier;
+        return $this->id;
     }
 
     /**
-     * @param string $identifier
+     * Set client_identifier
+     *
+     * @param string $clientIdentifier
+     * @return OAuthClient
      */
-    public function setIdentifier($identifier)
+    public function setClientIdentifier($clientIdentifier)
     {
-        $this->identifier = $identifier;
+        $this->clientIdentifier = $clientIdentifier;
+        return $this;
     }
 
     /**
-     * Get the client's name.
+     * Get client_identifier
      *
      * @return string
      */
-    public function getName()
+    public function getClientIdentifier()
     {
-        return $this->name;
+        return $this->clientIdentifier;
     }
 
     /**
-     * Returns the registered redirect URI (as a string).
+     * Set client_secret
      *
-     * Alternatively return an indexed array of redirect URIs.
+     * @param string $clientSecret
+     * @return OAuthClient
+     */
+    public function setClientSecret($clientSecret)
+    {
+        $this->clientSecret = $this->encryptField($clientSecret);
+        return $this;
+    }
+
+    /**
+     * Get client_secret
      *
-     * @return string|string[]
+     * @return string
+     */
+    public function getClientSecret()
+    {
+        return $this->clientSecret;
+    }
+
+    /**
+     * @param $clientSecret
+     * @return bool
+     */
+    public function verifyClientSecret($clientSecret)
+    {
+        return $this->verifyEncryptedFieldValue($this->getClientSecret(), $clientSecret);
+    }
+
+    /**
+     * Set redirect_uri
+     *
+     * @param string $redirectUri
+     * @return OAuthClient
+     */
+    public function setRedirectUri($redirectUri)
+    {
+        $this->redirectUri = $redirectUri;
+        return $this;
+    }
+
+    /**
+     * Get redirect_uri
+     *
+     * @return string
      */
     public function getRedirectUri()
     {
         return $this->redirectUri;
     }
 
-    /**
-     * @param string $name
-     * @return Client
-     */
-    public function setName($name)
+    public function toArray()
     {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @param string|\string[] $redirectUri
-     * @return Client
-     */
-    public function setRedirectUri($redirectUri)
-    {
-        $this->redirectUri = $redirectUri;
-        return $this;
+        return [
+            'client_id' => $this->clientIdentifier,
+            'client_secret' => $this->clientSecret,
+            'redirect_uri' => $this->redirectUri,
+        ];
     }
 }

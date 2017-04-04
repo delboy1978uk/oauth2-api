@@ -9,19 +9,47 @@
 namespace OAuth;
 
 use Del\Entity\User as UserEntity;
-use League\OAuth2\Server\Entities\UserEntityInterface;
+use OAuth\Traits\EncryptableFieldEntity;
 
 /**
  * @MappedSuperclass(repositoryClass="OAuth\Repository\UserRepository")
  */
-class User extends UserEntity implements UserEntityInterface
+class User extends UserEntity
 {
+    use EncryptableFieldEntity;
+
     /**
+     * Set password
+     *
+     * @param string $password
      * @return User
      */
-    public function getIdentifier()
+    public function setPassword($password)
     {
-        return $this->getID();
+        $password = $this->encryptField($password);
+        parent::setPassword($password);
+        return $this;
     }
 
+    /**
+     * Verify user's password
+     *
+     * @param string $password
+     * @return Boolean
+     */
+    public function verifyPassword($password)
+    {
+        return $this->verifyEncryptedFieldValue($this->getPassword(), $password);
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'user_id' => $this->getID(),
+            'scope' => null,
+        ];
+    }
 }

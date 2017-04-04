@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170322094605 extends AbstractMigration
+class Version20170404112639 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,8 @@ class Version20170322094605 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE Client (identifier VARCHAR(40) NOT NULL, name VARCHAR(40) NOT NULL, redirectUri VARCHAR(255) NOT NULL, PRIMARY KEY(identifier)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE client ADD clientIdentifier VARCHAR(50) NOT NULL, ADD clientSecret VARCHAR(20) NOT NULL, ADD redirectUri VARCHAR(255) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX identifier_idx ON client (clientIdentifier)');
     }
 
     /**
@@ -29,6 +30,7 @@ class Version20170322094605 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE Client');
+        $this->addSql('DROP INDEX identifier_idx ON Client');
+        $this->addSql('ALTER TABLE Client DROP clientIdentifier, DROP clientSecret, DROP redirectUri');
     }
 }

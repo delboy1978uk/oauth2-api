@@ -2,31 +2,36 @@
 
 namespace OAuth\Repository;
 
-use Del\Common\ContainerService;
-use Del\Criteria\UserCriteria;
 use Del\Repository\UserRepository as UserRepo;
-use Del\Service\UserService;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use OAuth2\Storage\UserCredentialsInterface;
 
-class UserRepository extends UserRepo implements UserRepositoryInterface
+class UserRepository extends UserRepo implements UserCredentialsInterface
 {
     /**
-     * @param string $username
-     * @param string $password
-     * @param string $grantType
-     * @param ClientEntityInterface $clientEntity
+     * @param $email
+     * @param $password
      * @return mixed
      */
-    public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
+    public function checkUserCredentials($email, $password)
     {
-        $container = ContainerService::getInstance()->getContainer();
-        /** @var UserService $userService */
-        $userService = $container['service.user'];
-        if ($id = $userService->authenticate($username, $password)) {
-            $user = $userService->findUserById($id);
-            return $user;
+        $user = $this->findOneBy(['email' => $email]);
+        if ($user) {
+            return $user->verifyPassword($password);
         }
         return false;
     }
+
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function getUserDetails($email)
+    {
+        $user = $this->findOneBy(['email' => $email]);
+        if ($user) {
+            $user = $user->toArray();
+        }
+        return $user;
+    }
+
 }
