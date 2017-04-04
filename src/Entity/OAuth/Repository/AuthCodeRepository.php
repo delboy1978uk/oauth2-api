@@ -5,8 +5,9 @@ namespace OAuth\Repository;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use OAuth\AuthCode;
+use OAuth2\Storage\AuthorizationCodeInterface;
 
-class AuthCodeRepository extends EntityRepository
+class AuthCodeRepository extends EntityRepository implements AuthorizationCodeInterface
 {
     /**
      * @param $code

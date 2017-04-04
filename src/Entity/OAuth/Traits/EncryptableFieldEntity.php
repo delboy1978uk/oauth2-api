@@ -8,18 +8,14 @@ trait EncryptableFieldEntity
 {
     private $bcrypt;
 
-    public function __construct()
-    {
-        $this->bcrypt = new Bcrypt();
-        $this->bcrypt->setCost(14);
-    }
-
     /**
      * @param $value
      * @return bool|string
      */
     protected function encryptField($value)
     {
+        $this->bcrypt = new Bcrypt();
+        $this->bcrypt->setCost(14);
         $encryptedPassword = $this->bcrypt->create($value);
         return $encryptedPassword;
     }
@@ -31,6 +27,8 @@ trait EncryptableFieldEntity
      */
     protected function verifyEncryptedFieldValue($encryptedValue, $value)
     {
+        $this->bcrypt = new Bcrypt();
+        $this->bcrypt->setCost(14);
         return $this->bcrypt->verify($value, $encryptedValue);
     }
 }

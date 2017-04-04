@@ -4,7 +4,7 @@ namespace OAuth;
 
 use OAuth\Traits\EncryptableFieldEntity;
 /**
- * OAuthClient
+ * Client
  * @entity(repositoryClass="OAuth\Repository\ClientRepository")
  * @Table(name="Client",uniqueConstraints={@UniqueConstraint(name="identifier_idx", columns={"clientIdentifier"})})
  */
@@ -28,7 +28,7 @@ class Client
 
     /**
      * @var string
-     * @Column(type="string",length=20)
+     * @Column(type="string",length=100)
      */
     private $clientSecret;
 
@@ -52,7 +52,7 @@ class Client
      * Set client_identifier
      *
      * @param string $clientIdentifier
-     * @return OAuthClient
+     * @return Client
      */
     public function setClientIdentifier($clientIdentifier)
     {
@@ -74,7 +74,7 @@ class Client
      * Set client_secret
      *
      * @param string $clientSecret
-     * @return OAuthClient
+     * @return Client
      */
     public function setClientSecret($clientSecret)
     {
@@ -105,7 +105,7 @@ class Client
      * Set redirect_uri
      *
      * @param string $redirectUri
-     * @return OAuthClient
+     * @return Client
      */
     public function setRedirectUri($redirectUri)
     {

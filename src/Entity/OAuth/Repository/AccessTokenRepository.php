@@ -30,14 +30,18 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenInter
     /**
      * @param string $oauthToken
      * @param string $clientId
-     * @param string $userId
+     * @param string $userEmail
      * @param int $expires
      * @param null $scope
      */
     public function setAccessToken($oauthToken, $clientIdentifier, $userEmail, $expires, $scope = null)
     {
-        $client = $this->_em->getRepository('OAuth\Client')->findOneBy(['client_identifier' => $clientIdentifier]);
-        $user = $this->_em->getRepository('OAuth\User')->findOneBy(['email' => $userEmail]);
+        $client = $this->_em->getRepository('OAuth\Client')->findOneBy(['clientIdentifier' => $clientIdentifier]);
+        if ($userEmail) {
+            $user = $this->_em->getRepository('OAuth\User')->findOneBy(['email' => $userEmail]);
+        } else {
+            $user = null; // is this required? guess we'll find out!
+        }
         $token = AccessToken::fromArray([
             'token'     => $oauthToken,
             'client'    => $client,

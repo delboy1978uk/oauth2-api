@@ -14,7 +14,7 @@ $config = array(
             'params' => array(),
         ),
         '/access-token' => array(
-            'controller' => 'oauth',
+            'controller' => 'access-token',
             'action' => 'access-token',
             'params' => array(),
         ),

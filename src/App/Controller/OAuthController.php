@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use Bone\Mvc\Controller;
-use DateInterval;
 use DateTime;
 use Del\Common\ContainerService;
-use Exception;
+use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\AuthorizationCode;
+use OAuth2\GrantType\RefreshToken;
 use OAuth2\Server;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\SapiEmitter;
 
 class OAuthController extends Controller
@@ -22,6 +22,7 @@ class OAuthController extends Controller
         $container = ContainerService::getInstance()->getContainer();
         $clientRepository = $container['repository.Client'];
         $accessTokenRepository = $container['repository.AccessToken'];
+        $authCodeRepository = $container['repository.AuthCode'];
         $scopeRepository = $container['repository.Scope'];
         $userRepository = $container['repository.User'];
         $refreshTokenRepository = $container['repository.RefreshToken'];
@@ -31,10 +32,19 @@ class OAuthController extends Controller
             'client_credentials' => $clientRepository,
             'user_credentials'   => $userRepository,
             'access_token'       => $accessTokenRepository,
+            'authorization_code' => $authCodeRepository,
+            'refresh_token'      => $refreshTokenRepository,
         ], [
             'auth_code_lifetime' => 30,
             'refresh_token_lifetime' => 30,
         ]);
+
+        $server->addGrantType(new ClientCredentials($clientRepository));
+        $server->addGrantType(new AuthorizationCode($authCodeRepository));
+        $server->addGrantType(new RefreshToken($refreshTokenRepository, [
+            'always_issue_new_refresh_token' => true,
+        ]));
+
         $this->oauth2Server = $server;
     }
 

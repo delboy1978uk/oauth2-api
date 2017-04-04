@@ -19,19 +19,6 @@ class User extends UserEntity
     use EncryptableFieldEntity;
 
     /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $password = $this->encryptField($password);
-        parent::setPassword($password);
-        return $this;
-    }
-
-    /**
      * Verify user's password
      *
      * @param string $password

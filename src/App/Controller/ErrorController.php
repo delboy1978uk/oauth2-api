@@ -12,9 +12,12 @@ class ErrorController extends Controller
     {
         /** @var Exception $e */
         $e = $this->getParam('error');
-        $this->view->message = $e->getMessage();
-        $this->view->code = $e->getCode();
-        $this->view->trace = $e->getTrace();
+        $responseArray = [
+            'code' => $e->getCode(),
+            'message' => $e->getMessage(),
+            'trace' => $e->getTrace(),
+        ];
+        $this->sendJsonResponse($responseArray);
     }
 
     public function notFoundAction(){}

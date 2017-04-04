@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Zend\Diactoros\Response;
+use OAuth2\Request;
 
 class AccessTokenController extends OAuthController
 {
@@ -10,11 +10,8 @@ class AccessTokenController extends OAuthController
     public function accessTokenAction()
     {
         $server = $this->oauth2Server;
-
-        $request = $this->getRequest();
-        $response = new Response();
-
-
-        $this->sendResponse($response);
+        $response = $server->handleTokenRequest(Request::createFromGlobals());
+        $response->send();
+        exit;
     }
 }
