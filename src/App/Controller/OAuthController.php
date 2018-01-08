@@ -57,7 +57,7 @@ class OAuthController extends Controller
 
     /**
      * @SWG\Get(
-     *     path="/authorize",
+     *     path="/ping",
      *     @SWG\Response(response="200", description="Sends a response with the time")
      * )
      */

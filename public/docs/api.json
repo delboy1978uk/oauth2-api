@@ -15,6 +15,15 @@
                 }
             }
         },
+        "/ping": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Sends a response with the time"
+                    }
+                }
+            }
+        },
         "/access-token": {
             "get": {
                 "responses": {
