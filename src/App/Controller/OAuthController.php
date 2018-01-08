@@ -9,6 +9,7 @@ use Del\Common\ContainerService;
 use Exception;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
@@ -17,12 +18,13 @@ use Zend\Diactoros\Response\SapiEmitter;
 class OAuthController extends Controller
 {
     /** @var AuthorizationServer $oauth2Server */
-    private $oauth2Server;
+    protected $oauth2Server;
 
     public function init()
     {
         $container = ContainerService::getInstance()->getContainer();
         $clientRepository = $container['repository.Client'];
+        $authCodeRepository = $container['repository.AuthCode'];
         $accessTokenRepository = $container['repository.AccessToken'];
         $scopeRepository = $container['repository.Scope'];
         $userRepository = $container['repository.User'];
@@ -33,6 +35,7 @@ class OAuthController extends Controller
             'file://'.APPLICATION_PATH.'/data/keys/private.key',    // path to private key
             'file://'.APPLICATION_PATH.'/data/keys/public.key'      // path to public key
         );
+        $server->setEncryptionKey('1De1boyXJzdk4TYmHkR3st6dJmHuEaneHB');
 
         $grant = new PasswordGrant($userRepository, $refreshTokenRepository);
 
@@ -43,12 +46,20 @@ class OAuthController extends Controller
             $grant,
             new DateInterval('PT1H') // access tokens will expire after 1 month
         );
+
+        $grant = new AuthCodeGrant($authCodeRepository, $refreshTokenRepository, new DateInterval('PT1H'));
+        $server->enableGrantType($grant);
+
+
         $this->oauth2Server = $server;
     }
 
 
     /**
-     * Sends a response with the time
+     * @SWG\Get(
+     *     path="/authorize",
+     *     @SWG\Response(response="200", description="Sends a response with the time")
+     * )
      */
     public function pingAction()
     {
@@ -56,7 +67,12 @@ class OAuthController extends Controller
         $this->sendJsonResponse(['pong' => $date->format('Y-m-d H:i:s')]);
     }
 
-
+    /**
+     * @SWG\Get(
+     *     path="/access-token",
+     *     @SWG\Response(response="200", description="An access token")
+     * )
+     */
     public function accessTokenAction()
     {
         /* @var AuthorizationServer $server */
@@ -81,7 +97,7 @@ class OAuthController extends Controller
     /**
      * @param ResponseInterface $response
      */
-    public function sendResponse(ResponseInterface $response)
+    protected function sendResponse(ResponseInterface $response)
     {
         $emitter = new SapiEmitter();
         $emitter->emit($response);

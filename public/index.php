@@ -75,6 +75,40 @@ if (file_exists( APPLICATION_PATH . '/config/config.dev.php'))
     $config = array_merge($config, require_once ( APPLICATION_PATH . '/config/config.dev.php'));
 }
 
+
+// Set up our Dependency Injection Container
+use Del\Common\Config\DbCredentials;
+use Del\Common\ContainerService;
+use Del\UserPackage;
+use OAuth\OAuthPackage;
+
+$containerSvc = ContainerService::getInstance();
+
+$dbname = $config['db']['database'];
+$user = $config['db']['user'];
+$pass = $config['db']['pass'];
+$host = $config['db']['host'];
+
+$credentials = new DbCredentials();
+$credentials->setUser($user)
+    ->setPassword($pass)
+    ->setDatabase($dbname)
+    ->setHost($host);
+
+$svc = ContainerService::getInstance();
+$svc->setDbCredentials($credentials);
+$svc->setProxyPath(realpath(APPLICATION_PATH.'/data/proxies'));
+$svc->registerToContainer(new UserPackage());
+$svc->registerToContainer(new OAuthPackage());
+$container = $svc->getContainer(); // Running this once after above setup creates the container for future use
+
+// Override the Del\Entity\User with our OAuth super class
+/** @var \Del\Service\UserService $userService */
+$userService = $container['service.user'];
+$userService->setUserClass('\OAuth\User');
+$container['service.user'] = $userService;
+
+
 /**
  *
  *  Time t'begin th'voyage me hearties!
