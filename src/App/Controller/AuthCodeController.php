@@ -31,10 +31,11 @@ class AuthCodeController extends OAuthController
     }
 
     /**
+     *
      * @SWG\Get(
-     *     path="/authorize",
+     *     path="/oauth2/authorize",
      *     @SWG\Response(response="200", description="An access token"),
-     *     tags={"auth"}
+     *     tags={"auth"},
      *     @SWG\Parameter(
      *         name="response_type",
      *         in="query",
@@ -90,8 +91,81 @@ class AuthCodeController extends OAuthController
             $response = $exception->generateHttpResponse($response);
 
         } catch (Exception $exception) {
-            die(var_dump($exception));
             $body = new Stream('php://temp', 'r+');
+            $body->write($exception->getMessage());
+            $response = $response->withStatus(500)->withBody($body);
+        }
+        $this->sendResponse($response);
+    }
+
+
+
+    /**
+     * @SWG\Post(
+     *     path="/oauth2/access-token",
+     *     operationId="accessToken",
+     *     @SWG\Response(response="200", description="An access token"),
+     *     tags={"auth"},
+     *     @SWG\Parameter(
+     *         name="grant_type",
+     *         in="body",
+     *         type="string",
+     *         description="the type of grant",
+     *         required=true,
+     *         default="authorization_code",
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="client_id",
+     *         in="body",
+     *         type="string",
+     *         description="the client id",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="client_secret",
+     *         in="body",
+     *         type="string",
+     *         description="the client secret",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="redirect_uri",
+     *         in="body",
+     *         type="string",
+     *         description="with the same redirect URI the user was redirect back to",
+     *         required=true,
+     *         default="authorization_code",
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="code",
+     *         in="body",
+     *         type="string",
+     *         description="with the authorization code from the query string",
+     *         required=true,
+     *         default="authorization_code",
+     *         @SWG\Schema(type="string")
+     *     ),
+     * )
+     */
+    public function accessTokenAction()
+    {
+        /* @var AuthorizationServer $server */
+        $server = $this->oauth2Server;
+
+        $request = $this->getRequest();
+        $response = new Response();
+
+        try {
+            // Try to respond to the access token request
+            $response = $server->respondToAccessTokenRequest($request, $response);
+        } catch (OAuthServerException $exception) {
+            $response = $exception->generateHttpResponse($response);
+        } catch (Exception $exception) {
+            $body = $response->getBody();
             $body->write($exception->getMessage());
             $response = $response->withStatus(500)->withBody($body);
         }

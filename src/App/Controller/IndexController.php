@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Bone\Mvc\Controller;
+use DateTime;
 use Swagger;
 
 /**
@@ -27,6 +28,21 @@ class IndexController extends Controller
     public function indexAction()
     {
 
+    }
+
+    /**
+     * Check basic connectivity. Returns a timestamp.
+     * @SWG\Get(
+     *     path="/ping",
+     *     tags={"status"},
+     *     @SWG\Response(response="200", description="Sends a response with the time")
+     * )
+     *
+     */
+    public function pingAction()
+    {
+        $date = new DateTime();
+        $this->sendJsonResponse(['pong' => $date->format('Y-m-d H:i:s')]);
     }
 
     public function apiAction()

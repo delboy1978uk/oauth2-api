@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: DM0C60544
- * Date: 21/3/2017
- * Time: 4:17 PM
- */
 
 namespace OAuth;
 
@@ -23,5 +17,4 @@ class User extends UserEntity implements UserEntityInterface
     {
         return $this->getID();
     }
-
 }
