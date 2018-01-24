@@ -8,6 +8,11 @@ $config = array(
             'action' => 'index',
             'params' => array(),
         ),
+        '/docs/api.json' => array(
+            'controller' => 'index',
+            'action' => 'api',
+            'params' => array(),
+        ),
         '/ping' => array(
             'controller' => 'oauth',
             'action' => 'ping',

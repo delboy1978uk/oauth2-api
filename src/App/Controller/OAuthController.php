@@ -3,14 +3,11 @@
 namespace App\Controller;
 
 use Bone\Mvc\Controller;
-use DateInterval;
 use DateTime;
 use Del\Common\ContainerService;
 use Exception;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\SapiEmitter;
@@ -22,13 +19,11 @@ class OAuthController extends Controller
 
     public function init()
     {
+
         $container = ContainerService::getInstance()->getContainer();
         $clientRepository = $container['repository.Client'];
-        $authCodeRepository = $container['repository.AuthCode'];
         $accessTokenRepository = $container['repository.AccessToken'];
         $scopeRepository = $container['repository.Scope'];
-        $userRepository = $container['repository.User'];
-        $refreshTokenRepository = $container['repository.RefreshToken'];
 
         // Setup the authorization server
         $server = new AuthorizationServer($clientRepository, $accessTokenRepository, $scopeRepository,
@@ -37,29 +32,18 @@ class OAuthController extends Controller
         );
         $server->setEncryptionKey('1De1boyXJzdk4TYmHkR3st6dJmHuEaneHB');
 
-        $grant = new PasswordGrant($userRepository, $refreshTokenRepository);
-
-        $grant->setRefreshTokenTTL(new DateInterval('P1M')); // refresh tokens will expire after 1 month
-
-        // Enable the password grant on the server with a token TTL of 1 hour
-        $server->enableGrantType(
-            $grant,
-            new DateInterval('PT1H') // access tokens will expire after 1 month
-        );
-
-        $grant = new AuthCodeGrant($authCodeRepository, $refreshTokenRepository, new DateInterval('PT1H'));
-        $server->enableGrantType($grant);
-
-
         $this->oauth2Server = $server;
     }
 
 
     /**
+     * Check basic connectivity. Returns a timestamp.
      * @SWG\Get(
      *     path="/ping",
+     *     tags={"status"},
      *     @SWG\Response(response="200", description="Sends a response with the time")
      * )
+     *
      */
     public function pingAction()
     {
@@ -70,6 +54,7 @@ class OAuthController extends Controller
     /**
      * @SWG\Get(
      *     path="/access-token",
+     *     operationId="authorise",
      *     @SWG\Response(response="200", description="An access token")
      * )
      */
