@@ -7,10 +7,31 @@ require_once '../vendor/autoload.php';
 
 use BoneMvc\ConsoleApplication;
 use Del\Console\UserCommand;
-
+use Del\Common\ContainerService;
+use Del\Common\Config\DbCredentials;
+use Del\UserPackage;
 
 // Set up the Dependency Injection container
 require_once '../config/config.php';
+
+$containerSvc = ContainerService::getInstance();
+
+$dbname = $config['db']['database'];
+$user = $config['db']['user'];
+$pass = $config['db']['pass'];
+$host = $config['db']['host'];
+
+$credentials = new DbCredentials();
+$credentials->setUser($user)
+    ->setPassword($pass)
+    ->setDatabase($dbname)
+    ->setHost($host);
+
+$svc = ContainerService::getInstance();
+$svc->setDbCredentials($credentials);
+$svc->setProxyPath(realpath(APPLICATION_PATH.'/data/proxies'));
+$svc->registerToContainer(new UserPackage());
+$container = $svc->getContainer();
 
 // Set up the application
 $app = new ConsoleApplication();

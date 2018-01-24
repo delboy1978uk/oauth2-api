@@ -31,14 +31,4 @@ class IndexControllerTest extends \Codeception\TestCase\Test
     {
         $this->assertNull($this->controller->indexAction());
     }
-
-    public function testLearnAction()
-    {
-        $this->assertNull($this->controller->learnAction());
-    }
-
-    public function testJsonAction()
-    {
-        $this->assertNull($this->controller->jsonAction());
-    }
 }

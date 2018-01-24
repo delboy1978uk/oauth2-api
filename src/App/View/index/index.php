@@ -43,57 +43,14 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <img src="/img/skull_and_crossbones.png" />
-                    <h1 class="brand-heading">Bone MVC Framework</h1>
-                    <p class="intro-text">It be yet another PHP framework swashbucklin' ont' th' scene!</p>
+                    <h1 class="brand-heading">API Control</h1>
                     <div class="page-scroll">
-                        <a href="#about" class="btn btn-circle">
-                            <i class="fa fa-angle-double-down animated"></i>
+                        <a href="/docs" class="btn btn-circle">
+                            <?= \Del\Icon::BOOK; ?>
                         </a>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<section id="about" class="container content-section text-center">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-            <h2>About Bone</h2>
-            <p>Be ye wantin an MVC framework peppered with local pirate lingo? It be the most bare bones framework in the seven seas! Garr!</p>
-            <code>composer create-project delboy1978uk/bonemvc your/path/here dev-master</code>
-        </div>
-    </div>
-</section>
-
-<section id="download" class="content-section text-center">
-    <div class="download-section">
-        <div class="container">
-            <div class="col-lg-8 col-lg-offset-2">
-                <h2>Download Bone MVC</h2>
-                <p>Ye can download th' Bone MVC source code by sailin' over t' Github. But the Cap'n recommends ye install <a target="_blank" href="http://getcomposer.org">Composer</a> 'n' do it that way.</p>
-                <a target="_blank" href="https://github.com/delboy1978uk/bonemvc" class="btn btn-default btn-lg"><i class="fa fa-github"></i> Visit Github</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="contribute" class="container content-section text-center">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-            <h2>Contribute</h2>
-            <p>Gaarrrr! We be needin' a foul-mouthed grog swillin' crew<br />t' sail th' ship t' th' fabled Monkey Island.<br />
-                If ye like Bone an' want t' help conquer the seven seas, fork it and get aboard!</p>
-            <p>delboy1978uk@gmail.com</p>
-            <ul class="list-inline banner-social-buttons ">
-                <li><a target="_blank" href="https://twitter.com/delboy1978uk" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
-                </li>
-                <li><a target="_blank" href="https://github.com/delboy1978uk/bonemvc" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                </li>
-                <li><a target="_blank" href="http://delboy1978uk.wordpress.com" class="btn btn-default btn-lg"><i class="fa fa-wordpress"></i> <span class="network-name">Wordpress</span></a>
-                </li>
-            </ul>
-            <div class="mt50 mb50"><br />&nbsp;<br />&nbsp;<br />&nbsp;<br /></div>
         </div>
     </div>
 </section>
