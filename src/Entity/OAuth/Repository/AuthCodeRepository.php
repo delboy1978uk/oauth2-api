@@ -5,15 +5,16 @@ namespace OAuth\Repository;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use OAuth\AuthCode;
 
 class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * @return mixed
+     * @return AuthCode
      */
     public function getNewAuthCode()
     {
-
+        return new AuthCode();
     }
 
     /**

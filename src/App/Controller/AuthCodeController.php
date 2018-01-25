@@ -94,12 +94,12 @@ class AuthCodeController extends OAuthController
             // Return the HTTP redirect response
             $response = $server->completeAuthorizationRequest($authRequest, $response);
 
-        } catch (OAuthServerException $exception) {
-            $response = $exception->generateHttpResponse($response);
+        } catch (OAuthServerException $e) {
+            $response = $e->generateHttpResponse($response);
 
-        } catch (Exception $exception) {
+        } catch (Exception $e) {
             $body = new Stream('php://temp', 'r+');
-            $body->write($exception->getMessage());
+            $body->write($e->getMessage());
             $response = $response->withStatus(500)->withBody($body);
         }
         $this->sendResponse($response);

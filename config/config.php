@@ -18,25 +18,15 @@ $config = array(
             'action' => 'ping',
             'params' => [],
         ),
-        '/access-token' => array(
-            'controller' => 'access-token',
-            'action' => 'access-token',
-            'params' => [],
-        ),
-        '/authorize' => array(
+        '/oauth2/authorize' => array(
             'controller' => 'auth-code',
             'action' => 'authorize',
             'params' => [],
         ),
-        '/resource' => array(
-            'controller' => 'resource',
-            'action' => 'resource',
-            'params' => array(),
-        ),
-        '/auth' => array(
-            'controller' => 'authorisation',
-            'action' => 'auth',
-            'params' => array(),
+        '/oauth2/access-token' => array(
+            'controller' => 'access-token',
+            'action' => 'access-token',
+            'params' => [],
         ),
     ),
     'db' => array(
