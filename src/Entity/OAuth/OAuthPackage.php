@@ -3,7 +3,7 @@ namespace OAuth;
 
 use Del\Common\Container\RegistrationInterface;
 use Doctrine\ORM\EntityManager;
-use OAuth\Repository\AccessTokenRepository;
+use OAuth\Service\ClientService;
 use Pimple\Container;
 
 class OAuthPackage implements RegistrationInterface
@@ -39,6 +39,13 @@ class OAuthPackage implements RegistrationInterface
             return $repository;
         };
         $c['repository.Client'] = $c->factory($function);
+
+        $function = function ($c) {
+            $repository = $c['repository.Client'];
+            $svc = new ClientService($repository);
+            return $svc;
+        };
+        $c['oauth.service.client'] = $c->factory($function);
 
         // RefreshToken
         $function = function ($c) {

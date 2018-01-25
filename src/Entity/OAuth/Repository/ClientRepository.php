@@ -31,11 +31,20 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      * @return Client
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    public function create(Client $client)
+    {
+        $this->_em->persist($client);
+        $this->_em->flush($client);
+        return $client;
+    }
+
+    /**
+     * @param Client $client
+     * @return Client
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function save(Client $client)
     {
-        if (!$client->getClientIdentifier()) {
-            $this->_em->persist($client);
-        }
         $this->_em->flush($client);
         return $client;
     }
