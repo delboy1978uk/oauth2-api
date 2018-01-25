@@ -23,10 +23,6 @@ class AuthCode implements AuthCodeEntityInterface
 
     /**
      * @var ArrayCollection $scopes
-     * @ManyToMany(targetEntity="OAuth\Scope")
-     * @JoinTable(name="AuthTokenScope",
-     *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
-     *      inverseJoinColumns={@JoinColumn(name="authTokenId", referencedColumnName="identifier")})
      */
     protected $scopes;
 

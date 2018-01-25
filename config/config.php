@@ -14,7 +14,7 @@ $config = array(
             'params' => array(),
         ),
         '/ping' => array(
-            'controller' => 'oauth',
+            'controller' => 'index',
             'action' => 'ping',
             'params' => [],
         ),

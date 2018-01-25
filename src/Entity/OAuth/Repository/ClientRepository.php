@@ -14,16 +14,29 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      * @param string $grantType
      * @param null|string|null $clientSecret
      * @param bool $mustValidateSecret
-     * @return ClientEntityInterface
+     *
+     * @return ClientEntityInterface|null
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
-        $qb = $this->createQueryBuilder('c');
-        $qb->where('c.identifier = :id');
-        $qb->setParameter('id', $clientIdentifier);
-        $query = $qb->getQuery();
-        $result = $query->getResult();
-        return empty($result) ? null : $result[0];
+        /** @var Client $client */
+        $client = $this->findOneBy([
+            'identifier' => $clientIdentifier
+        ]);
+
+        if ($client instanceof Client == false) {
+            return null;
+        }
+
+        if (
+            $mustValidateSecret === true
+            && $client['is_confidential'] === true
+            && $clientSecret != $client->getSecret()
+        ) {
+            return null;
+        }
+
+        return $client;
     }
 
     /**

@@ -9,6 +9,6 @@ return [
         'host' => 'mariadb',
     ],
     'packages' => [
-        'delboy1978uk/user',
+        'delboy1978uk/person',
     ],
 ];

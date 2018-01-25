@@ -18,16 +18,7 @@
                     <a href="#page-top"></a>
                 </li>
                 <li class="page-scroll">
-                    <a href="#about">About</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="#download">Download</a>
-                </li>
-                <li class="page-scroll">
-                    <a href="#contribute">Contribute</a>
-                </li>
-                <li class="">
-                    <a href="/learn">Learn</a>
+                    <a href="/">API Docs</a>
                 </li>
             </ul>
         </div>

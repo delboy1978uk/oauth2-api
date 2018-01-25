@@ -19,11 +19,6 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var ArrayCollection $scopes
-     * @ManyToMany(targetEntity="OAuth\Scope", inversedBy="accessTokens")
-     * @JoinTable(name="AccessTokenScope",
-     *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
-     *      inverseJoinColumns={@JoinColumn(name="accessTokenId", referencedColumnName="identifier")}
-     *      )
      */
     protected $scopes;
 
@@ -34,7 +29,7 @@ class AccessToken implements AccessTokenEntityInterface
     protected $expiryDateTime;
 
     /**
-     * @var User
+     * @var int
      * @Column(type="integer", length=11)
      */
     protected $userIdentifier;

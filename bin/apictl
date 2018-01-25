@@ -45,7 +45,7 @@ $container = $svc->getContainer();
 $app = new ConsoleApplication();
 
 $userCommand = new UserCommand();
-$clientCommand = new ClientCommand($container['oauth.service.client']);
+$clientCommand = new ClientCommand($container['oauth.service.client'], $container['service.user']);
 
 $app->add($userCommand);
 $app->add($clientCommand);

@@ -10,25 +10,42 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
  */
 class Client implements ClientEntityInterface
 {
-
     /**
      * @var string
      * @Column(type="string", length=40)
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string|string[]
      * @Column(type="string", length=255)
      */
-    protected $redirectUri;
+    private $redirectUri;
 
     /**
      * @var string
      * @Id
      * @Column(type="string", length=40)
      */
-    protected $identifier;
+    private $identifier;
+
+    /**
+     * @var string
+     * @Column(type="string", length=40, nullable=true)
+     */
+    private $secret;
+
+    /**
+     * @var bool $confidential
+     */
+    private $confidential;
+
+    /**
+     * @var User $user*
+     * @ManyToOne(targetEntity="OAuth\User")
+     * @JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
 
     /**
      * @return string
@@ -85,6 +102,60 @@ class Client implements ClientEntityInterface
     public function setRedirectUri($redirectUri)
     {
         $this->redirectUri = $redirectUri;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret(): string
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     * @return Client
+     */
+    public function setSecret(string $secret): Client
+    {
+        $this->secret = $secret;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfidential(): bool
+    {
+        return $this->confidential;
+    }
+
+    /**
+     * @param bool $confidential
+     * @return Client
+     */
+    public function setConfidential(bool $confidential): Client
+    {
+        $this->confidential = $confidential;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return Client
+     */
+    public function setUser(User $user): Client
+    {
+        $this->user = $user;
         return $this;
     }
 }
