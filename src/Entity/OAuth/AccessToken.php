@@ -3,73 +3,59 @@
 namespace OAuth;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 
 /**
 * @Entity(repositoryClass="OAuth\Repository\AccessTokenRepository")
-* @Table(name="AccessToken",uniqueConstraints={@UniqueConstraint(name="token_idx", columns={"token"})})
+* @Table(name="AccessToken")
 */
-class AccessToken
+class AccessToken implements AccessTokenEntityInterface
 {
-    /**
-     * @var integer
-     * @Id
-     * @Column(type="integer", length=11)
-     * @GeneratedValue
-     */
-    private $id;
+    use AccessTokenTrait;
 
     /**
-     * @var string
-     * @Column(type="string",length=40)
+     * @var ArrayCollection $scopes
+     * @ManyToMany(targetEntity="OAuth\Scope", inversedBy="accessTokens")
+     * @JoinTable(name="AccessTokenScope",
+     *      joinColumns={@JoinColumn(name="scopeId", referencedColumnName="identifier")},
+     *      inverseJoinColumns={@JoinColumn(name="accessTokenId", referencedColumnName="identifier")}
+     *      )
      */
-    private $token;
-
-    /**
-     * @var int $clientId
-     * @Column(type="integer", length=11)
-     */
-    private $clientId;
-
-    /**
-     * @var int $userId
-     * @Column(type="integer", length=11, nullable=true)
-     */
-    private $userId;
+    protected $scopes;
 
     /**
      * @var DateTime
-     * @Column(type="datetime")
+     * @Column(type="date",nullable=true)
      */
-    private $expires;
-
-    /**
-     * @var string
-     * @Column(type="string", length=50, nullable=true)
-     */
-    private $scope;
-
-    /**
-     * @var Client
-     * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="clientId", referencedColumnName="id")
-     */
-    private $client;
+    protected $expiryDateTime;
 
     /**
      * @var User
-     * @ManyToOne(targetEntity="OAuth\User")
-     * @JoinColumn(name="userId", referencedColumnName="id")
+     * @Column(type="integer", length=11)
      */
-    private $user;
+    protected $userIdentifier;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * @var ClientEntityInterface
+     * @ManyToOne(targetEntity="OAuth\Client")
+     * @JoinColumn(name="client", referencedColumnName="identifier")
      */
-    public function getId()
+    protected $client;
+
+    /**
+     * @var string
+     * @Id
+     * @Column(type="string", length=40)
+     */
+    protected $identifier;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->scopes = new ArrayCollection();
     }
 
     /**
@@ -89,115 +75,83 @@ class AccessToken
      *
      * @return string
      */
-    public function getToken()
+    public function getIdentifier()
     {
-        return $this->token;
+        return $this->identifier;
     }
 
     /**
-     * Set client_id
-     *
-     * @param int $clientId
-     * @return AccessToken
+     * @param string $identifier
      */
-    public function setClientId($clientId)
+    public function setIdentifier($identifier)
     {
-        $this->clientId = $clientId;
+        $this->identifier = $identifier;
+    }
+
+    /**
+     * @param ScopeEntityInterface $scope
+     * @return $this
+     */
+    public function addScope(ScopeEntityInterface $scope)
+    {
+        $this->scopes->add($scope);
         return $this;
     }
 
     /**
-     * Get client_id
+     * Return an array of scopes associated with the token.
      *
-     * @return int
+     * @return ScopeEntityInterface[]
      */
-    public function getClientId()
+    public function getScopes()
     {
-        return $this->clientId;
+        return $this->scopes->toArray();
     }
 
     /**
-     * Set user_id
-     *
-     * @param int $userId
-     * @return AccessToken
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-        return $this;
-    }
-
-    /**
-     * Get user_identifier
-     *
-     * @return int
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * Set expires
-     *
-     * @param DateTime $expires
-     * @return AccessToken
-     */
-    public function setExpires($expires)
-    {
-        $this->expires = $expires;
-        return $this;
-    }
-
-    /**
-     * Get expires
+     * Get the token's expiry date time.
      *
      * @return DateTime
      */
-    public function getExpires()
+    public function getExpiryDateTime()
     {
-        return $this->expires;
+        return $this->expiryDateTime;
     }
 
     /**
-     * Set scope
+     * Set the date time when the token expires.
      *
-     * @param string $scope
-     * @return AccessToken
+     * @param DateTime $dateTime
      */
-    public function setScope($scope)
+    public function setExpiryDateTime(DateTime $dateTime)
     {
-        $this->scope = $scope;
+        $this->expiryDateTime = $dateTime;
+    }
+
+    /**
+     * @param int $identifier
+     * @return $this
+     */
+    public function setUserIdentifier($identifier)
+    {
+        $this->userIdentifier = $identifier;
         return $this;
     }
 
     /**
-     * Get scope
+     * Get the token user's identifier.
      *
-     * @return string
+     * @return int
      */
-    public function getScope()
+    public function getUserIdentifier()
     {
-        return $this->scope;
+        return $this->userIdentifier;
     }
 
     /**
-     * Set client
+     * Get the client that the token was issued to.
      *
-     * @param Client $client
-     * @return AccessToken
-     */
-    public function setClient(Client $client = null)
-    {
-        $this->client = $client;
-        return $this;
-    }
-
-    /**
-     * Get client
-     *
-     * @return Client
+     * @return ClientEntityInterface
      */
     public function getClient()
     {
@@ -205,51 +159,12 @@ class AccessToken
     }
 
     /**
-     * @param $params
-     * @return AccessToken
-     */
-    public static function fromArray($params)
-    {
-        $token = new self();
-        foreach ($params as $property => $value) {
-            $token->$property = $value;
-        }
-        return $token;
-    }
-
-    /**
-     * Set user
+     * Set the client that the token was issued to.
      *
-     * @param User $user
-     * @return AccessToken
+     * @param ClientEntityInterface $client
      */
-    public function setUser(User $user = null)
+    public function setClient(ClientEntityInterface $client)
     {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'token' => $this->token,
-            'client_id' => $this->clientId,
-            'user_id' => $this->userId,
-            'expires' => $this->expires,
-            'scope' => $this->scope,
-        ];
+        $this->client = $client;
     }
 }

@@ -3,10 +3,23 @@
 namespace OAuth\Repository;
 
 use Del\Repository\UserRepository as UserRepo;
-use OAuth2\Storage\UserCredentialsInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\UserEntityInterface;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
-class UserRepository extends UserRepo implements UserCredentialsInterface
+class UserRepository extends UserRepo implements UserRepositoryInterface
 {
+    public function getUserEntityByUserCredentials(
+        $email,
+        $password,
+        $grantType,
+        ClientEntityInterface $client
+    )
+    {
+        // TODO: Implement getUserEntityByUserCredentials() method.
+    }
+
+
     /**
      * @param $email
      * @param $password

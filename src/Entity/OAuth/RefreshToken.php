@@ -3,253 +3,87 @@
 namespace OAuth;
 
 use DateTime;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
 
 /**
  * @Entity(repositoryClass="OAuth\Repository\RefreshTokenRepository")
- * @Table(name="RefreshToken",uniqueConstraints={@UniqueConstraint(name="refresh_token_idx", columns={"refreshToken"})})
+ * @Table(name="RefreshToken")
  */
-class RefreshToken
+class RefreshToken implements RefreshTokenEntityInterface
 {
-    /**
-     * @var integer
-     * @Id
-     * @Column(type="integer", length=11)
-     * @GeneratedValue
-     */
-    private $id;
+    use RefreshTokenTrait;
 
     /**
      * @var string
-     * @Column(type="string",length=40)
+     * @Id
+     * @Column(type="string", length=40)
      */
-    private $refreshToken;
+    protected $identifier;
 
     /**
-     * @var int
-     * @Column(type="integer",length=11)
+     * @var AccessTokenEntityInterface
+     * @OneToOne(targetEntity="OAuth\AccessToken")
+     * @JoinColumn(name="accessToken", referencedColumnName="identifier")
      */
-    private $clientId;
-
-    /**
-     * @var int
-     * @Column(type="integer",length=11, nullable=true)
-     */
-    private $userId;
+    protected $accessToken;
 
     /**
      * @var DateTime
-     * @Column(type="datetime")
+     * @Column(type="date",nullable=true)
      */
-    private $expires;
+    protected $expiryDateTime;
 
     /**
-     * @var string
-     * @Column(type="string",length=50)
+     * {@inheritdoc}
      */
-    private $scope;
-
-    /**
-     * @var Client
-     * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="client", referencedColumnName="id")
-     */
-    private $client;
-
-    /**
-     * @var User
-     * @ManyToOne(targetEntity="OAuth\User")
-     * @JoinColumn(name="user", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function setAccessToken(AccessTokenEntityInterface $accessToken)
     {
-        return $this->id;
+        $this->accessToken = $accessToken;
     }
 
     /**
-     * Set refresh_token
-     *
-     * @param string $refresh_token
-     * @return RefreshToken
+     * {@inheritdoc}
      */
-    public function setRefreshToken($refresh_token)
+    public function getAccessToken()
     {
-        $this->refresh_token = $refresh_token;
-        return $this;
+        return $this->accessToken;
     }
 
     /**
-     * Get refresh_token
-     *
-     * @return string
-     */
-    public function getRefreshToken()
-    {
-        return $this->refreshToken;
-    }
-
-    /**
-     * Set client_id
-     *
-     * @param int $clientId
-     * @return RefreshToken
-     */
-    public function setClientId($clientId)
-    {
-        $this->clientId = $clientId;
-        return $this;
-    }
-
-    /**
-     * Get client_id
-     *
-     * @return int
-     */
-    public function getClientId()
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * Set user_id
-     *
-     * @param int $userId
-     * @return RefreshToken
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-        return $this;
-    }
-
-    /**
-     * Get user_identifier
-     *
-     * @return int
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * Set expires
-     *
-     * @param DateTime $expires
-     * @return RefreshToken
-     */
-    public function setExpires(DateTime $expires)
-    {
-        $this->expires = $expires;
-        return $this;
-    }
-
-    /**
-     * Get expires
+     * Get the token's expiry date time.
      *
      * @return DateTime
      */
-    public function getExpires()
+    public function getExpiryDateTime()
     {
-        return $this->expires;
+        return $this->expiryDateTime;
     }
 
     /**
-     * Set scope
+     * Set the date time when the token expires.
      *
-     * @param string $scope
-     * @return RefreshToken
+     * @param DateTime $dateTime
      */
-    public function setScope($scope)
+    public function setExpiryDateTime(DateTime $dateTime)
     {
-        $this->scope = $scope;
-        return $this;
+        $this->expiryDateTime = $dateTime;
     }
 
     /**
-     * Get scope
-     *
-     * @return string
+     * @return mixed
      */
-    public function getScope()
+    public function getIdentifier()
     {
-        return $this->scope;
+        return $this->identifier;
     }
 
     /**
-     * Set client
-     *
-     * @param Client $client
-     * @return RefreshToken
+     * @param mixed $identifier
      */
-    public function setClient(Client $client = null)
+    public function setIdentifier($identifier)
     {
-        $this->client = $client;
-        return $this;
-    }
-
-    /**
-     * Get client
-     *
-     * @return Client
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * Set user
-     *
-     * @param User $user
-     * @return RefreshToken
-     */
-    public function setUser(User $user = null)
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'refresh_token' => $this->refreshToken,
-            'client_id' => $this->clientId,
-            'user_id' => $this->userId,
-            'expires' => $this->expires,
-            'scope' => $this->scope,
-        ];
-    }
-
-    /**
-     * @param $params
-     * @return RefreshToken
-     */
-    public static function fromArray($params)
-    {
-        $token = new self();
-        foreach ($params as $property => $value) {
-            $token->$property = $value;
-        }
-        return $token;
+        $this->identifier = $identifier;
     }
 }

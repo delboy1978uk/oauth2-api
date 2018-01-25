@@ -2,46 +2,73 @@
 
 namespace OAuth\Repository;
 
-use DateTime;
 use Doctrine\ORM\EntityRepository;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use OAuth\RefreshToken;
-use OAuth2\Storage\RefreshTokenInterface;
 
-class RefreshTokenRepository extends EntityRepository implements RefreshTokenInterface
+/**
+ * Class RefreshTokenRepository
+ * @package OAuth\Repository
+ */
+class RefreshTokenRepository extends EntityRepository implements RefreshTokenRepositoryInterface
 {
-    public function getRefreshToken($refreshToken)
+    /**
+     * @return RefreshToken
+     */
+    public function getNewRefreshToken()
     {
-        $refreshToken = $this->findOneBy(['refresh_token' => $refreshToken]);
-        if ($refreshToken) {
-            $refreshToken = $refreshToken->toArray();
-            /** @var DateTime $date */
-            $date = $refreshToken['expires'];
-            $refreshToken['expires'] = $date->getTimestamp();
+        return new RefreshToken();
+    }
+
+    /**
+     * @param RefreshTokenEntityInterface $refreshTokenEntity
+     * @return RefreshTokenEntityInterface
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    {
+        $this->_em->persist($refreshTokenEntity);
+        $this->_em->flush();
+
+        return $refreshTokenEntity;
+    }
+
+    /**
+     * @param string $tokenId
+     * @return bool
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
+    public function revokeRefreshToken($tokenId)
+    {
+        $token = $this->_em->find(RefreshToken::class, $tokenId);
+        if ($token instanceof RefreshTokenEntityInterface) {
+            $this->_em->remove($token);
+            $this->_em->flush();
+
+            return true;
         }
-        return $refreshToken;
+
+        return false;
     }
 
-    public function setRefreshToken($refreshToken, $clientIdentifier, $userEmail, $expires, $scope = null)
+    /**
+     * @param string $tokenId
+     * @return bool
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
+    public function isRefreshTokenRevoked($tokenId)
     {
-        $client = $this->_em->getRepository('YourNamespace\Entity\OAuthClient')
-            ->findOneBy(['client_identifier' => $clientIdentifier]);
-        $user = $this->_em->getRepository('YourNamespace\Entity\OAuthUser')
-            ->findOneBy(['email' => $userEmail]);
-        $refreshToken = RefreshToken::fromArray([
-            'refresh_token'  => $refreshToken,
-            'client'         => $client,
-            'user'           => $user,
-            'expires'        => (new \DateTime())->setTimestamp($expires),
-            'scope'          => $scope,
-        ]);
-        $this->_em->persist($refreshToken);
-        $this->_em->flush();
-    }
+        $token = $this->_em->find(RefreshToken::class, $tokenId);
+        if ($token instanceof RefreshTokenEntityInterface) {
 
-    public function unsetRefreshToken($refreshToken)
-    {
-        $refreshToken = $this->findOneBy(['refresh_token' => $refreshToken]);
-        $this->_em->remove($refreshToken);
-        $this->_em->flush();
+            return false;
+        }
+
+        return true;
     }
 }

@@ -2,67 +2,44 @@
 
 namespace OAuth\Repository;
 
-use DateTime;
 use Doctrine\ORM\EntityRepository;
-use OAuth\AuthCode;
-use OAuth2\Storage\AuthorizationCodeInterface;
+use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
-class AuthCodeRepository extends EntityRepository implements AuthorizationCodeInterface
+class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * @param $code
-     * @return null|array
+     * @return mixed
      */
-    public function getAuthorizationCode($code)
+    public function getNewAuthCode()
     {
-        $authCode = $this->findOneBy(['code' => $code]);
-        if ($authCode) {
-            $authCode = $authCode->toArray();
-            /** @var DateTime $date */
-            $date = $authCode['expires'];
-            $authCode['expires'] = $date->getTimestamp();
-            return $authCode;
-        }
-        return null;
+        // TODO: Implement getNewAuthCode() method.
     }
 
     /**
-     * @param $code
-     * @param $clientIdentifier
-     * @param $userEmail
-     * @param $redirectUri
-     * @param $expires
-     * @param null $scope
+     * @param AuthCodeEntityInterface $authCodeEntity
+     * @return mixed
      */
-    public function setAuthorizationCode($code, $clientIdentifier, $userEmail, $redirectUri, $expires, $scope = null)
+    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
-        $client = $this->_em->getRepository('OAuth\Client')->findOneBy(array('clientIdentifier' => $clientIdentifier));
-        $user = null;
-        if ($userEmail) {
-            $user = $this->_em->getRepository('OAuth\User')->findOneBy(['email' => $userEmail]);
-        }
-        $date = new DateTime();
-        $date->setTimestamp($expires);
-        $authCode = AuthCode::fromArray([
-            'code'           => $code,
-            'client'         => $client,
-            'clientId'         => $client->getId(),
-            'user'           => $user,
-            'redirect_uri'   => $redirectUri,
-            'expires'        => $date,
-            'scope'          => $scope,
-        ]);
-        $this->_em->persist($authCode);
-        $this->_em->flush();
+        // TODO: Implement persistNewAuthCode() method.
     }
 
     /**
-     * @param $code
+     * @param string $codeId
+     * @return mixed
      */
-    public function expireAuthorizationCode($code)
+    public function revokeAuthCode($codeId)
     {
-        $authCode = $this->findOneBy(['code' => $code]);
-        $this->_em->remove($authCode);
-        $this->_em->flush();
+        // TODO: Implement revokeAuthCode() method.
+    }
+
+    /**
+     * @param string $codeId
+     * @return mixed
+     */
+    public function isAuthCodeRevoked($codeId)
+    {
+        // TODO: Implement isAuthCodeRevoked() method.
     }
 }

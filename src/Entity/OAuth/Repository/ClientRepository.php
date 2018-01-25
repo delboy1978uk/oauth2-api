@@ -2,66 +2,51 @@
 
 namespace OAuth\Repository;
 
+use OAuth\Client;
 use Doctrine\ORM\EntityRepository;
-use OAuth2\Storage\ClientCredentialsInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 
-class ClientRepository extends EntityRepository implements ClientCredentialsInterface
+class ClientRepository extends EntityRepository implements ClientRepositoryInterface
 {
     /**
-     * @param string $clientId
-     * @param string|null $clientSecret
-     * @return bool
+     * @param string $clientIdentifier
+     * @param string $grantType
+     * @param null|string|null $clientSecret
+     * @param bool $mustValidateSecret
+     * @return ClientEntityInterface
      */
-    public function checkClientCredentials($clientId, $clientSecret = null)
+    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
-        $client = $this->findOneBy(['clientIdentifier' => $clientId]);
-        if ($client) {
-            return $client->verifyClientSecret($clientSecret);
-        }
-        return false;
+        $qb = $this->createQueryBuilder('c');
+        $qb->where('c.identifier = :id');
+        $qb->setParameter('id', $clientIdentifier);
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return empty($result) ? null : $result[0];
     }
 
     /**
-     * @param $clientId
-     * @return bool
+     * @param Client $client
+     * @return Client
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function isPublicClient($clientId)
+    public function save(Client $client)
     {
-        return false;
-    }
-
-    /**
-     * @param $clientId
-     * @return null|array
-     */
-    public function getClientDetails($clientId)
-    {
-        $client = $this->findOneBy(['clientIdentifier' => $clientId]);
-        if ($client) {
-            $client = $client->toArray();
+        if (!$client->getClientIdentifier()) {
+            $this->_em->persist($client);
         }
+        $this->_em->flush($client);
         return $client;
     }
 
     /**
-     * @param $client_id
-     * @return null
+     * @param Client $client
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getClientScope($client_id)
+    public function delete(Client $client)
     {
-        return null;
+        $this->_em->remove($client);
+        $this->_em->flush($client);
     }
-
-    /**
-     * @param $clientId
-     * @param $grantType
-     * @return bool
-     */
-    public function checkRestrictedGrantType($clientId, $grantType)
-    {
-        // we do not support different grant types per client in this example
-        return true;
-    }
-
-
 }
