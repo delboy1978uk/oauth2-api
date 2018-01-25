@@ -64,6 +64,13 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="with a CSRF token. This parameter is optional but highly recommended.",
      *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="scope",
+     *         in="query",
+     *         type="string",
+     *         description="allowed scopes, space separated",
+     *         required=false,
      *     )
      * )
      */

@@ -13,7 +13,7 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
      */
     public function getNewAuthCode()
     {
-        // TODO: Implement getNewAuthCode() method.
+
     }
 
     /**
