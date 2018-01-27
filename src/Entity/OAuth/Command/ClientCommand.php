@@ -71,7 +71,7 @@ class ClientCommand extends Command
         $question = new Question('Give a name for this application: ', false);
         $name = $helper->ask($input, $output, $question);
 
-        $question = new Question('Give a redirect URI: ', false);
+        $question = new Question('Give a redirect URI: ', '');
         $uri = $helper->ask($input, $output, $question);
 
         $question = new ConfirmationQuestion('Is this a phone app or JS client ? ', false);

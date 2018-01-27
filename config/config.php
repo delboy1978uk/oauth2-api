@@ -1,44 +1,49 @@
 <?php
 
 
-$config = array(
-    'routes' => array(
-        '/' => array(
+$config = [
+    'routes' => [
+        '/' => [
             'controller' => 'index',
             'action' => 'index',
-            'params' => array(),
-        ),
-        '/docs/api.json' => array(
+            'params' => [],
+        ],
+        '/docs/api.json' => [
             'controller' => 'index',
             'action' => 'api',
-            'params' => array(),
-        ),
-        '/ping' => array(
+            'params' => [],
+        ],
+        '/ping' => [
             'controller' => 'index',
             'action' => 'ping',
             'params' => [],
-        ),
-        '/oauth2/authorize' => array(
+        ],
+        '/oauth2/authorize' => [
             'controller' => 'auth-code',
             'action' => 'authorize',
             'params' => [],
-        ),
-        '/oauth2/access-token' => array(
+        ],
+        '/oauth2/access-token' => [
             'controller' => 'access-token',
             'action' => 'access-token',
             'params' => [],
-        ),
-    ),
-    'db' => array(
+        ],
+        '/fake-client-callback' => [
+            'controller' => 'index',
+            'action' => 'fake-client-callback',
+            'params' => [],
+        ],
+    ],
+    'db' => [
             'host' => '127.0.0.1',
             'database' => 'testapi',
             'user' => 'root',
             'pass' => ''
-    ),
-    'templates' => array(
+    ],
+    'templates' => [
         'layout'
-    ),
-);
+    ],
+];
 
 return $config;
 

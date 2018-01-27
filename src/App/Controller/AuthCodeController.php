@@ -95,9 +95,11 @@ class AuthCodeController extends OAuthController
             $response = $server->completeAuthorizationRequest($authRequest, $response);
 
         } catch (OAuthServerException $e) {
+            die(var_dump($e));
             $response = $e->generateHttpResponse($response);
 
         } catch (Exception $e) {
+            die(var_dump($e));
             $body = new Stream('php://temp', 'r+');
             $body->write($e->getMessage());
             $response = $response->withStatus(500)->withBody($body);

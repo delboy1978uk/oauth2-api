@@ -6,6 +6,7 @@ use Del\Repository\UserRepository as UserRepo;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use OAuth\Client;
 
 class UserRepository extends UserRepo implements UserRepositoryInterface
 {
@@ -16,7 +17,14 @@ class UserRepository extends UserRepo implements UserRepositoryInterface
         ClientEntityInterface $client
     )
     {
-        // TODO: Implement getUserEntityByUserCredentials() method.
+        $user = $this->findOneBy(['email' => $email]);
+        if ($user) {
+            /** @var Client $client */
+//            $client->ge
+            return $user;
+            /** @todo check password client and granttype */
+        }
+        return false;
     }
 
 

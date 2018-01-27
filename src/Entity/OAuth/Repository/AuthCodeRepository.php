@@ -2,10 +2,12 @@
 
 namespace OAuth\Repository;
 
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use OAuth\AuthCode;
+use OAuth\Client;
 
 class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryInterface
 {
@@ -19,11 +21,18 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
 
     /**
      * @param AuthCodeEntityInterface $authCodeEntity
-     * @return mixed
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
-        // TODO: Implement persistNewAuthCode() method.
+        /** @var Client $client */
+        $client = $this->_em->find(Client::class, $authCodeEntity->getClient()->getIdentifier());
+        $authCodeEntity->setClient($client);
+        $this->_em->persist($authCodeEntity);
+        $this->_em->flush();
+        return;
     }
 
     /**
@@ -41,6 +50,11 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
      */
     public function isAuthCodeRevoked($codeId)
     {
-        // TODO: Implement isAuthCodeRevoked() method.
+        /** @var AuthCode $code */
+        $code = $this->findOneBy(['identifier' => $codeId]);
+        if (!$code || $code->getExpiryDateTime() < new DateTime()) {
+            return true;
+        }
+        return false;
     }
 }

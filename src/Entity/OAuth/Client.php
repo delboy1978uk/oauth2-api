@@ -6,10 +6,18 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 /**
  * @Entity(repositoryClass="OAuth\Repository\ClientRepository")
- * @Table(name="Client")
+ * @Table(name="Client",uniqueConstraints={@UniqueConstraint(name="indentifier_idx", columns={"identifier"})})
  */
 class Client implements ClientEntityInterface
 {
+
+    /**
+     * @Id
+     * @var string
+     * @Column(type="integer", length=11)
+     */
+    private $id;
+
     /**
      * @var string
      * @Column(type="string", length=40)
@@ -24,7 +32,6 @@ class Client implements ClientEntityInterface
 
     /**
      * @var string
-     * @Id
      * @Column(type="string", length=40)
      */
     private $identifier;
@@ -39,13 +46,6 @@ class Client implements ClientEntityInterface
      * @var bool $confidential
      */
     private $confidential;
-
-    /**
-     * @var User $user*
-     * @ManyToOne(targetEntity="OAuth\User")
-     * @JoinColumn(name="user", referencedColumnName="id")
-     */
-    private $user;
 
     /**
      * @return string
@@ -142,20 +142,20 @@ class Client implements ClientEntityInterface
     }
 
     /**
-     * @return User
+     * @return string
      */
-    public function getUser(): User
+    public function getId(): string
     {
-        return $this->user;
+        return $this->id;
     }
 
     /**
-     * @param User $user
+     * @param string $id
      * @return Client
      */
-    public function setUser(User $user): Client
+    public function setId(string $id): Client
     {
-        $this->user = $user;
+        $this->id = $id;
         return $this;
     }
 }

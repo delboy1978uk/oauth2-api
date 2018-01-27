@@ -37,7 +37,7 @@ class AccessToken implements AccessTokenEntityInterface
     /**
      * @var ClientEntityInterface
      * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="client", referencedColumnName="identifier")
+     * @JoinColumn(name="client", referencedColumnName="id")
      */
     protected $client;
 

@@ -42,7 +42,7 @@ class AuthCode implements AuthCodeEntityInterface
     /**
      * @var ClientEntityInterface
      * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="client", referencedColumnName="identifier")
+     * @JoinColumn(name="client", referencedColumnName="id")
      */
     protected $client;
 

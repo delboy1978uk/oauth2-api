@@ -8,7 +8,7 @@ use Swagger;
 
 /**
  * @SWG\Swagger(
- *     schemes={"http","https"},
+ *     schemes={"https"},
  *     host="awesome.dev",
  *     basePath="/",
  *     @SWG\Info(
@@ -53,5 +53,13 @@ class IndexController extends Controller
         header('Content-Type: application/json');
         echo $swagger;
         exit;
+    }
+
+
+
+    public function fakeClientCallbackAction()
+    {
+        $request = $this->getRequest();
+        die(var_dump($request));
     }
 }
