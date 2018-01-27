@@ -2,6 +2,7 @@
 namespace OAuth;
 
 use Del\Common\Container\RegistrationInterface;
+use Del\Service\UserService;
 use Doctrine\ORM\EntityManager;
 use OAuth\Service\ClientService;
 use Pimple\Container;
@@ -73,8 +74,6 @@ class OAuthPackage implements RegistrationInterface
             return $repository;
         };
         $c['repository.User'] = $c->factory($function);
-
-
     }
 
     public function getEntityPath()

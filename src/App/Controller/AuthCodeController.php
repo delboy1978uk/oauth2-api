@@ -5,6 +5,8 @@ namespace App\Controller;
 use DateInterval;
 use Del\Common\ContainerService;
 use Exception;
+use function GuzzleHttp\Psr7\_parse_request_uri;
+use function GuzzleHttp\Psr7\parse_query;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
@@ -49,7 +51,8 @@ class AuthCodeController extends OAuthController
      *         in="query",
      *         type="string",
      *         description="the client identifier",
-     *         required=true
+     *         required=true,
+     *         default="testclient"
      *     ),
      *     @SWG\Parameter(
      *         name="redirect_uri",
@@ -95,16 +98,24 @@ class AuthCodeController extends OAuthController
             $response = $server->completeAuthorizationRequest($authRequest, $response);
 
         } catch (OAuthServerException $e) {
-            die(var_dump($e));
             $response = $e->generateHttpResponse($response);
 
         } catch (Exception $e) {
-            die(var_dump($e));
             $body = new Stream('php://temp', 'r+');
             $body->write($e->getMessage());
             $response = $response->withStatus(500)->withBody($body);
         }
-        $this->sendResponse($response);
+
+        $redirectUri = $response->getHeader('Location');
+        if (!empty($redirectUri)) {
+            if (substr($redirectUri[0], 0, 1) == '?') {
+                $uri = str_replace('?', '', $redirectUri[0]);
+                parse_str($uri, $vars);
+                $this->sendJsonResponse($vars);
+            }
+        } else {
+            $this->sendResponse($response);
+        }
     }
 
 
@@ -137,7 +148,7 @@ class AuthCodeController extends OAuthController
      *         in="body",
      *         type="string",
      *         description="the client secret",
-     *         required=true,
+     *         required=false,
      *         @SWG\Schema(type="string")
      *     ),
      *     @SWG\Parameter(
@@ -145,7 +156,7 @@ class AuthCodeController extends OAuthController
      *         in="body",
      *         type="string",
      *         description="with the same redirect URI the user was redirect back to",
-     *         required=true,
+     *         required=false,
      *         default="authorization_code",
      *         @SWG\Schema(type="string")
      *     ),

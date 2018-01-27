@@ -2,6 +2,7 @@
 
 namespace OAuth;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 /**
@@ -44,8 +45,24 @@ class Client implements ClientEntityInterface
 
     /**
      * @var bool $confidential
+     * @Column(type="boolean")
      */
     private $confidential;
+
+    /**
+     * @var ArrayCollection $scopes
+     * @ManyToMany(targetEntity="Scope")
+     * @JoinTable(name="Client_Scope",
+     *      joinColumns={@JoinColumn(name="client_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="scope_id", referencedColumnName="identifier")}
+     *      )
+     */
+    private $scopes;
+
+    public function __construct()
+    {
+        $this->scopes = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -156,6 +173,24 @@ class Client implements ClientEntityInterface
     public function setId(string $id): Client
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getScopes(): ArrayCollection
+    {
+        return $this->scopes;
+    }
+
+    /**
+     * @param ArrayCollection $scopes
+     * @return Client
+     */
+    public function setScopes(ArrayCollection $scopes): Client
+    {
+        $this->scopes = $scopes;
         return $this;
     }
 }

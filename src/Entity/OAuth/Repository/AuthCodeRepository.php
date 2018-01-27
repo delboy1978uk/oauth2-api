@@ -28,7 +28,8 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
         /** @var Client $client */
-        $client = $this->_em->find(Client::class, $authCodeEntity->getClient()->getIdentifier());
+        $client = $this->_em->getRepository(Client::class)
+                    ->findOneBy(['identifier' => $authCodeEntity->getClient()->getIdentifier()]);
         $authCodeEntity->setClient($client);
         $this->_em->persist($authCodeEntity);
         $this->_em->flush();

@@ -24,7 +24,7 @@ $config = [
             'params' => [],
         ],
         '/oauth2/access-token' => [
-            'controller' => 'access-token',
+            'controller' => 'auth-code',
             'action' => 'access-token',
             'params' => [],
         ],

@@ -7,7 +7,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
 
 /**
  * @MappedSuperclass
- * @Entity(repositoryClass="OAuth\Repository\UserRepository") // problems? comment out then migrate and uncomment ;-)
+ * @Table(name="User")
  */
 class User extends UserEntity implements UserEntityInterface
 {
