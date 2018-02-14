@@ -9,7 +9,7 @@ use Swagger;
 /**
  * @SWG\Swagger(
  *     schemes={"https"},
- *     host="awesome.dev",
+ *     host="awesome.del",
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",

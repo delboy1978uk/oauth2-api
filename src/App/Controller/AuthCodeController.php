@@ -141,6 +141,7 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="the client id",
      *         required=true,
+     *         default="testclient",
      *         @SWG\Schema(type="string")
      *     ),
      *     @SWG\Parameter(
@@ -166,7 +167,7 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="with the authorization code from the query string",
      *         required=true,
-     *         default="authorization_code",
+     *         default="pastehere",
      *         @SWG\Schema(type="string")
      *     ),
      * )
