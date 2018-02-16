@@ -48,14 +48,10 @@ class IndexController extends Controller
     public function apiAction()
     {
         $swagger = Swagger\scan(APPLICATION_PATH.'/src');
-        $this->disableLayout();
-        $this->disableView();
         header('Content-Type: application/json');
         echo $swagger;
         exit;
     }
-
-
 
     public function fakeClientCallbackAction()
     {

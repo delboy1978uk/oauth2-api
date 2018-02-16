@@ -30,7 +30,7 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
 
         if (
             $mustValidateSecret === true
-            && $client['is_confidential'] === true
+            && $client->isConfidential() === true
             && $clientSecret != $client->getSecret()
         ) {
             return null;

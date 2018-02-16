@@ -102,7 +102,7 @@ $svc->registerToContainer(new UserPackage());
 $svc->registerToContainer(new OAuthPackage());
 $container = $svc->getContainer(); // Running this once after above setup creates the container for future use
 
-// Override the Del\Entity\User with our OAuth super class
+// Override the Del\Entity\User with our OAuth user class
 /** @var \Del\Service\UserService $userService */
 $userService = $container['service.user'];
 $userService->setUserClass('\OAuth\User');

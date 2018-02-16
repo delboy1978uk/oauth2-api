@@ -2,20 +2,20 @@
 
 namespace OAuth;
 
-use Del\Entity\User as UserEntity;
+use Del\Entity\BaseUser;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
 /**
  * @MappedSuperclass
  * @Table(name="User")
  */
-class User extends UserEntity implements UserEntityInterface
+class User extends BaseUser implements UserEntityInterface
 {
     /**
-     * @return User
+     * @return int
      */
     public function getIdentifier()
     {
-        return $this->getID();
+        return $this->getId();
     }
 }

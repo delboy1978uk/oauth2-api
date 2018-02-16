@@ -48,10 +48,17 @@ class AuthCode implements AuthCodeEntityInterface
 
     /**
      * @var string
-     * @Id
-     * @Column(type="string", length=40)
+     * @Column(type="text", nullable=false)
      */
     protected $identifier;
+
+    /**
+     * @var int
+     * @Id
+     * @Column(type="integer", nullable=false)
+     * @GeneratedValue
+     */
+    protected $id;
 
     public function __construct()
     {

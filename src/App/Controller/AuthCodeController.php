@@ -5,8 +5,6 @@ namespace App\Controller;
 use DateInterval;
 use Del\Common\ContainerService;
 use Exception;
-use function GuzzleHttp\Psr7\_parse_request_uri;
-use function GuzzleHttp\Psr7\parse_query;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
@@ -128,47 +126,42 @@ class AuthCodeController extends OAuthController
      *     tags={"auth"},
      *     @SWG\Parameter(
      *         name="grant_type",
-     *         in="body",
+     *         in="formData",
      *         type="string",
      *         description="the type of grant",
      *         required=true,
      *         default="authorization_code",
-     *         @SWG\Schema(type="string")
      *     ),
      *     @SWG\Parameter(
      *         name="client_id",
-     *         in="body",
+     *         in="formData",
      *         type="string",
      *         description="the client id",
      *         required=true,
-     *         default="testclient",
-     *         @SWG\Schema(type="string")
+     *         default="testclient"
      *     ),
      *     @SWG\Parameter(
      *         name="client_secret",
-     *         in="body",
+     *         in="formData",
      *         type="string",
      *         description="the client secret",
-     *         required=false,
-     *         @SWG\Schema(type="string")
+     *         required=false
      *     ),
      *     @SWG\Parameter(
      *         name="redirect_uri",
-     *         in="body",
+     *         in="formData",
      *         type="string",
      *         description="with the same redirect URI the user was redirect back to",
      *         required=false,
-     *         default="authorization_code",
-     *         @SWG\Schema(type="string")
+     *         default="authorization_code"
      *     ),
      *     @SWG\Parameter(
      *         name="code",
-     *         in="body",
+     *         in="formData",
      *         type="string",
      *         description="with the authorization code from the query string",
      *         required=true,
-     *         default="pastehere",
-     *         @SWG\Schema(type="string")
+     *         default="pastehere"
      *     ),
      * )
      */
