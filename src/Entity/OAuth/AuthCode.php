@@ -28,7 +28,7 @@ class AuthCode implements AuthCodeEntityInterface
 
     /**
      * @var DateTime
-     * @Column(type="date",nullable=true)
+     * @Column(type="datetime",nullable=true)
      */
     protected $expiryDateTime;
 

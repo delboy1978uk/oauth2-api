@@ -27,6 +27,9 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
+        $date = new DateTime();
+        $date->modify('+24 hours');
+        $authCodeEntity->setExpiryDateTime($date);
         /** @var Client $client */
         $client = $this->_em->getRepository(Client::class)
                     ->findOneBy(['identifier' => $authCodeEntity->getClient()->getIdentifier()]);

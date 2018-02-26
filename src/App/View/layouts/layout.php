@@ -37,6 +37,11 @@ use Del\Cdn;
 <?= $this->section('header'); ?>
 <?= $content ;?>
 <?= $this->section('footer'); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.tt').tooltip();
+    });
+</script>
 </body>
 </html>
 
