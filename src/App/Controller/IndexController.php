@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Bone\Exception;
 use Bone\Mvc\Controller;
 use DateTime;
 use Swagger;
@@ -9,7 +10,7 @@ use Swagger;
 /**
  * @SWG\Swagger(
  *     schemes={"https"},
- *     host="awesome.del",
+ *     host="awesome.scot",
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",
@@ -27,7 +28,7 @@ class IndexController extends Controller
 {
     public function indexAction()
     {
-
+        throw new Exception('awerh');
     }
 
     /**

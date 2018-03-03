@@ -1,6 +1,5 @@
 <?php
 
-
 $config = [
     'routes' => [
         '/' => [
@@ -26,6 +25,16 @@ $config = [
         '/oauth2/access-token' => [
             'controller' => 'auth-code',
             'action' => 'access-token',
+            'params' => [],
+        ],
+        '/user/register' => [
+            'controller' => 'user',
+            'action' => 'register',
+            'params' => [],
+        ],
+        '/user[/:id]' => [
+            'controller' => 'user',
+            'action' => 'index',
             'params' => [],
         ],
         '/fake-client-callback' => [

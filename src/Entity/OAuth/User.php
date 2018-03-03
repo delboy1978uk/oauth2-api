@@ -6,7 +6,7 @@ use Del\Entity\BaseUser;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
 /**
- * @MappedSuperclass
+ * @Entity(repositoryClass="OAuth\Repository\UserRepository")
  * @Table(name="User")
  */
 class User extends BaseUser implements UserEntityInterface
