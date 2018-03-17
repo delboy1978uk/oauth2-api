@@ -16,7 +16,7 @@ use Swagger;
  * Class ApiController
  * @package App\Controller
  */
-class ApiController extends Controller
+class ApiController extends BaseController
 {
 
 

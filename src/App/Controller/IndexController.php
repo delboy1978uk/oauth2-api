@@ -24,11 +24,10 @@ use Swagger;
  * )
  *
  */
-class IndexController extends Controller
+class IndexController extends BaseController
 {
     public function indexAction()
     {
-        throw new Exception('awerh');
     }
 
     /**

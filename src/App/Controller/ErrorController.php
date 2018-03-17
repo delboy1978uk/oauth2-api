@@ -5,7 +5,7 @@ namespace App\Controller;
 use Bone\Mvc\Controller;
 use Exception;
 
-class ErrorController extends Controller
+class ErrorController extends BaseController
 {
 
     public function errorAction()
@@ -17,7 +17,7 @@ class ErrorController extends Controller
             'message' => $e->getMessage(),
             'trace' => $e->getTrace(),
         ];
-        $this->sendJsonResponse($responseArray);
+        $this->sendJsonResponse($responseArray, $e->getCode());
     }
 
     public function notFoundAction(){}

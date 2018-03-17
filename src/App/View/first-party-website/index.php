@@ -9,7 +9,7 @@
                         <a href="/" class="btn btn-circle tt" title="Back">
                             <?= \Del\Icon::CARET_LEFT; ?>
                         </a>&nbsp;
-                        <a href="/" class="btn btn-circle tt" title="Register">
+                        <a href="/website/register" class="btn btn-circle tt" title="Register">
                             <?= \Del\Icon::EDIT; ?>
                         </a>&nbsp;
                         <a href="/" class="btn btn-circle tt" title="Login">

@@ -32,7 +32,12 @@ $config = [
             'action' => 'register',
             'params' => [],
         ],
-        '/user[/:id]' => [
+        '/user/activate/:email/:token' => [
+            'controller' => 'user',
+            'action' => 'activate',
+            'params' => [],
+        ],
+        '/user/:id' => [
             'controller' => 'user',
             'action' => 'index',
             'params' => [],
@@ -40,6 +45,11 @@ $config = [
         '/fake-client-callback' => [
             'controller' => 'index',
             'action' => 'fake-client-callback',
+            'params' => [],
+        ],
+        '/website/register' => [
+            'controller' => 'first-party-website',
+            'action' => 'register',
             'params' => [],
         ],
     ],

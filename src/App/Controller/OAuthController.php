@@ -8,7 +8,7 @@ use League\OAuth2\Server\AuthorizationServer;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
 
-class OAuthController extends Controller
+class OAuthController extends BaseController
 {
     /** @var AuthorizationServer $oauth2Server */
     protected $oauth2Server;
