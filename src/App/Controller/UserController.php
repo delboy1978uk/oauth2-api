@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Form\User\RegistrationForm;
 use Del\Common\ContainerService;
+use Del\Exception\EmailLinkException;
 use Del\Exception\UserException;
 use Del\Service\UserService;
+use Del\Value\User\State;
 use Exception;
 use OAuth\User;
 
@@ -154,9 +156,38 @@ class UserController extends BaseController
         $email = $this->getParam('email');
         $token = $this->getParam('token');
 
+        $userService = $this->userService;
+        $this->view->success = false;
+
+        try {
+
+            $link = $userService->findEmailLink($email, $token);
+            $user = $link->getUser();
+            $user->setState(new State(State::STATE_ACTIVATED));
+            $userService->saveUser($user);
+            $userService->deleteEmailLink($link);
+            $this->view->success = true;
+            return;
+
+        } catch (EmailLinkException $e) {
+            switch ($e->getMessage()) {
+                case EmailLinkException::LINK_EXPIRED:
+                    $this->sendJsonResponse([
+                        'success' => false,
+                        'error' => 'The activation link has expired. You can send a new activation <a href="/user/resend-activation-mail/' . $email . '">here.</a>',
+                    ], 403);
+                    break;
+                default:
+                    $this->sendJsonResponse([
+                        'success' => false,
+                        'error' => $e->getMessage(),
+                    ], 500);
+                    break;
+            }
+        }
+
         $this->sendJsonResponse([
-            'email' => $email,
-            'token' => $token
+            'success' => true,
         ]);
     }
 }

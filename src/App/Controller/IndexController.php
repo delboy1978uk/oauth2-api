@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use Bone\Exception;
-use Bone\Mvc\Controller;
 use DateTime;
 use Swagger;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Stream;
 
 /**
  * @SWG\Swagger(
@@ -45,12 +45,16 @@ class IndexController extends BaseController
         $this->sendJsonResponse(['pong' => $date->format('Y-m-d H:i:s')]);
     }
 
+    /**
+     * @return Response
+     */
     public function apiAction()
     {
-        $swagger = Swagger\scan(APPLICATION_PATH.'/src');
-        header('Content-Type: application/json');
-        echo $swagger;
-        exit;
+        $swagger = Swagger\scan(APPLICATION_PATH.'/src')->__toString();
+        $response = new Response();
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write($swagger);
+        return $response;
     }
 
     public function fakeClientCallbackAction()
