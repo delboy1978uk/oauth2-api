@@ -108,7 +108,7 @@ $userService = $container['service.user'];
 $userService->setUserClass('\OAuth\User');
 $container['service.user'] = $userService;
 
-
+ini_set('display_errors', false);
 /**
  *
  *  Time t'begin th'voyage me hearties!

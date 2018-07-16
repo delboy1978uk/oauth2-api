@@ -5,7 +5,6 @@ namespace App\Controller;
 use DateTime;
 use Swagger;
 use Zend\Diactoros\Response;
-use Zend\Diactoros\Stream;
 
 /**
  * @SWG\Swagger(
@@ -28,6 +27,8 @@ class IndexController extends BaseController
 {
     public function indexAction()
     {
+        $this->enableLayout();
+        $this->enableView();
     }
 
     /**

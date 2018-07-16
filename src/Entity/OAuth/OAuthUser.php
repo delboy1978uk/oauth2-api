@@ -2,15 +2,16 @@
 
 namespace OAuth;
 
-use Del\Entity\BaseUser;
+use Del\Entity\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
 /**
- * @Entity(repositoryClass="OAuth\Repository\UserRepository")
- * @Table(name="User")
+ * @ORM\Entity(repositoryClass="OAuth\Repository\UserRepository")
  */
-class User extends BaseUser implements UserEntityInterface
+class OAuthUser extends BaseUser implements UserEntityInterface
 {
+
     /**
      * @return int
      */

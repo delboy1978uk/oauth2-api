@@ -4,14 +4,15 @@ namespace OAuth;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 
 /**
-* @Entity(repositoryClass="OAuth\Repository\AccessTokenRepository")
-* @Table(name="AccessToken")
+* @ORM\Entity(repositoryClass="OAuth\Repository\AccessTokenRepository")
+* @ORM\Table(name="AccessToken")
 */
 class AccessToken implements AccessTokenEntityInterface
 {
@@ -19,32 +20,37 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var ArrayCollection $scopes
+     * @ORM\ManyToMany(targetEntity="Scope", inversedBy="accessTokens")
+     * @ORM\JoinTable(name="AccessToken_Scope",
+     *      joinColumns={@ORM\JoinColumn(name="token_id", referencedColumnName="identifier")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="scope_id", referencedColumnName="identifier")}
+     *      )
      */
     protected $scopes;
 
     /**
      * @var DateTime
-     * @Column(type="date",nullable=true)
+     * @ORM\Column(type="date",nullable=true)
      */
     protected $expiryDateTime;
 
     /**
      * @var int
-     * @Column(type="integer", length=11)
+     * @ORM\Column(type="integer", length=11)
      */
     protected $userIdentifier;
 
     /**
      * @var ClientEntityInterface
-     * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="client", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="OAuth\Client")
+     * @ORM\JoinColumn(name="client", referencedColumnName="id")
      */
     protected $client;
 
     /**
      * @var string
-     * @Id
-     * @Column(type="string", length=40)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=40)
      */
     protected $identifier;
 

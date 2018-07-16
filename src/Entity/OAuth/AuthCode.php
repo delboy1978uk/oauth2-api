@@ -4,20 +4,21 @@ namespace OAuth;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
- * @Entity(repositoryClass="OAuth\Repository\AuthCodeRepository")
- * @Table(name="AuthCode")
+ * @ORM\Entity(repositoryClass="OAuth\Repository\AuthCodeRepository")
+ * @ORM\Table(name="AuthCode")
  */
 class AuthCode implements AuthCodeEntityInterface
 {
 
     /**
      * @var null|string
-     * @Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $redirectUri;
 
@@ -28,35 +29,35 @@ class AuthCode implements AuthCodeEntityInterface
 
     /**
      * @var DateTime
-     * @Column(type="datetime",nullable=true)
+     * @ORM\Column(type="datetime",nullable=true)
      */
     protected $expiryDateTime;
 
     /**
-     * @var User
-     * @OneToOne(targetEntity="OAuth\User")
-     * @JoinColumn(name="client", referencedColumnName="id")
+     * @var OAuthUser
+     * @ORM\OneToOne(targetEntity="OAuth\OAuthUser")
+     * @ORM\JoinColumn(name="client", referencedColumnName="id")
      */
     protected $userIdentifier;
 
     /**
      * @var ClientEntityInterface
-     * @ManyToOne(targetEntity="OAuth\Client")
-     * @JoinColumn(name="client", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="OAuth\Client")
+     * @ORM\JoinColumn(name="client", referencedColumnName="id")
      */
     protected $client;
 
     /**
      * @var string
-     * @Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=false)
      */
     protected $identifier;
 
     /**
      * @var int
-     * @Id
-     * @Column(type="integer", nullable=false)
-     * @GeneratedValue
+     * @ORM\Id
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\GeneratedValue
      */
     protected $id;
 

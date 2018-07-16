@@ -16,5 +16,7 @@ class BaseController extends Controller
     {
         parent::__construct($request);
         $this->serializer = SerializerBuilder::create()->build();
+        $this->disableView();
+        $this->disableLayout();
     }
 }

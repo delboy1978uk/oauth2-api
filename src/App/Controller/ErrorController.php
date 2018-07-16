@@ -4,9 +4,14 @@ namespace App\Controller;
 
 use Bone\Mvc\Controller;
 use Exception;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ErrorController extends BaseController
 {
+    public function __construct(ServerRequestInterface $request)
+    {
+        parent::__construct($request);
+    }
 
     public function errorAction()
     {

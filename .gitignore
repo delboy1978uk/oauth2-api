@@ -13,3 +13,4 @@ data/keys/*
 data/proxies/*
 data/cache/*
 tests/_output/*
+cli-config.php

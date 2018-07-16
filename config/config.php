@@ -7,6 +7,11 @@ $config = [
             'action' => 'index',
             'params' => [],
         ],
+        '/client' => [
+            'controller' => 'client',
+            'action' => 'index',
+            'params' => [],
+        ],
         '/docs/api.json' => [
             'controller' => 'index',
             'action' => 'api',

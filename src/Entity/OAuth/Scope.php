@@ -3,24 +3,25 @@
 namespace OAuth;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
-* @Entity(repositoryClass="OAuth\Repository\ScopeRepository")
-* @Table(name="Scope")
+* @ORM\Entity(repositoryClass="OAuth\Repository\ScopeRepository")
+* @ORM\Table(name="Scope")
 */
 class Scope implements ScopeEntityInterface
 {
     /**
      * @var string
-     * @Id
-     * @Column(type="string", length=40)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=40)
      */
     protected $identifier;
 
     /**
      * @var ArrayCollection $accessTokens
-     * @ManyToMany(targetEntity="AccessToken", mappedBy="scopes")
+     * @ORM\ManyToMany(targetEntity="AccessToken", mappedBy="scopes")
      */
     protected $accessTokens;
 

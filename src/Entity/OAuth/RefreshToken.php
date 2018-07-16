@@ -3,13 +3,14 @@
 namespace OAuth;
 
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
 
 /**
- * @Entity(repositoryClass="OAuth\Repository\RefreshTokenRepository")
- * @Table(name="RefreshToken")
+ * @ORM\Entity(repositoryClass="OAuth\Repository\RefreshTokenRepository")
+ * @ORM\Table(name="RefreshToken")
  */
 class RefreshToken implements RefreshTokenEntityInterface
 {
@@ -17,21 +18,21 @@ class RefreshToken implements RefreshTokenEntityInterface
 
     /**
      * @var string
-     * @Id
-     * @Column(type="string", length=40)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=40)
      */
     protected $identifier;
 
     /**
      * @var AccessTokenEntityInterface
-     * @OneToOne(targetEntity="OAuth\AccessToken")
-     * @JoinColumn(name="accessToken", referencedColumnName="identifier")
+     * @ORM\OneToOne(targetEntity="OAuth\AccessToken")
+     * @ORM\JoinColumn(name="accessToken", referencedColumnName="identifier")
      */
     protected $accessToken;
 
     /**
      * @var DateTime
-     * @Column(type="date",nullable=true)
+     * @ORM\Column(type="date",nullable=true)
      */
     protected $expiryDateTime;
 

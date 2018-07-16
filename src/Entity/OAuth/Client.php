@@ -3,58 +3,59 @@
 namespace OAuth;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 /**
- * @Entity(repositoryClass="OAuth\Repository\ClientRepository")
- * @Table(name="Client",uniqueConstraints={@UniqueConstraint(name="indentifier_idx", columns={"identifier"})})
+ * @ORM\Entity(repositoryClass="OAuth\Repository\ClientRepository")
+ * @ORM\Table(name="Client",uniqueConstraints={@ORM\UniqueConstraint(name="indentifier_idx", columns={"identifier"})})
  */
 class Client implements ClientEntityInterface
 {
 
     /**
-     * @Id
+     * @ORM\Id
      * @var string
-     * @Column(type="integer", length=11)
+     * @ORM\Column(type="integer", length=11)
      */
     private $id;
 
     /**
      * @var string
-     * @Column(type="string", length=40)
+     * @ORM\Column(type="string", length=40)
      */
     private $name;
 
     /**
      * @var string|string[]
-     * @Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $redirectUri;
 
     /**
      * @var string
-     * @Column(type="string", length=40)
+     * @ORM\Column(type="string", length=40)
      */
     private $identifier;
 
     /**
      * @var string
-     * @Column(type="string", length=40, nullable=true)
+     * @ORM\Column(type="string", length=40, nullable=true)
      */
     private $secret;
 
     /**
      * @var bool $confidential
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $confidential;
 
     /**
      * @var ArrayCollection $scopes
-     * @ManyToMany(targetEntity="Scope")
-     * @JoinTable(name="Client_Scope",
-     *      joinColumns={@JoinColumn(name="client_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="scope_id", referencedColumnName="identifier")}
+     * @ORM\ManyToMany(targetEntity="Scope")
+     * @ORM\JoinTable(name="Client_Scope",
+     *      joinColumns={@ORM\JoinColumn(name="client_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="scope_id", referencedColumnName="identifier")}
      *      )
      */
     private $scopes;
