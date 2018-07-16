@@ -49,7 +49,7 @@ class UserController extends BaseController
         if (!$user) {
             $this->sendJsonResponse(['User not found']);
         }
-        $this->sendJsonResponse(['email' => $user->getEmail()]);
+        $this->sendJsonObjectResponse($user);
     }
 
     /**
