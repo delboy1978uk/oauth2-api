@@ -70,7 +70,7 @@ class OAuthPackage implements RegistrationInterface
         $function = function ($c) {
             /** @var EntityManager $entityManager */
             $entityManager = $c['doctrine.entity_manager'];
-            $repository = $entityManager->getRepository('OAuth\User');
+            $repository = $entityManager->getRepository(OAuthUser::class);
             return $repository;
         };
         $c['repository.User'] = $c->factory($function);

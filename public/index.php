@@ -105,7 +105,7 @@ $container = $svc->getContainer(); // Running this once after above setup create
 // Override the Del\Entity\User with our OAuth user class
 /** @var \Del\Service\UserService $userService */
 $userService = $container['service.user'];
-$userService->setUserClass('\OAuth\User');
+$userService->setUserClass(\OAuth\OAuthUser::class);
 $container['service.user'] = $userService;
 
 ini_set('display_errors', false);

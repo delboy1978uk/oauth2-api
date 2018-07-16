@@ -7,7 +7,7 @@ use DateTime;
 use OAuth\AuthCode;
 use OAuth\Client;
 use OAuth\Scope;
-use OAuth\User;
+use OAuth\OAuthUser;
 
 class AuthCodeTest extends Test
 {
@@ -46,11 +46,11 @@ class AuthCodeTest extends Test
 
     public function testGetSetUser()
     {
-        $user = new User();
+        $user = new OAuthUser();
         $user->setID(6);
         $code = new AuthCode();
         $code->setUserIdentifier($user);
-        $this->assertInstanceOf('OAuth\User', $code->getUserIdentifier());
+        $this->assertInstanceOf(OAuthUser::class, $code->getUserIdentifier());
         $this->assertEquals(6, $code->getUserIdentifier()->getID());
     }
 

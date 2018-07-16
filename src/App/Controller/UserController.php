@@ -9,7 +9,7 @@ use Del\Exception\UserException;
 use Del\Service\UserService;
 use Del\Value\User\State;
 use Exception;
-use OAuth\User;
+use OAuth\OAuthUser;
 
 class UserController extends BaseController
 {
@@ -44,7 +44,7 @@ class UserController extends BaseController
         $id = $this->getParam('id');
         /** @var UserService $userSvc */
         $userSvc = ContainerService::getInstance()->getContainer()['service.user'];
-        /** @var User $user */
+        /** @var OAuthUser $user */
         $user = $userSvc->findUserById($id);
         if (!$user) {
             $this->sendJsonResponse(['User not found']);

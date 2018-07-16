@@ -8,7 +8,7 @@ use Exception;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
-use OAuth\User;
+use OAuth\OAuthUser;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
 
@@ -88,7 +88,7 @@ class AuthCodeController extends OAuthController
             // The auth request object can be serialized into a user's session
             $authRequest = $server->validateAuthorizationRequest($request);
             // Once the user has logged in set the user on the AuthorizationRequest
-            $authRequest->setUser(new User());
+            $authRequest->setUser(new OAuthUser());
             // Once the user has approved or denied the client update the status
             // (true = approved, false = denied)
             $authRequest->setAuthorizationApproved(true);

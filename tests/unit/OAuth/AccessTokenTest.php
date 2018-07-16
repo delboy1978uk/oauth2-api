@@ -7,7 +7,7 @@ use DateTime;
 use OAuth\AccessToken;
 use OAuth\Client;
 use OAuth\Scope;
-use OAuth\User;
+use OAuth\OAuthUser;
 
 class AccessTokenTest extends Test
 {
@@ -39,11 +39,11 @@ class AccessTokenTest extends Test
 
     public function testGetSetUser()
     {
-        $user = new User();
+        $user = new OAuthUser();
         $user->setID(6);
         $token = new AccessToken();
         $token->setUserIdentifier($user);
-        $this->assertInstanceOf('OAuth\User', $token->getUserIdentifier());
+        $this->assertInstanceOf(OAuthUser::class, $token->getUserIdentifier());
         $this->assertEquals(6, $token->getUserIdentifier()->getID());
     }
 

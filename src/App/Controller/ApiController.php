@@ -8,7 +8,7 @@ use Del\Common\ContainerService;
 use Del\Service\UserService;
 use Doctrine\ORM\EntityManager;
 use OAuth\Repository\UserRepository;
-use OAuth\User;
+use OAuth\OAuthUser;
 use Psr\Http\Message\ServerRequestInterface;
 use Swagger;
 
