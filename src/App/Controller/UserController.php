@@ -9,7 +9,6 @@ use Del\Exception\UserException;
 use Del\Service\UserService;
 use Del\Value\User\State;
 use Exception;
-use OAuth\OAuthUser;
 
 class UserController extends BaseController
 {
@@ -23,7 +22,8 @@ class UserController extends BaseController
     }
 
     /**
-     * Fetch user details
+     * Fetch user details by ID.
+     *
      * @SWG\Get(
      *     path="/user/{id}",
      *     tags={"users"},
@@ -42,18 +42,21 @@ class UserController extends BaseController
     public function indexAction()
     {
         $id = $this->getParam('id');
+
         /** @var UserService $userSvc */
         $userSvc = ContainerService::getInstance()->getContainer()['service.user'];
-        /** @var OAuthUser $user */
+
         $user = $userSvc->findUserById($id);
         if (!$user) {
-            $this->sendJsonResponse(['User not found']);
+            $this->sendJsonResponse(['User not found'], 404);
         }
+
         $this->sendJsonObjectResponse($user);
     }
 
     /**
-     * Register as a new user.
+     * Register as a new user. Gives an email link token.
+     *
      * @SWG\Post(
      *     path="/user/register",
      *     tags={"users"},
@@ -98,36 +101,64 @@ class UserController extends BaseController
                 $data = $form->getValues();
                 $user = $this->userService->registerUser($data);
                 $link = $this->userService->generateEmailLink($user);
-                $this->sendJsonResponse([
-                    'user' => $this->userService->toArray($user),
-                    'link' => [
-                        'token' => $link->getToken(),
-                        'expires' => $link->getExpiryDate()->format('Y-m-d H:i:s'),
-                    ],
-                ]);
+                $this->sendJsonObjectResponse($link);
 
             } catch (UserException $e) {
 
                 switch ($e->getMessage()) {
                     case UserException::USER_EXISTS:
-                        throw new Exception($e->getMessage(), 400);
-                        break;
                     case UserException::WRONG_PASSWORD:
-
                         throw new Exception($e->getMessage(), 400);
                         break;
                 }
                 throw $e;
             }
-
-            $form->populate($formData);
         }
+    }
+
+
+    /**
+     * Get a new activation email link.
+     *
+     * @SWG\Get(
+     *     path="/user/activate/resend/{email}",
+     *     tags={"users"},
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="path",
+     *         type="string",
+     *         description="the email of the user registering",
+     *         required=true,
+     *         default="someone@email.com"
+     *     ),
+     *     @SWG\Response(response="200", description="Sends email link details")
+     * )
+     * @throws Exception
+     */
+    public function resendActivationAction()
+    {
+        $email = $this->getParam('email');
+
+        $user = $this->userService->findUserByEmail($email);
+        if (!$user) {
+            $this->sendJsonResponse(['User not found'], 404);
+            return;
+        }
+
+        if ($user->getState()->getValue() == State::STATE_ACTIVATED) {
+            $this->sendJsonResponse(['error' => UserException::USER_ACTIVATED], 400);
+            return;
+        }
+
+        $link = $this->userService->generateEmailLink($user);
+        $this->sendJsonObjectResponse($link);
     }
 
 
 
     /**
      * Activate from the email link.
+     *
      * @SWG\Get(
      *     path="/user/activate/{email}/{token}",
      *     tags={"users"},
@@ -166,28 +197,28 @@ class UserController extends BaseController
             $user->setState(new State(State::STATE_ACTIVATED));
             $userService->saveUser($user);
             $userService->deleteEmailLink($link);
-            $this->view->success = true;
-            return;
+            $data = ['success' => true];
+            $code = 200;
 
         } catch (EmailLinkException $e) {
             switch ($e->getMessage()) {
                 case EmailLinkException::LINK_EXPIRED:
-                    $this->sendJsonResponse([
+                    $data = [
                         'success' => false,
-                        'error' => 'The activation link has expired. You can send a new activation <a href="/user/resend-activation-mail/' . $email . '">here.</a>',
-                    ], 403);
+                        'error' => 'The activation link has expired. You can send a new activation <a href="/user/activate/resend/' . $email . '">here.</a>',
+                    ];
+                    $code = 403;
                     break;
                 default:
-                    $this->sendJsonResponse([
+                    $data = [
                         'success' => false,
                         'error' => $e->getMessage(),
-                    ], 500);
+                    ];
+                    $code = 500;
                     break;
             }
         }
 
-        $this->sendJsonResponse([
-            'success' => true,
-        ]);
+        $this->sendJsonResponse($data, $code);
     }
 }

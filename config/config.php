@@ -37,6 +37,11 @@ $config = [
             'action' => 'register',
             'params' => [],
         ],
+        '/user/activate/resend/:email' => [
+            'controller' => 'user',
+            'action' => 'resend-activation',
+            'params' => [],
+        ],
         '/user/activate/:email/:token' => [
             'controller' => 'user',
             'action' => 'activate',
