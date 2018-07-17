@@ -39,4 +39,15 @@ class BaseController extends Controller
         $this->setBody($json);
         $this->setStatusCode($statusCode);
     }
+
+    protected function httpMethodCheck($method)
+    {
+        if ($this->getRequest()->getMethod() !== $method) {
+            $this->sendJsonResponse(['error' => 'Method not allowed'], 405);
+
+            return false;
+        }
+
+        return true;
+    }
 }

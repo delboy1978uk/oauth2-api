@@ -41,6 +41,8 @@ class UserController extends BaseController
      */
     public function indexAction()
     {
+        if (!$this->httpMethodCheck('POST')) { return; }
+
         $id = $this->getParam('id');
 
         /** @var UserService $userSvc */
@@ -49,46 +51,10 @@ class UserController extends BaseController
         $user = $userSvc->findUserById($id);
         if (!$user) {
             $this->sendJsonResponse(['error' => 'User not found'], 404);
+            return;
         }
 
         $this->sendJsonObjectResponse($user);
-    }
-
-    /**
-     * Get a lost password email link token.
-     *
-     * @SWG\Get(
-     *     path="/user/lost-password/{email}",
-     *     tags={"users"},
-     *     @SWG\Parameter(
-     *         name="email",
-     *         in="path",
-     *         type="string",
-     *         description="the email of the user",
-     *         required=true,
-     *         default="someone@email.com"
-     *     ),
-     *     @SWG\Response(response="200", description="Sends email link details")
-     * )
-     * @throws Exception
-     */
-    public function lostPasswordAction()
-    {
-        $email = $this->getParam('email');
-
-        $user = $this->userService->findUserByEmail($email);
-        if (!$user) {
-            $this->sendJsonResponse(['error' => UserException::USER_NOT_FOUND], 404);
-            return;
-        }
-
-        if ($user->getState()->getValue() == State::STATE_UNACTIVATED) {
-            $this->sendJsonResponse(['error' => UserException::USER_UNACTIVATED], 400);
-            return;
-        }
-
-        $link = $this->userService->generateEmailLink($user);
-        $this->sendJsonObjectResponse($link);
     }
 
 
@@ -121,6 +87,8 @@ class UserController extends BaseController
      */
     public function activateAction()
     {
+        if (!$this->httpMethodCheck('GET')) { return; }
+
         $email = $this->getParam('email');
         $token = $this->getParam('token');
 
@@ -128,7 +96,9 @@ class UserController extends BaseController
 
         try {
 
+            /** @todo  handle exceptions */
             $link = $userService->findEmailLink($email, $token);
+
             $user = $link->getUser();
             $user->setState(new State(State::STATE_ACTIVATED));
             $userService->saveUser($user);
@@ -179,6 +149,8 @@ class UserController extends BaseController
      */
     public function resendActivationAction()
     {
+        if (!$this->httpMethodCheck('GET')) { return; }
+
         $email = $this->getParam('email');
 
         $user = $this->userService->findUserByEmail($email);
@@ -189,6 +161,45 @@ class UserController extends BaseController
 
         if ($user->getState()->getValue() == State::STATE_ACTIVATED) {
             $this->sendJsonResponse(['error' => UserException::USER_ACTIVATED], 400);
+            return;
+        }
+
+        $link = $this->userService->generateEmailLink($user);
+        $this->sendJsonObjectResponse($link);
+    }
+
+    /**
+     * Get a lost password email link token.
+     *
+     * @SWG\Get(
+     *     path="/user/lost-password/{email}",
+     *     tags={"users"},
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="path",
+     *         type="string",
+     *         description="the email of the user",
+     *         required=true,
+     *         default="someone@email.com"
+     *     ),
+     *     @SWG\Response(response="200", description="Sends email link details")
+     * )
+     * @throws Exception
+     */
+    public function lostPasswordAction()
+    {
+        if (!$this->httpMethodCheck('GET')) { return; }
+
+        $email = $this->getParam('email');
+
+        $user = $this->userService->findUserByEmail($email);
+        if (!$user) {
+            $this->sendJsonResponse(['error' => UserException::USER_NOT_FOUND], 404);
+            return;
+        }
+
+        if ($user->getState()->getValue() == State::STATE_UNACTIVATED) {
+            $this->sendJsonResponse(['error' => UserException::USER_UNACTIVATED], 400);
             return;
         }
 
@@ -232,6 +243,8 @@ class UserController extends BaseController
      */
     public function registerAction()
     {
+        if (!$this->httpMethodCheck('POST')) { return; }
+
         $form = new RegistrationForm('register');
 
         if ($this->getRequest()->getMethod() == 'POST') {
@@ -256,5 +269,92 @@ class UserController extends BaseController
                 throw $e;
             }
         }
+    }
+
+    /**
+     * Resets the users password. Requires an email link token.
+     *
+     * @SWG\Post(
+     *     path="/user/reset-password/{email}/{token}",
+     *     tags={"users"},
+     *     @SWG\Response(response="200", description="Resets a users email"),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="path",
+     *         type="string",
+     *         description="the email of the user",
+     *         required=true,
+     *         default="someone@email.com"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="token",
+     *         in="path",
+     *         type="string",
+     *         description="the email link token",
+     *         required=true,
+     *         default="r4nd0mT0k3n"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         in="formData",
+     *         type="string",
+     *         description="a password for the user",
+     *         required=true,
+     *         default="password"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="confirm",
+     *         in="formData",
+     *         type="string",
+     *         description="password confirmation",
+     *         required=true,
+     *         default="password"
+     *     )
+     * )
+     * @throws Exception
+     * @todo keep working!
+     */
+    public function resetPassAction()
+    {
+        if (!$this->httpMethodCheck('POST')) { return; }
+
+        $email = $this->getParam('email');
+        $token = $this->getParam('token');
+
+        $user = $this->userService->findUserByEmail($email);
+        if (!$user) {
+            $this->sendJsonResponse(['error' => UserException::USER_NOT_FOUND], 404);
+            return;
+        }
+
+        try {
+            $link = $this->userService->findEmailLink($email, $token);
+        } catch (EmailLinkException $e) {
+            $code = $e->getMessage() == EmailLinkException::LINK_EXPIRED ? 400 : 404;
+            $this->sendJsonResponse(['error' => $e->getMessage(), $code]);
+            return;
+        } catch (Exception $e) {
+            throw $e;
+        }
+/*
+        $form = new Application_Form_ResetPass();
+
+        $data = $this->getRequest()->getParams();
+
+        if ($form->isValid($data)) {
+
+            if ($data['password'] == $data['confirm']) {
+                $this->getUserService()->changePassword($user, $data['password']);
+                $this->getUserService()->deleteEmailLink($link);
+                $this->view->message = [' You have successfully changed your password.', 'success'];
+                $this->view->success = true;
+            } else {
+                $this->view->message = $this->view->message = ['Passwords did not match, please try again.', 'danger'];
+                $this->view->form = $form;
+            }
+        } else {
+            $this->view->form = $form;
+        }
+*/
     }
 }
