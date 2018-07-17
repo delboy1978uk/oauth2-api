@@ -47,6 +47,11 @@ $config = [
             'action' => 'activate',
             'params' => [],
         ],
+        '/user/lost-password/:email' => [
+            'controller' => 'user',
+            'action' => 'lost-password',
+            'params' => [],
+        ],
         '/user/:id' => [
             'controller' => 'user',
             'action' => 'index',
