@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\User\RegistrationForm;
+use App\Form\User\ResetPasswordForm;
 use Del\Common\ContainerService;
 use Del\Exception\EmailLinkException;
 use Del\Exception\UserException;
@@ -312,7 +313,6 @@ class UserController extends BaseController
      *     )
      * )
      * @throws Exception
-     * @todo keep working!
      */
     public function resetPassAction()
     {
@@ -333,28 +333,34 @@ class UserController extends BaseController
             $code = $e->getMessage() == EmailLinkException::LINK_EXPIRED ? 400 : 404;
             $this->sendJsonResponse(['error' => $e->getMessage(), $code]);
             return;
-        } catch (Exception $e) {
-            throw $e;
         }
-/*
-        $form = new Application_Form_ResetPass();
 
-        $data = $this->getRequest()->getParams();
+        $form = new ResetPasswordForm('reset-pass');
 
-        if ($form->isValid($data)) {
+        $data = $this->getRequest()->getParsedBody();
+
+        $form->populate($data);
+
+        if ($form->isValid()) {
 
             if ($data['password'] == $data['confirm']) {
-                $this->getUserService()->changePassword($user, $data['password']);
-                $this->getUserService()->deleteEmailLink($link);
-                $this->view->message = [' You have successfully changed your password.', 'success'];
-                $this->view->success = true;
+                $this->userService->changePassword($user, $data['password']);
+                $this->userService->deleteEmailLink($link);
+                $this->sendJsonResponse(['success' => 'Password successfully changed'], 200);
+                return;
             } else {
-                $this->view->message = $this->view->message = ['Passwords did not match, please try again.', 'danger'];
-                $this->view->form = $form;
+                $this->sendJsonResponse(['error' => 'Passwords did not match, please try again.'], 400);
             }
         } else {
-            $this->view->form = $form;
+            $errors = [];
+            $fields = $form->getFields();
+            foreach ($fields as $field) {
+                $validators = $field->getValidators();
+                foreach ($validators as $validator) {
+                    $errors[$field->getName()] = $validator->getMessages();
+                }
+            }
+            $this->sendJsonResponse(['error' => $errors], 400);
         }
-*/
     }
 }

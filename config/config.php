@@ -52,6 +52,11 @@ $config = [
             'action' => 'lost-password',
             'params' => [],
         ],
+        '/user/reset-password/:email/:token' => [
+            'controller' => 'user',
+            'action' => 'reset-pass',
+            'params' => [],
+        ],
         '/user/:id' => [
             'controller' => 'user',
             'action' => 'index',
