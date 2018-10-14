@@ -10,6 +10,7 @@ use Del\Exception\UserException;
 use Del\Service\UserService;
 use Del\Value\User\State;
 use Exception;
+use Zend\Validator\EmailAddress;
 
 class UserController extends BaseController
 {
@@ -42,7 +43,7 @@ class UserController extends BaseController
      */
     public function indexAction()
     {
-        if (!$this->httpMethodCheck('POST')) { return; }
+        if (!$this->httpMethodCheck('GET')) { return; }
 
         $id = $this->getParam('id');
 
@@ -346,7 +347,7 @@ class UserController extends BaseController
             if ($data['password'] == $data['confirm']) {
                 $this->userService->changePassword($user, $data['password']);
                 $this->userService->deleteEmailLink($link);
-                $this->sendJsonResponse(['success' => 'Password successfully changed'], 200);
+                $this->sendJsonResponse(['success' => 'Password successfully changed']);
                 return;
             } else {
                 $this->sendJsonResponse(['error' => 'Passwords did not match, please try again.'], 400);

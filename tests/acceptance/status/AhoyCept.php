@@ -1,6 +1,6 @@
 <?php
 
 $I = new AcceptanceTester($scenario);
-$I->wantTo("ensure th' ship is docked in the Bay of Hoempaige");
+$I->wantTo("Check homepage works");
 $I->amOnPage('/');
 $I->see('Bone MVC Framework');

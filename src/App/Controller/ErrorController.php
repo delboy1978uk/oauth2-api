@@ -25,7 +25,10 @@ class ErrorController extends BaseController
         $this->sendJsonResponse($responseArray, $e->getCode());
     }
 
-    public function notFoundAction(){}
+    public function notFoundAction()
+    {
+        $this->sendJsonResponse(['message' => 'Resource not found'], 404);
+    }
 
     public function notAuthorisedAction(){}
 }
