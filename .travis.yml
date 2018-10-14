@@ -11,7 +11,7 @@ branches:
 
 addons:
   hosts:
-    - bone
+    - awesome.scot
 
 sudo: false
 
@@ -29,7 +29,7 @@ before_script:
   - "mysql -e 'create database testapi;'"
   - nohup php -S bone:8000 public/index.php &
 script:
-  - php vendor/bin/codecept run  --coverage-xml --env travis
+  - php vendor/bin/codecept run api --coverage-xml --env travis
 after_script:
   - phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar

@@ -12,6 +12,7 @@ class UserCest
      */
     public function tryToRegisterAndActivate(ApiTester $I)
     {
+        // successful registration request
         $email = uniqid() . '@' . uniqid() . '.net';
         $I->sendPOST('/user/register', [
             'email' => $email,
@@ -36,6 +37,7 @@ class UserCest
           "token" => "string",
         ]);
 
+        // failed activation
         $I->sendGET('/user/activate/' . $email . '/wrongtoken');
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(404);
@@ -44,12 +46,40 @@ class UserCest
             "error" => 'string',
         ]);
 
+        // resend activation
+        $I->sendGET('/user/activate/resend/' . $email);
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseMatchesJsonType([
+            "token" => 'string',
+        ]);
         $token = $I->grabDataFromResponseByJsonPath('$.token');
+
+        // successful activation
         $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);
         $I->seeResponseMatchesJsonType([
             "success" => 'boolean',
         ]);
+
+        //lost password email link
+        $I->sendGET('/user/lost-password/' . $email );
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseMatchesJsonType([
+            "token" => 'string',
+        ]);
+
+        // reset email
+        $token = $I->grabDataFromResponseByJsonPath('$.token');
+        $I->sendGET('/user/lost-password/' . $email );
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseMatchesJsonType([
+            "token" => 'string',
+        ]);
     }
+
+
 }
