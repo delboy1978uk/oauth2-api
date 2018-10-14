@@ -34,7 +34,8 @@ class ErrorControllerTest extends \Codeception\TestCase\Test
     public function testErrorAction()
     {
         $this->controller->errorAction();
-        $this->assertEquals('bang!', $this->controller->view->message);
+        $msg = json_decode($this->controller->getBody(), true)['message'];
+        $this->assertEquals('bang!', $msg);
     }
 
     public function testNotFoundAction()
