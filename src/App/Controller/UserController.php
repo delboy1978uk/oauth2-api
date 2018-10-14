@@ -98,7 +98,6 @@ class UserController extends BaseController
 
         try {
 
-            /** @todo  handle exceptions */
             $link = $userService->findEmailLink($email, $token);
 
             $user = $link->getUser();
@@ -111,11 +110,19 @@ class UserController extends BaseController
         } catch (EmailLinkException $e) {
             switch ($e->getMessage()) {
                 case EmailLinkException::LINK_EXPIRED:
+                case EmailLinkException::LINK_NO_MATCH:
                     $data = [
                         'success' => false,
-                        'error' => 'The activation link has expired. You can send a new activation <a href="/user/activate/resend/' . $email . '">here.</a>',
+                        'error' => $e->getMessage(),
                     ];
                     $code = 403;
+                    break;
+                case EmailLinkException::LINK_NOT_FOUND:
+                    $data = [
+                        'success' => false,
+                        'error' => $e->getMessage(),
+                    ];
+                    $code = 404;
                     break;
                 default:
                     $data = [

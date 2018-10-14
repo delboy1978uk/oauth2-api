@@ -36,6 +36,14 @@ class UserCest
           "token" => "string",
         ]);
 
+        $I->sendGET('/user/activate/' . $email . '/wrongtoken');
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseMatchesJsonType([
+            "success" => 'boolean',
+            "error" => 'string',
+        ]);
+
         $token = $I->grabDataFromResponseByJsonPath('$.token');
         $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
         $I->seeResponseIsJson();
