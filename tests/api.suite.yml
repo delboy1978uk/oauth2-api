@@ -1,7 +1,15 @@
 actor: ApiTester
 modules:
-    enabled:
-        - REST:
-            url: https://192.168.99.100/
-            depends: PhpBrowser
-            part: Json
+  enabled:
+  - REST:
+      url: https://192.168.99.100/
+      depends: PhpBrowser
+      part: Json
+env:
+  travis:
+    modules:
+      enabled:
+      - REST:
+          url: http://awesome.scot:8000/
+          depends: PhpBrowser
+          part: Json
