@@ -6,10 +6,15 @@ class UserCest
     {
     }
 
-    public function tryToRegister(ApiTester $I)
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToRegisterAndActivate(ApiTester $I)
     {
+        $email = uniqid() . '@' . uniqid() . '.net';
         $I->sendPOST('/user/register', [
-            'email' => 'man@work.com',
+            'email' => $email,
             'password' => 'nothing',
             'confirm' => 'nothing'
         ]);
@@ -29,6 +34,14 @@ class UserCest
           ],
           "expiry_date" => "string:date",
           "token" => "string",
+        ]);
+
+        $token = $I->grabDataFromResponseByJsonPath('$.token');
+        $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseMatchesJsonType([
+            "success" => 'boolean',
         ]);
     }
 }
