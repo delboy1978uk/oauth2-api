@@ -23,10 +23,16 @@ install:
 
 before_script:
   - export DISPLAY=:99.0
+  - export PATH=$PATH:vendor/bin
   - sh -e /etc/init.d/xvfb start
   - sleep 5
   - java -jar selenium-server-standalone-2.42.2.jar -port 4444 &
-  - "mysql -e 'create database testapi;'"
+  - mysql -e "create database IF NOT EXISTS delboy1978uk;\n" -uroot
+  - mysql -e "USE mysql;\n" -uroot
+  - mysql -e "GRANT ALL PRIVILEGES ON *.* TO dbuser@'%' IDENTIFIED BY 'dbpass';\n" -uroot
+  - mysql -e "FLUSH PRIVILEGES;\n" -uroot
+  - migrant migrate --no-interaction
+  - migrant generate-proxies
   - nohup php -S awesome.scot:8000 public/index.php &
 script:
   - php vendor/bin/codecept run api --env travis -vvv

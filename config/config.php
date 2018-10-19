@@ -76,8 +76,8 @@ $config = [
     'db' => [
             'host' => '127.0.0.1',
             'database' => 'testapi',
-            'user' => 'root',
-            'pass' => ''
+            'user' => 'dbuser',
+            'pass' => 'dbpass'
     ],
     'templates' => [
         'layout'
