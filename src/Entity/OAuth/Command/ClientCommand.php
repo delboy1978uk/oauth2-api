@@ -5,7 +5,7 @@ namespace OAuth\Command;
 use Del\Service\UserService;
 use OAuth\Client;
 use OAuth\Service\ClientService;
-use OAuth\OAuthUser;
+use OAuth\OAuthUser as User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

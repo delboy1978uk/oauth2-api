@@ -30,7 +30,6 @@
 //                                     (____/ \__/ \_)__)(____)\_)(_/ \__/  \___)
 
 
-
 /**
  *
  * I be settin' up th'application path
@@ -40,6 +39,13 @@ chdir(dirname(__DIR__));
 if (!defined('APPLICATION_PATH'))
 {
     define('APPLICATION_PATH', realpath(__DIR__ . '/../'));
+}
+
+if (!defined('APPLICATION_ENV'))
+{
+    define('APPLICATION_ENV', (getenv('APPLICATION_ENV')
+        ? getenv('APPLICATION_ENV')
+        : 'production'));
 }
 
 
@@ -56,24 +62,9 @@ if (!file_exists('vendor/autoload.php'))
 }
 $loader = require_once 'vendor/autoload.php';
 
+$server = new \Bone\Server\Environment($_SERVER);
+$config = $server->fetchConfig(APPLICATION_PATH .'/config', APPLICATION_ENV);
 
-/**
- *
- *  Whit be yer configuration, sonny?
- *
- */
-$config = require_once APPLICATION_PATH . '/config/config.php';
-
-
-/**
- *
- *  Be ye on the practice ship?
- *
- */
-if (file_exists( APPLICATION_PATH . '/config/config.dev.php'))
-{
-    $config = array_merge($config, require_once ( APPLICATION_PATH . '/config/config.dev.php'));
-}
 
 
 // Set up our Dependency Injection Container

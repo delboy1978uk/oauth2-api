@@ -1,6 +1,6 @@
 <?php
 
-$config = [
+return [
     'routes' => [
         '/' => [
             'controller' => 'index',
@@ -83,6 +83,4 @@ $config = [
         'layout'
     ],
 ];
-
-return $config;
 

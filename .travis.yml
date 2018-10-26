@@ -1,13 +1,8 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
-
-branches:
-  except:
-    - gh-pages
 
 addons:
   hosts:
@@ -15,11 +10,9 @@ addons:
 
 sudo: false
 
-
 install:
   - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
   - composer install
-
 
 before_script:
   - export DISPLAY=:99.0

@@ -21,3 +21,10 @@ coverage:
         include:
             - src/App/Controller/*
             - src/Entity/OAuth/*
+    remote_context_options:
+        http:
+            timeout: 60
+        ssl:
+            verify_peer: false
+            verify_peer_name: false
+            allow_self_signed: true

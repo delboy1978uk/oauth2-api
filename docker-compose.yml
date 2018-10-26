@@ -25,6 +25,8 @@ services:
         links:
             - mariadb
             - mail
+        environment:
+            APPLICATION_ENV: 'development'
 
     app:
         image: httpd:latest
