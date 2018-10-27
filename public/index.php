@@ -65,8 +65,6 @@ $loader = require_once 'vendor/autoload.php';
 $server = new \Bone\Server\Environment($_SERVER);
 $config = $server->fetchConfig(APPLICATION_PATH .'/config', APPLICATION_ENV);
 
-ini_set('display_errors', 'on');
-
 // Set up our Dependency Injection Container
 use Del\Common\Config\DbCredentials;
 use Del\Common\ContainerService;
