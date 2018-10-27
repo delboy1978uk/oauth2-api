@@ -48,8 +48,10 @@ class UserCest
 
         // resend activation
         $I->sendGET('/user/activate/resend/' . $email);
-        $I->seeResponseIsJson();
+        $response = $I->grabResponse();
+        var_dump($response); exit;
         $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
             "token" => 'string',
         ]);
@@ -57,8 +59,8 @@ class UserCest
 
         // successful activation
         $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
-        $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
             "success" => 'boolean',
         ]);
