@@ -173,8 +173,9 @@ class UserController extends BaseController
             return;
         }
 
-        $link = $this->userService->generateEmailLink($user);
-        $this->sendJsonObjectResponse($link);
+//        $link = $this->userService->generateEmailLink($user);
+//        $this->sendJsonObjectResponse($link);
+        $this->sendJsonResponse(['something' => 'ok']);
     }
 
     /**
