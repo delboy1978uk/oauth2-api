@@ -163,6 +163,8 @@ class UserController extends BaseController
         $email = $this->getParam('email');
 
         $user = $this->userService->findUserByEmail($email);
+        $this->sendJsonResponse(['something' => 'ok']);
+        return;
         if (!$user) {
             $this->sendJsonResponse(['error' => UserException::USER_NOT_FOUND], 404);
             return;
@@ -173,9 +175,8 @@ class UserController extends BaseController
             return;
         }
 
-//        $link = $this->userService->generateEmailLink($user);
-//        $this->sendJsonObjectResponse($link);
-        $this->sendJsonResponse(['something' => 'ok']);
+        $link = $this->userService->generateEmailLink($user);
+        $this->sendJsonObjectResponse($link);
     }
 
     /**
