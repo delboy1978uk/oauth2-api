@@ -6,7 +6,7 @@ return [
         'dbname' => 'oauth2api',
         'user' => 'dbuser',
         'password' => '[123456]',
-        'host' => 'localhost',
+        'host' => 'mariadb',
     ],
     'packages' => [
         'delboy1978uk/user',
