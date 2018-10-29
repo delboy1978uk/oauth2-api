@@ -3,6 +3,10 @@
 
 define('APPLICATION_PATH', realpath('..'));
 
+define('APPLICATION_ENV', (getenv('APPLICATION_ENV')
+    ? getenv('APPLICATION_ENV')
+    : 'production'));
+
 require_once '../vendor/autoload.php';
 
 use BoneMvc\ConsoleApplication;
@@ -13,13 +17,10 @@ use OAuth\Command\ClientCommand;
 use Del\UserPackage;
 use OAuth\OAuthPackage;
 
-// Set up the Dependency Injection container
-require_once APPLICATION_PATH . '/config/config.php';
 
-if (file_exists( APPLICATION_PATH . '/config/config.dev.php'))
-{
-    $config = array_merge($config, require_once ( APPLICATION_PATH . '/config/config.dev.php'));
-}
+$server = new \Bone\Server\Environment([]);
+$configFolder = APPLICATION_PATH . '/config';
+$config = $server->fetchConfig($configFolder, APPLICATION_ENV);
 
 $containerSvc = ContainerService::getInstance();
 
