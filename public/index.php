@@ -48,6 +48,13 @@ if (!defined('APPLICATION_ENV'))
         : 'production'));
 }
 
+/*
+ * code coverage for travis
+ */
+if (APPLICATION_ENV == 'travis') {
+    require_once APPLICATION_PATH . '/c3.php';
+}
+
 
 /**
  *

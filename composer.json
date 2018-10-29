@@ -22,7 +22,8 @@
     "require-dev": {
         "codeception/codeception": "*",
         "codeception/aspect-mock": "*",
-        "flow/jsonpath": "^0.4.0"
+        "flow/jsonpath": "^0.4.0",
+        "codeception/c3": "^2.4"
     },
     "autoload": {
         "psr-4": {
