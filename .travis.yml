@@ -17,6 +17,7 @@ install:
 before_script:
   - export DISPLAY=:99.0
   - export PATH=$PATH:vendor/bin
+  - export APPLICATION_ENV=travis
   - sh -e /etc/init.d/xvfb start
   - sleep 5
   - java -jar selenium-server-standalone-2.42.2.jar -port 4444 &
