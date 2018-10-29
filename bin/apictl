@@ -9,7 +9,7 @@ define('APPLICATION_ENV', (getenv('APPLICATION_ENV')
 
 require_once '../vendor/autoload.php';
 
-use BoneMvc\ConsoleApplication;
+use Bone\ConsoleApplication;
 use Del\Console\UserCommand;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
