@@ -63,4 +63,12 @@ class IndexController extends BaseController
         $request = $this->getRequest();
         die(var_dump($request));
     }
+
+    public function emailAction()
+    {
+        $this->enableView();
+
+        $reg = $this->getViewEngine()->render('emails/user_registration');
+        echo $reg; exit;
+    }
 }

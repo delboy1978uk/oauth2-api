@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <img src="/img/skull_and_crossbones.png" />
-                    <h1 class="brand-heading">API Control</h1>
+                    <h1 class="brand-heading"><?= $this->t('welcome') ;?></h1>
                     <div class="page-scroll">
                         <a href="/first-party-website" class="btn btn-circle tt" title="1st Party Client Website">
                             <?= \Del\Icon::MALE; ?>

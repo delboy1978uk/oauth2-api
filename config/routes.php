@@ -73,14 +73,5 @@ return [
             'params' => [],
         ],
     ],
-    'db' => [
-            'host' => '127.0.0.1',
-            'database' => 'oauth2api',
-            'user' => '',
-            'pass' => ''
-    ],
-    'templates' => [
-        'layout'
-    ],
 ];
 

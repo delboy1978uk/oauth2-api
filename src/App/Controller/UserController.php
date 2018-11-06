@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Form\User\RegistrationForm;
 use App\Form\User\ResetPasswordForm;
+use Bone\Mvc\Registry;
+use Bone\Service\MailService;
 use Del\Common\ContainerService;
 use Del\Exception\EmailLinkException;
 use Del\Exception\UserException;
@@ -261,22 +263,48 @@ class UserController extends BaseController
             $formData = $this->getRequest()->getParsedBody();
             $form->populate($formData);
 
-            try {
-                $data = $form->getValues();
-                $user = $this->userService->registerUser($data);
-                $link = $this->userService->generateEmailLink($user);
-                $this->sendJsonObjectResponse($link);
+            if ($form->isValid()) {
+                try {
+                    $data = $form->getValues();
+                    $user = $this->userService->registerUser($data);
+                    $link = $this->userService->generateEmailLink($user);
+                    $mail = $this->getMailService();
+                    $env = $this->getServerEnvironment();
+                    $siteURL = $env->getRequestScheme() . '://' . $env->getHttpHost();
+                    $email = $user->getEmail();
+                    $token = $link->getToken();
 
-            } catch (UserException $e) {
+                    $message =
+                        <<<END
+                        Thank you for registering with $siteURL. You must now activate your account by clicking on the link below.<br /&nbsp;<br />
+<a href="$siteURL/user/activate/$email/$token">Activate my Account</a>.
+END;
 
-                switch ($e->getMessage()) {
-                    case UserException::USER_EXISTS:
-                    case UserException::WRONG_PASSWORD:
-                        throw new Exception($e->getMessage(), 400);
-                        break;
+                    $mail->setFrom('noreply@' . $env->getHttpHost())
+                        ->setTo($user->getEmail())
+                        ->setSubject('Thank you for registering with ' . Registry::ahoy()->get('site')['name'])
+                        ->setHeader('MAIL HEADER')
+//                        ->setHeader(Template::getHeader())
+                        ->setFooter('MAIL FOOTER')
+//                        ->setFooter(Template::getFooter())
+                        ->setMessage($message)
+                        ->send();
+                    $this->sendJsonObjectResponse($link);
+
+                } catch (UserException $e) {
+
+                    switch ($e->getMessage()) {
+                        case UserException::USER_EXISTS:
+                        case UserException::WRONG_PASSWORD:
+                            throw new Exception($e->getMessage(), 400);
+                            break;
+                    }
+                    throw $e;
                 }
-                throw $e;
+            } else {
+                throw new Exception('Invalid request data;', 400);
             }
+
         }
     }
 

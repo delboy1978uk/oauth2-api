@@ -2,7 +2,7 @@ actor: ApiTester
 modules:
   enabled:
   - REST:
-      url: https://192.168.99.100
+      url: https://apache
       depends: PhpBrowser
       part: Json
 env:
