@@ -17,6 +17,8 @@ before_install:
   - source ~/.profile
   - go get github.com/mailhog/MailHog
   - go get github.com/mailhog/mhsendmail
+  - ls -la
+  - la -la gocode
   - sudo cp ./gocode/bin/MailHog /usr/local/bin/mailhog
   - sudo cp ./gocode/bin/mhsendmail /usr/local/bin/mhsendmail
 install:
