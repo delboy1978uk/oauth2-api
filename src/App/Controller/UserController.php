@@ -255,7 +255,7 @@ class UserController extends BaseController
     public function registerAction()
     {
         if (!$this->httpMethodCheck('POST')) { return; }
-phpinfo(); exit;
+
         $form = new RegistrationForm('register');
 
         if ($this->getRequest()->getMethod() == 'POST') {
