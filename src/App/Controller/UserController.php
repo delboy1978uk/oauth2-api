@@ -280,7 +280,7 @@ class UserController extends BaseController
 <a href="$siteURL/user/activate/$email/$token">Activate my Account</a>.
 END;
 
-                    $mail->setFrom('noreply@' . $env->getHttpHost())
+                    $mail->setFrom('noreply@' . $env->getServerName())
                         ->setTo($user->getEmail())
                         ->setSubject('Thank you for registering with ' . Registry::ahoy()->get('site')['name'])
                         ->setHeader('MAIL HEADER')
