@@ -34,3 +34,7 @@ after_script:
   - phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover tests/_output/coverage.xml
+after_failure:
+  - php -i | grep error_log
+  - pwd
+#  - cat /home/travis/builds/name/something/php_error_log
