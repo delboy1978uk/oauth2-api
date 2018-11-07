@@ -270,8 +270,9 @@ class UserController extends BaseController
                     $link = $this->userService->generateEmailLink($user);
                     $mail = $this->getMailService();
                     $env = $this->getServerEnvironment();
-                    var_dump($env); exit;
-                    $siteURL = $env->getRequestScheme() . '://' . $env->getHttpHost();
+                    // default to http (travis built in $_SERVER doesn't have this var)
+                    $scheme = $env->getRequestScheme() ?: 'http';
+                    $siteURL = $scheme . '://' . $env->getHttpHost();
                     $email = $user->getEmail();
                     $token = $link->getToken();
 
