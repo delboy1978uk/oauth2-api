@@ -35,7 +35,4 @@ after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover tests/_output/coverage.xml
 after_failure:
-  - php -i | grep error_log
-  - pwd
-  - ls -la
-#  - cat /home/travis/build/delboy1978uk/oauth2-api/php_error_log
+  - cat /home/travis/build/delboy1978uk/oauth2-api/data/logs/error_log

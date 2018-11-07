@@ -53,6 +53,7 @@ if (!defined('APPLICATION_ENV'))
  */
 if (APPLICATION_ENV == 'travis') {
     require_once APPLICATION_PATH . '/c3.php';
+    ini_set('error_log', '/home/travis/build/delboy1978uk/oauth2-api/data/logs/error_log');
 }
 
 
