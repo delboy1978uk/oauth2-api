@@ -7,4 +7,9 @@ return [
         'user' => 'dbuser',
         'pass' => '[123456]',
     ],
+    'mail' => [
+        'name'              => 'localhost',
+        'host'              => 'localhost',
+        'port'              => 1025,
+    ],
 ];
