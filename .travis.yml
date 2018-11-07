@@ -13,12 +13,13 @@ sudo: true
 before_install:
   - sudo apt-get install -y golang-go
   - mkdir gocode
-  - echo "export GOPATH=$HOME/gocode" >> ~/.profile
+  - export GOPATH=/home/travis/build/delboy1978uk/oauth2-api/gocode
   - source ~/.profile
   - go get github.com/mailhog/MailHog
   - go get github.com/mailhog/mhsendmail
   - ls -la
   - ls -la gocode
+  - echo $HOME
   - sudo cp /home/travis/build/delboy1978uk/oauth2-api/gocode/bin/MailHog /usr/local/bin/mailhog
   - sudo cp /home/travis/build/delboy1978uk/oauth2-api/gocode/bin/mhsendmail /usr/local/bin/mhsendmail
 install:
