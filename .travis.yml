@@ -12,15 +12,12 @@ sudo: true
 
 before_install:
   - sudo apt-get install -y golang-go
-  - mkdir gocode
-  - export GOPATH=/home/travis/build/delboy1978uk/oauth2-api/gocode
-  - source ~/.profile
   - go env
   - go get github.com/mailhog/MailHog
   - go get github.com/mailhog/mhsendmail
   - ls -la gocode
-  - sudo cp /home/travis/build/delboy1978uk/oauth2-api/gocode/bin/MailHog /usr/local/bin/mailhog
-  - sudo cp /home/travis/build/delboy1978uk/oauth2-api/gocode/bin/mhsendmail /usr/local/bin/mhsendmail
+  - sudo cp /home/travis/gopath/bin/MailHog /usr/local/bin/mailhog
+  - sudo cp /home/travis/gopath/bin/mhsendmail /usr/local/bin/mhsendmail
 install:
   - mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
   - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
