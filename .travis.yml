@@ -17,8 +17,8 @@ before_install:
   - source ~/.profile
   - go get github.com/mailhog/MailHog
   - go get github.com/mailhog/mhsendmail
-  - sudo cp gocode/bin/MailHog /usr/local/bin/mailhog
-  - sudo cp gocode/bin/mhsendmail /usr/local/bin/mhsendmail
+  - sudo cp ./gocode/bin/MailHog /usr/local/bin/mailhog
+  - sudo cp ./gocode/bin/mhsendmail /usr/local/bin/mhsendmail
 install:
   - mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
   - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
