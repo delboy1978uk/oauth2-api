@@ -270,6 +270,7 @@ class UserController extends BaseController
                     $link = $this->userService->generateEmailLink($user);
                     $mail = $this->getMailService();
                     $env = $this->getServerEnvironment();
+                    var_dump($env); exit;
                     $siteURL = $env->getRequestScheme() . '://' . $env->getHttpHost();
                     $email = $user->getEmail();
                     $token = $link->getToken();
