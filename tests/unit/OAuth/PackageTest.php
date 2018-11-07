@@ -2,7 +2,9 @@
 
 namespace OAuthTest;
 
+use Bone\Server\Environment;
 use Codeception\TestCase\Test;
+use Del\Common\Config\DbCredentials;
 use Del\Common\ContainerService;
 use OAuth\OAuthPackage;
 
@@ -10,11 +12,28 @@ class OAuthPackageTest extends Test
 {
     public function testGetSetIdentifierRegisterPackages()
     {
-        require_once APPLICATION_PATH.'/config/config.php';
-        $package = new OAuthPackage();
+        $env = new Environment([]);
+        $config = $env->fetchConfig(APPLICATION_PATH . '/config', getenv('APPLICATION_ENV'));
+
+        $dbname = $config['db']['database'];
+        $user = $config['db']['user'];
+        $pass = $config['db']['pass'];
+        $host = $config['db']['host'];
+
+        $credentials = new DbCredentials();
+        $credentials->setUser($user)
+            ->setPassword($pass)
+            ->setDatabase($dbname)
+            ->setHost($host);
+
         $svc = ContainerService::getInstance();
+        $svc->setDbCredentials($credentials);
+
+        $package = new OAuthPackage();
         $svc->registerToContainer($package);
+
         $container = $svc->getContainer();
+
         $repository = $container['repository.AccessToken'];
         $this->assertInstanceOf('OAuth\Repository\AccessTokenRepository', $repository);
         $repository = $container['repository.AuthCode'];
