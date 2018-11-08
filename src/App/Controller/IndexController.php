@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Bone\Mvc\Registry;
 use DateTime;
 use Swagger;
 use Zend\Diactoros\Response;
