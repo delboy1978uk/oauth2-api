@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Bone\Mvc\Registry;
 use DateTime;
 use Swagger;
 use Zend\Diactoros\Response;
@@ -66,9 +67,10 @@ class IndexController extends BaseController
 
     public function emailAction()
     {
-        $this->enableView();
-
-        $reg = $this->getViewEngine()->render('emails/user_registration');
+        $reg = $this->getViewEngine()->render('emails/user_registration', [
+            'siteUrl' => $this->getServerEnvironment()->getSiteURL(),
+            'activationLink' => '/user/activate/fhd@hgf.net/dhfdhfddhfdh',
+        ]);
         echo $reg; exit;
     }
 }

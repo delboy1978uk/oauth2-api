@@ -13,8 +13,8 @@
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td class="padding" align="center">
-                                <a href="http://litmus.com" target="_blank">
-                                    <img src="/img/emails/pirateship.jpg" width="500" height="400" border="0" alt="Insert alt text here" style="display: block; color: #666666;  font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max">
+                                <a href="<?= $this->e($siteUrl) ;?>" target="_blank">
+                                    <img src="<?= $this->e($siteUrl) ;?>/img/emails/pirateship.jpg" width="400" height="164" border="0" alt="Insert alt text here" style="display: block; color: #666666;  font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max">
                                 </a>
                             </td>
                         </tr>
@@ -23,10 +23,10 @@
                                 <!-- COPY -->
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding">Thanks for registering</td>
+                                        <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding"><?= $this->t('email.user.register.thanks') ;?></td>
                                     </tr>
                                     <tr>
-                                        <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding">You're one click away from awesome things! Follow the link to complete the registration process.</td>
+                                        <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding"><?= $this->t('email.user.register.body') ;?></td>
                                     </tr>
                                 </table>
                             </td>
@@ -40,7 +40,7 @@
                                             <table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container">
                                                 <tr>
                                                     <td align="center" style="border-radius: 3px;" bgcolor="#256F9C">
-                                                        <a href="https://litmus.com" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">Activate your account &rarr;</a></td>
+                                                        <a href="<?= $this->e($siteUrl . $activationLink) ;?>" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button"><?= $this->t('email.user.register.button') ;?> &rarr;</a></td>
                                                 </tr>
                                             </table>
                                         </td>

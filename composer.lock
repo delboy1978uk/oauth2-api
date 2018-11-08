@@ -378,12 +378,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/delboy1978uk/bone.git",
-                "reference": "61e033030f76148c76e5a390fa1e2dac0ad66f21"
+                "reference": "e8caf59b309339725a2601dbb2f9e85fdb7efc95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delboy1978uk/bone/zipball/61e033030f76148c76e5a390fa1e2dac0ad66f21",
-                "reference": "61e033030f76148c76e5a390fa1e2dac0ad66f21",
+                "url": "https://api.github.com/repos/delboy1978uk/bone/zipball/e8caf59b309339725a2601dbb2f9e85fdb7efc95",
+                "reference": "e8caf59b309339725a2601dbb2f9e85fdb7efc95",
                 "shasum": ""
             },
             "require": {
@@ -414,7 +414,7 @@
                 }
             ],
             "description": "Bone MVC Framework Library",
-            "time": "2018-11-07T16:29:52+00:00"
+            "time": "2018-11-08T00:38:54+00:00"
         },
         {
             "name": "delboy1978uk/cdn",

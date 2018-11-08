@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth\n"
-"POT-Creation-Date: 2018-11-04 00:11+0100\n"
-"PO-Revision-Date: 2018-11-04 00:12+0100\n"
+"POT-Creation-Date: 2018-11-08 00:59+0100\n"
+"PO-Revision-Date: 2018-11-08 01:04+0100\n"
 "Last-Translator: Derek McLean <delboy1978uk@gmail.com>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -14,6 +14,20 @@ msgstr ""
 "X-Poedit-Basepath: ../../../\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: src\n"
+
+#: src/App/View/emails/user_registration.php:26
+msgid "email.user.register.thanks"
+msgstr "Gracias por registrarte"
+
+#: src/App/View/emails/user_registration.php:29
+msgid "email.user.register.body"
+msgstr ""
+"Estás a un clic de cosas increíbles! Siga el enlace para completar el "
+"proceso de registro."
+
+#: src/App/View/emails/user_registration.php:43
+msgid "email.user.register.button"
+msgstr "Activa tu cuenta"
 
 #: src/App/View/index/index.php:37
 msgid "welcome"

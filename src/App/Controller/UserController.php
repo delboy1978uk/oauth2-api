@@ -283,10 +283,6 @@ END;
                     $mail->setFrom('noreply@' . $env->getServerName())
                         ->setTo($user->getEmail())
                         ->setSubject('Thank you for registering with ' . Registry::ahoy()->get('site')['name'])
-                        ->setHeader('MAIL HEADER')
-//                        ->setHeader(Template::getHeader())
-                        ->setFooter('MAIL FOOTER')
-//                        ->setFooter(Template::getFooter())
                         ->setMessage($message)
                         ->send();
                     $this->sendJsonObjectResponse($link);

@@ -112,7 +112,7 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="wrapper">
                 <tr>
                     <td align="center" valign="top" style="padding: 15px 0;" class="logo">
-                        <a href="http://litmus.com" target="_blank">
+                        <a href="<?= $this->e($siteUrl) ;?>" target="_blank">
                             <img alt="Logo" src="/img/emails/logo.jpg" width="60" height="60" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
                         </a>
                     </td>
@@ -141,9 +141,9 @@
                     <td align="center" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">
                         1234 Main Street, Anywhere, MA 01234, USA
                         <br>
-                        <a href="http://litmus.com" target="_blank" style="color: #666666; text-decoration: none;">Unsubscribe</a>
+                        <a href="<?= $this->e($siteUrl) ;?>" target="_blank" style="color: #666666; text-decoration: none;">Unsubscribe</a>
                         <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                        <a href="http://litmus.com" target="_blank" style="color: #666666; text-decoration: none;">View this email in your browser</a>
+                        <a href="<?= $this->e($siteUrl) ;?>" target="_blank" style="color: #666666; text-decoration: none;">View this email in your browser</a>
                     </td>
                 </tr>
             </table>
