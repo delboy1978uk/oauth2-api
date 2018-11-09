@@ -67,7 +67,7 @@ class UserCest
             'password' => 'nothing',
             'confirm' => 'nothing'
         ]);
-        $I->sendGET('/user/activate/resend/' . $email);
+        $I->sendGET('/en_GB/user/activate/resend/' . $email);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
