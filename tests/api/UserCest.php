@@ -183,4 +183,17 @@ class UserCest
             'token' => 'string',
         ]);
     }
+
+
+    public function tryToGetUser(ApiTester $I)
+    {
+        $I->sendGET('/user/1');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'id' => 'integer',
+            'email' => 'string',
+            'password' => 'string',
+        ]);
+    }
 }
