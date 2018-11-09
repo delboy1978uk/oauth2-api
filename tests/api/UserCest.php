@@ -145,11 +145,13 @@ class UserCest
         $svc->registerToContainer($package);
 
         $container = $svc->getContainer();
-        /** @var \Del\Repository\EmailLink $svc */
-        $svc = $container['repository.EmailLink'];
-        $link = $svc->findByToken($token[0]);
+        $em = $container['doctrine.entity_manager'];
+        /** @var \Del\Repository\EmailLink $repository */
+        $repository = $em->getRepository('Del\Entity\EmailLink');
+        /** @var \Del\Entity\EmailLink $link */
+        $link = $repository->findBy(['token' => $token[0]]);
         $link->setExpiryDate(DateTime::createFromFormat('Y-m-d', '2000-01-01'));
-        $svc->save($link);
+        $em->flush($link);
 
         $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
         $I->seeResponseCodeIs(400);
