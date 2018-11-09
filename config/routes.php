@@ -32,12 +32,12 @@ return [
             'action' => 'access-token',
             'params' => [],
         ],
-        '/user/register' => [
+        '/:locale/user/register' => [
             'controller' => 'user',
             'action' => 'register',
             'params' => [],
         ],
-        '/user/activate/resend/:email' => [
+        '/:locale/user/activate/resend/:email' => [
             'controller' => 'user',
             'action' => 'resend-activation',
             'params' => [],

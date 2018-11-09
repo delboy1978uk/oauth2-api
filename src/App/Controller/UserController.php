@@ -144,8 +144,16 @@ class UserController extends BaseController
      * Refresh the activation email link token.
      *
      * @SWG\Get(
-     *     path="/user/activate/resend/{email}",
+     *     path="/{locale}/user/activate/resend/{email}",
      *     tags={"users"},
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
      *     @SWG\Parameter(
      *         name="email",
      *         in="path",
@@ -176,6 +184,25 @@ class UserController extends BaseController
         }
 
         $link = $this->userService->generateEmailLink($user);
+
+        $mail = $this->getMailService();
+        $env = $this->getServerEnvironment();
+        $email = $user->getEmail();
+        $token = $link->getToken();
+
+        $message = $this->getViewEngine()->render('emails/user_registration/user_registration', [
+            'siteUrl' => $env->getSiteURL(),
+            'activationLink' => '/' . $this->getParam('locale') . '/user/activate/' . $email . '/' . $token,
+        ]);
+
+        $mail->setFrom('noreply@' . $env->getServerName())
+            ->setTo($user->getEmail())
+            ->setSubject($this->getTranslator()
+                    ->translate('email.user.register.thankswith') . ' ' . Registry::ahoy()->get('site')['name'])
+            ->setMessage($message)
+            ->send();
+
+
         $this->sendJsonObjectResponse($link);
     }
 
@@ -222,9 +249,17 @@ class UserController extends BaseController
      * Register as a new user. Returns an email link token.
      *
      * @SWG\Post(
-     *     path="/user/register",
+     *     path="/{locale}/user/register",
      *     tags={"users"},
      *     @SWG\Response(response="200", description="Registers a new unactivated user"),
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
      *     @SWG\Parameter(
      *         name="email",
      *         in="formData",
@@ -270,19 +305,18 @@ class UserController extends BaseController
                     $link = $this->userService->generateEmailLink($user);
                     $mail = $this->getMailService();
                     $env = $this->getServerEnvironment();
-                    $siteURL = $env->getSiteURL();
                     $email = $user->getEmail();
                     $token = $link->getToken();
 
-                    $message =
-                        <<<END
-                        Thank you for registering with $siteURL. You must now activate your account by clicking on the link below.<br /&nbsp;<br />
-<a href="$siteURL/user/activate/$email/$token">Activate my Account</a>.
-END;
+                    $message = $this->getViewEngine()->render('emails/user_registration/user_registration', [
+                        'siteUrl' => $env->getSiteURL(),
+                        'activationLink' => '/' . $this->getParam('locale') . '/user/activate/' . $email . '/' . $token,
+                    ]);
 
                     $mail->setFrom('noreply@' . $env->getServerName())
                         ->setTo($user->getEmail())
-                        ->setSubject('Thank you for registering with ' . Registry::ahoy()->get('site')['name'])
+                        ->setSubject($this->getTranslator()
+                            ->translate('email.user.register.thankswith') . ' ' . Registry::ahoy()->get('site')['name'])
                         ->setMessage($message)
                         ->send();
                     $this->sendJsonObjectResponse($link);

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OAuth\n"
-"POT-Creation-Date: 2018-11-08 00:59+0100\n"
-"PO-Revision-Date: 2018-11-08 01:03+0100\n"
+"POT-Creation-Date: 2018-11-09 12:44+0100\n"
+"PO-Revision-Date: 2018-11-09 12:48+0100\n"
 "Last-Translator: Derek McLean <delboy1978uk@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl_BE\n"
@@ -15,6 +15,11 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: src\n"
 
+#: src/App/Controller/UserController.php:292
+msgid "email.user.register.thankswith"
+msgstr "Bedankt voor uw registratie bij"
+
+#: src/App/View/emails/user_registration.php:1
 #: src/App/View/emails/user_registration.php:26
 msgid "email.user.register.thanks"
 msgstr "Bedankt voor het registreren"

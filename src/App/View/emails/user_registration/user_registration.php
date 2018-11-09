@@ -1,4 +1,4 @@
-<?php $this->layout('/emails/layout', ['title' => 'Thanks for registering']) ?>
+<?php $this->layout('/emails/layout', ['title' => $this->t('email.user.register.thanks'), 'siteUrl' => $siteUrl]) ?>
 <tr>
     <td bgcolor="#ffffff" align="center" style="padding: 20px 15px 70px 15px;" class="section-padding">
         <!--[if (gte mso 9)|(IE)]>
@@ -14,7 +14,7 @@
                         <tr>
                             <td class="padding" align="center">
                                 <a href="<?= $this->e($siteUrl) ;?>" target="_blank">
-                                    <img src="<?= $this->e($siteUrl) ;?>/img/emails/pirateship.jpg" width="400" height="164" border="0" alt="Insert alt text here" style="display: block; color: #666666;  font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max">
+                                    <img src="<?= $this->e($siteUrl) ;?>/img/emails/pirateship.jpg" width="400" height="164" border="0" alt="<?= $this->e($siteUrl) ;?>" style="display: block; color: #666666;  font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max">
                                 </a>
                             </td>
                         </tr>
