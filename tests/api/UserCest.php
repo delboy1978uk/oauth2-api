@@ -181,6 +181,19 @@ class UserCest
      * @param ApiTester $I
      * @throws Exception
      */
+    public function tryToActivateWithBullshitNonRegisteredUser(ApiTester $I)
+    {
+        $I->sendGET('/user/activate/bullshit@user.com/ifthisworksitsamiracle');
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseIsJson();
+    }
+
+
+
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
     public function tryToSendLostPasswordEmail(ApiTester $I)
     {
         $email = uniqid() . '@' . uniqid() . '.net';
