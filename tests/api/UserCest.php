@@ -10,7 +10,7 @@ class UserCest
     {
         // successful registration request
         $email = uniqid() . '@' . uniqid() . '.net';
-        $I->sendPOST('/user/register', [
+        $I->sendPOST('/en_GB/user/register', [
             'email' => $email,
             'password' => 'nothing',
             'confirm' => 'nothing'
@@ -41,7 +41,7 @@ class UserCest
     public function tryToActivateWithWrongToken(ApiTester $I)
     {
         $email = uniqid() . '@' . uniqid() . '.net';
-        $I->sendPOST('/user/register', [
+        $I->sendPOST('/en_GB/user/register', [
             'email' => $email,
             'password' => 'nothing',
             'confirm' => 'nothing'
@@ -62,7 +62,7 @@ class UserCest
     public function tryToResendActivationMail(ApiTester $I)
     {
         $email = uniqid() . '@' . uniqid() . '.net';
-        $I->sendPOST('/user/register', [
+        $I->sendPOST('/en_GB/user/register', [
             'email' => $email,
             'password' => 'nothing',
             'confirm' => 'nothing'
@@ -82,7 +82,7 @@ class UserCest
     public function tryToActivate(ApiTester $I)
     {
         $email = uniqid() . '@' . uniqid() . '.net';
-        $I->sendPOST('/user/register', [
+        $I->sendPOST('/en_GB/user/register', [
             'email' => $email,
             'password' => 'nothing',
             'confirm' => 'nothing'
@@ -103,7 +103,7 @@ class UserCest
     public function tryToSendLostPasswordEmail(ApiTester $I)
     {
         $email = uniqid() . '@' . uniqid() . '.net';
-        $I->sendPOST('/user/register', [
+        $I->sendPOST('/en_GB/user/register', [
             'email' => $email,
             'password' => 'nothing',
             'confirm' => 'nothing'
