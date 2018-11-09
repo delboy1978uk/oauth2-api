@@ -140,7 +140,7 @@ class UserCest
 
         $svc = \Del\Common\ContainerService::getInstance();
         $svc->setDbCredentials($credentials);
-        $svc->setProxyPath(realpath(APPLICATION_PATH.'/data/proxies'));
+        $svc->setProxyPath(realpath('data/proxies'));
 
         $package = new \OAuth\OAuthPackage();
         $svc->registerToContainer($package);
