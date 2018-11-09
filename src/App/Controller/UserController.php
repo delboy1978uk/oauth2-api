@@ -174,7 +174,7 @@ class UserController extends BaseController
 
         $user = $this->userService->findUserByEmail($email);
         if (!$user) {
-            $this->sendJsonResponse(['error' => UserException::USER_NOT_FOUND], 404);
+            $this->sendJsonResponse(['error' => UserException::USER_NOT_FOUND . print_r($this->getParams())], 404);
             return;
         }
 
