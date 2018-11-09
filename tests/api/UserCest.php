@@ -79,6 +79,20 @@ class UserCest
      * @param ApiTester $I
      * @throws Exception
      */
+    public function tryToResendActivationMailWithActivatedUser(ApiTester $I)
+    {
+        $I->sendGET('/en_GB/user/activate/resend/delboy1978uk@gmail.com');
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            "error" => 'string',
+        ]);
+    }
+
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
     public function tryToActivate(ApiTester $I)
     {
         $email = uniqid() . '@' . uniqid() . '.net';
