@@ -162,6 +162,21 @@ class UserCest
         ]);
     }
 
+
+
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToActivateWithNonsenseToken(ApiTester $I)
+    {
+        $I->sendGET('/user/activate/delboy1978uk@gmail.com/ifthisworksitsamiracle');
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseIsJson();
+    }
+
+
+
     /**
      * @param ApiTester $I
      * @throws Exception
