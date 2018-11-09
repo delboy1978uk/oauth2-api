@@ -150,7 +150,7 @@ class UserCest
         /** @var \Del\Repository\EmailLink $repository */
         $repository = $em->getRepository('Del\Entity\EmailLink');
         /** @var \Del\Entity\EmailLink $link */
-        $link = $repository->findBy(['token' => $token[0]]);
+        $link = $repository->findOneBy(['token' => $token[0]]);
         $link->setExpiryDate(DateTime::createFromFormat('Y-m-d', '2000-01-01'));
         $em->flush($link);
 
