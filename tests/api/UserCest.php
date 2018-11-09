@@ -171,7 +171,7 @@ class UserCest
     public function tryToActivateWithNonsenseToken(ApiTester $I)
     {
         $I->sendGET('/user/activate/delboy1978uk@gmail.com/ifthisworksitsamiracle');
-        $I->seeResponseCodeIs(400);
+        $I->seeResponseCodeIs(404);
         $I->seeResponseIsJson();
     }
 
