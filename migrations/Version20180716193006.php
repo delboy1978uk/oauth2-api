@@ -36,8 +36,7 @@ class Version20180716193006 extends AbstractMigration
         $this->addSql('ALTER TABLE Client_Scope ADD CONSTRAINT FK_7A323D9819EB6921 FOREIGN KEY (client_id) REFERENCES Client (id)');
         $this->addSql('ALTER TABLE Client_Scope ADD CONSTRAINT FK_7A323D98682B5931 FOREIGN KEY (scope_id) REFERENCES Scope (identifier)');
         $this->addSql('INSERT INTO `Person` (`id`, `firstname`, `middlename`, `lastname`, `aka`, `dob`, `birthplace`, `country`, `image`) VALUES (1, \'Derek\', \'Stephen\', \'McLean\', \'Delboy\', \'1978-02-17\', \'Glasgow\', \'GB\', NULL);');
-        $this->addSql('INSERT INTO `User` (`id`, `person_id`, `email`, `password`, `state`, `registrationDate`, `lastLoginDate`, `class`) VALUES (1, 1, \'delboy1978uk@gmail.com\', \'$2y$14$80YHRgTqqOcAWplaBatC8.BGuJW3JDgtE42FyRDw.y4hdPasbMdqu\', 1, \'2018-01-27\', \'2018-01-27\', \'oauth\');');
-//        $this->addSql('INSERT INTO `EmailLink` (`id`, `person_id`, `email`, `password`, `state`, `registrationDate`, `lastLoginDate`, `class`) VALUES (1, 1, \'delboy1978uk@gmail.com\', \'$2y$14$80YHRgTqqOcAWplaBatC8.BGuJW3JDgtE42FyRDw.y4hdPasbMdqu\', 1, \'2018-01-27\', \'2018-01-27\', \'oauth\');');
+        $this->addSql('INSERT INTO `User` (`id`, `person_id`, `email`, `password`, `state`, `registrationDate`, `lastLoginDate`, `class`) VALUES (1, 1, \'delboy1978uk@gmail.com\', \'$2y$14$80YHRgTqqOcAWplaBatC8.BGuJW3JDgtE42FyRDw.y4hdPasbMdqu\', 1, \'2018-01-27\', \'2018-01-27\', \'oauthuser\');');
         $this->addSql('INSERT INTO `Client` (`id`, `identifier`, `name`, `redirectUri`, `secret`) VALUES (1, \'testclient\', \'Test Client\', \'\', \'JDJ5JDEwJDJmd1Nya1FWSDhQaDZydHVuc29jZnV2\');');
     }
 
