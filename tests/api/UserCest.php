@@ -155,7 +155,7 @@ class UserCest
         $em->flush($link);
 
         $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
-        $I->seeResponseCodeIs(400);
+        $I->seeResponseCodeIs(403);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
             'error' => 'string',
