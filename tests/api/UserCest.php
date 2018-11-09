@@ -125,7 +125,7 @@ class UserCest
         $token = $I->grabDataFromResponseByJsonPath('$.token');
 
         $env = new \Bone\Server\Environment([]);
-        $config = $env->fetchConfig(APPLICATION_PATH . '/config', getenv('APPLICATION_ENV'));
+        $config = $env->fetchConfig( 'config', getenv('APPLICATION_ENV'));
 
         $dbname = $config['db']['database'];
         $user = $config['db']['user'];
