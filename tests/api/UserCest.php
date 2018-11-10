@@ -46,7 +46,7 @@ class UserCest
             'password' => 'nothing',
             'confirm' => 'nothing'
         ]);
-        $I->sendGET('/user/activate/' . $email . '/wrongtoken');
+        $I->sendGET('/en_GB/user/activate/' . $email . '/wrongtoken');
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(404);
         $I->seeResponseMatchesJsonType([
@@ -102,7 +102,7 @@ class UserCest
             'confirm' => 'nothing'
         ]);
         $token = $I->grabDataFromResponseByJsonPath('$.token');
-        $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
+        $I->sendGET('/en_GB/user/activate/' . $email . '/' . $token[0]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
@@ -154,7 +154,7 @@ class UserCest
         $link->setExpiryDate(DateTime::createFromFormat('Y-m-d', '2000-01-01'));
         $em->flush($link);
 
-        $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
+        $I->sendGET('/en_GB/user/activate/' . $email . '/' . $token[0]);
         $I->seeResponseCodeIs(403);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
@@ -170,7 +170,7 @@ class UserCest
      */
     public function tryToActivateWithNonsenseToken(ApiTester $I)
     {
-        $I->sendGET('/user/activate/delboy1978uk@gmail.com/ifthisworksitsamiracle');
+        $I->sendGET('/en_GB/user/activate/delboy1978uk@gmail.com/ifthisworksitsamiracle');
         $I->seeResponseCodeIs(404);
         $I->seeResponseIsJson();
     }
@@ -183,7 +183,7 @@ class UserCest
      */
     public function tryToActivateWithBullshitNonRegisteredUser(ApiTester $I)
     {
-        $I->sendGET('/user/activate/bullshit@user.com/ifthisworksitsamiracle');
+        $I->sendGET('/en_GB/user/activate/bullshit@user.com/ifthisworksitsamiracle');
         $I->seeResponseCodeIs(404);
         $I->seeResponseIsJson();
     }
@@ -203,7 +203,7 @@ class UserCest
             'confirm' => 'nothing'
         ]);
         $token = $I->grabDataFromResponseByJsonPath('$.token');
-        $I->sendGET('/user/activate/' . $email . '/' . $token[0]);
+        $I->sendGET('/en_GB/user/activate/' . $email . '/' . $token[0]);
         $I->sendGET('/user/lost-password/' . $email );
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);

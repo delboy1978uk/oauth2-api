@@ -67,9 +67,17 @@ class UserController extends BaseController
      * Activate from the email link token.
      *
      * @SWG\Get(
-     *     path="/user/activate/{email}/{token}",
+     *     path="/{locale}/user/activate/{email}/{token}",
      *     tags={"users"},
      *     @SWG\Response(response="200", description="Registers a new unactivated user"),
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
      *     @SWG\Parameter(
      *         name="email",
      *         in="path",

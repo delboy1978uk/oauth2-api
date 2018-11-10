@@ -42,7 +42,7 @@ return [
             'action' => 'resend-activation',
             'params' => [],
         ],
-        '/user/activate/:email/:token' => [
+        '/:locale/user/activate/:email/:token' => [
             'controller' => 'user',
             'action' => 'activate',
             'params' => [],
