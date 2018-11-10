@@ -30,7 +30,7 @@ class UserController extends BaseController
      *
      * @SWG\Get(
      *     path="/user/{id}",
-     *     tags={"users"},
+     *     tags={"user"},
      *     @SWG\Parameter(
      *         name="id",
      *         in="path",
@@ -68,7 +68,7 @@ class UserController extends BaseController
      *
      * @SWG\Get(
      *     path="/{locale}/user/activate/{email}/{token}",
-     *     tags={"users"},
+     *     tags={"user_registration"},
      *     @SWG\Response(response="200", description="Registers a new unactivated user"),
      *     @SWG\Parameter(
      *         name="locale",
@@ -153,7 +153,7 @@ class UserController extends BaseController
      *
      * @SWG\Get(
      *     path="/{locale}/user/activate/resend/{email}",
-     *     tags={"users"},
+     *     tags={"user_registration"},
      *     @SWG\Parameter(
      *         name="locale",
      *         in="path",
@@ -219,7 +219,7 @@ class UserController extends BaseController
      *
      * @SWG\Get(
      *     path="/{locale}/user/lost-password/{email}",
-     *     tags={"users"},
+     *     tags={"user_registration"},
      *     @SWG\Parameter(
      *         name="locale",
      *         in="path",
@@ -266,7 +266,7 @@ class UserController extends BaseController
      *
      * @SWG\Post(
      *     path="/{locale}/user/register",
-     *     tags={"users"},
+     *     tags={"user_registration"},
      *     @SWG\Response(response="200", description="Registers a new unactivated user"),
      *     @SWG\Parameter(
      *         name="locale",
@@ -359,7 +359,7 @@ class UserController extends BaseController
      *
      * @SWG\Post(
      *     path="/{locale}/user/reset-password/{email}/{token}",
-     *     tags={"users"},
+     *     tags={"user_registration"},
      *     @SWG\Response(response="200", description="Resets a users email"),
      *     @SWG\Parameter(
      *         name="locale",
@@ -452,5 +452,283 @@ class UserController extends BaseController
             }
             $this->sendJsonResponse(['error' => $errors], 400);
         }
+    }
+
+
+    /**
+     * @SWG\Post(
+     *     path="/{locale}/me/change-password/",
+     *     tags={"user_profile"},
+     *     @SWG\Response(response="200", description="Changes a users password."),
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="path",
+     *         type="string",
+     *         description="the email of the user",
+     *         required=true,
+     *         default="someone@email.com"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="token",
+     *         in="path",
+     *         type="formData",
+     *         description="the email link token",
+     *         required=true,
+     *         default="r4nd0mT0k3n"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         in="formData",
+     *         type="string",
+     *         description="a password for the user",
+     *         required=true,
+     *         default="password"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="confirm",
+     *         in="formData",
+     *         type="string",
+     *         description="password confirmation",
+     *         required=true,
+     *         default="password"
+     *     )
+     * )
+     * @throws Exception
+     */
+    public function changePassAction()
+    {
+//        $request = $this->getRequest();
+//
+//        $form = new Application_Form_ChangePass();
+//
+//        if ($request->isPost()) {
+//
+//            $data = $request->getPost();
+//
+//            if ($form->isValid($data)) {
+//
+//                $oldPassword = $form->getValue('oldPassword');
+//                $password = $form->getValue('password');
+//                $confirm = $form->getValue('confirm');
+//
+//                if ($password != $confirm) {
+//
+//                    $this->view->message = ['Your new passwords didn\'t match!','danger'];
+//
+//                } else {
+//
+//                    $user = $this->getUserService()->findUserById(Zend_Auth::getInstance()->getIdentity());
+//
+//                    if($this->getUserService()->checkPassword($user, $oldPassword)) {
+//
+//                        $this->getUserService()->changePassword($user, $password);
+//                        $this->view->message = ['Password successfully updated. Click here to <a href ="/">return</a>.','success'];
+//                        return;
+//
+//                    } else {
+//
+//                        $this->view->message = ['Your password was wrong!','danger'];
+//
+//                    }
+//                }
+//            }
+//        }
+//        $this->view->form = $form;
+    }
+
+    /**
+     * @SWG\Post(
+     *     path="/{locale}/me/change-email/",
+     *     tags={"user_profile"},
+     *     @SWG\Response(response="200", description="Changes a users email."),
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="path",
+     *         type="string",
+     *         description="the email of the user",
+     *         required=true,
+     *         default="someone@email.com"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="token",
+     *         in="path",
+     *         type="formData",
+     *         description="the email link token",
+     *         required=true,
+     *         default="r4nd0mT0k3n"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         in="formData",
+     *         type="string",
+     *         description="a password for the user",
+     *         required=true,
+     *         default="password"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="confirm",
+     *         in="formData",
+     *         type="string",
+     *         description="password confirmation",
+     *         required=true,
+     *         default="password"
+     *     )
+     * )
+     * @throws Exception
+     */
+    public function changeEmailAction()
+    {
+//        /* @var $request Zend_Controller_Request_Http */
+//        $request = $this->getRequest();
+//
+//        $user = $this->getUserService()->findUserById(Zend_Auth::getInstance()->getIdentity());
+//
+//        $form = new Application_Form_ChangeEmail();
+//
+//        if ($request->isPost()) {
+//
+//            $data = $request->getPost();
+//
+//            if ($form->isValid($data)) {
+//
+//                $newEmail = $form->getValue('email');
+//                $password = $form->getValue('password');
+//
+//                $existing = $this->getUserService()->findUserByEmail($newEmail);
+//                if($existing) {
+//
+//                    $this->view->message = ['This email is already registered with a Cloud Tax Return account.','danger'];
+//                    return;
+//                }
+//
+//                if ($this->getUserService()->checkPassword($user, $password)) {
+//
+//                    $link = $this->getUserService()->generateEmailLink($user);
+//
+//                    try {
+//
+//                        $siteURL = SITE_URL;
+//                        $currentEmail = $user->getEmail();
+//                        $token = $link->getToken();
+//
+//                        $message =
+//                            <<<END
+//                            You have requested to change the login email for your Cloud Tax Return account to $newEmail. Click on the link below to confirm this change.
+//                            You can ignore this email if you do not wish to change your address.<br /&nbsp;<br />
+//<a href="$siteURL/reset-email/$currentEmail/$newEmail/$token">Switch to my new email address.</a>.
+//END;
+//
+//                        /** @var Mail $emailService */
+//                        $mail = new Mail();
+//                        $mail->setFrom('noreply@cloudtaxreturn.co.uk')
+//                            ->setTo($currentEmail)
+//                            ->setSubject('Change your email address on Cloud Tax Return.')
+//                            ->setHeader(Template::getHeader())
+//                            ->setFooter(Template::getFooter())
+//                            ->setMessage($message)
+//                            ->send();
+//
+//                        $this->view->message = ['Please check your email for a link to activate your new address.','info'];
+//                        $this->view->form = null;
+//
+//                    } catch (Exception $e) {
+//                        $this->view->message = ['We were unable to send your e-mail confirmation. Please contact '.$this->config->email->support.'.','danger'];
+//                    }
+//
+//                } else {
+//                    $this->view->message = ['Your password was wrong','danger'];
+//                }
+//
+//            }
+//        }
+//        $this->view->form = $form;
+    }
+
+
+    /**
+     * @SWG\Post(
+     *     path="/{locale}/me/reset-email/",
+     *     tags={"user_profile"},
+     *     @SWG\Response(response="200", description="Resets the users email."),
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="formData",
+     *         type="string",
+     *         description="the email of the user",
+     *         required=true,
+     *         default="someone@email.com"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="newemail",
+     *         in="formData",
+     *         type="string",
+     *         description="password confirmation",
+     *         required=true,
+     *         default="password"
+     *     )
+     *     @SWG\Parameter(
+     *         name="token",
+     *         in="path",
+     *         type="string",
+     *         description="the email link token",
+     *         required=true,
+     *         default="r4nd0mT0k3n"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="password",
+     *         in="formData",
+     *         type="string",
+     *         description="a password for the user",
+     *         required=true,
+     *         default="password"
+     *     ),
+     * )
+     * @throws Exception
+     */
+    public function resetEmailAction()
+    {
+//        $email = $this->_request->getParam('email');
+//        $newEmail = $this->_request->getParam('newemail');
+//        $token = $this->_request->getParam('token');
+//
+//        try {
+//
+//            $link = $this->getUserService()->findEmailLink($email, $token);
+//            $user = $link->getUser();
+//            $user->setEmail($newEmail);
+//            $this->getUserService()->saveUser($user);
+//            $this->getUserService()->deleteEmailLink($link);
+//            $this->view->message = ['You have switched your email address. Please log in with '.$newEmail.' from now on.', 'success'];
+//
+//        } catch (EmailLinkException $e) {
+//            $this->view->message = [$e->getMessage(), 'danger'];
+//            return;
+//        } catch (Exception $e) {
+//            throw $e;
+//        }
     }
 }
