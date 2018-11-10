@@ -204,7 +204,7 @@ class UserCest
         ]);
         $token = $I->grabDataFromResponseByJsonPath('$.token');
         $I->sendGET('/en_GB/user/activate/' . $email . '/' . $token[0]);
-        $I->sendGET('/user/lost-password/' . $email );
+        $I->sendGET('/en_GB/user/lost-password/' . $email );
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);
         $I->seeResponseMatchesJsonType([

@@ -218,8 +218,16 @@ class UserController extends BaseController
      * Get a lost password email link token.
      *
      * @SWG\Get(
-     *     path="/user/lost-password/{email}",
+     *     path="/{locale}/user/lost-password/{email}",
      *     tags={"users"},
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
      *     @SWG\Parameter(
      *         name="email",
      *         in="path",
@@ -350,9 +358,17 @@ class UserController extends BaseController
      * Resets the users password. Requires an email link token.
      *
      * @SWG\Post(
-     *     path="/user/reset-password/{email}/{token}",
+     *     path="/{locale}/user/reset-password/{email}/{token}",
      *     tags={"users"},
      *     @SWG\Response(response="200", description="Resets a users email"),
+     *     @SWG\Parameter(
+     *         name="locale",
+     *         in="path",
+     *         type="string",
+     *         description="the locale to use",
+     *         required=true,
+     *         default="en_GB"
+     *     ),
      *     @SWG\Parameter(
      *         name="email",
      *         in="path",

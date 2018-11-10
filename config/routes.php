@@ -47,12 +47,12 @@ return [
             'action' => 'activate',
             'params' => [],
         ],
-        '/user/lost-password/:email' => [
+        '/:locale/user/lost-password/:email' => [
             'controller' => 'user',
             'action' => 'lost-password',
             'params' => [],
         ],
-        '/user/reset-password/:email/:token' => [
+        '/:locale/user/reset-password/:email/:token' => [
             'controller' => 'user',
             'action' => 'reset-pass',
             'params' => [],
