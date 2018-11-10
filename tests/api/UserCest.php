@@ -213,6 +213,46 @@ class UserCest
     }
 
 
+
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToSendLostPasswordEmailForUnactivatedUser(ApiTester $I)
+    {
+        $email = uniqid() . '@' . uniqid() . '.net';
+        $I->sendPOST('/en_GB/user/register', [
+            'email' => $email,
+            'password' => 'nothing',
+            'confirm' => 'nothing'
+        ]);
+
+        $I->sendGET('/en_GB/user/lost-password/' . $email );
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseMatchesJsonType([
+            'error' => 'string',
+        ]);
+    }
+
+
+
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToSendLostPasswordEmailForNonRegisteredUser(ApiTester $I)
+    {
+        $email = 'lechuck@monkeyisland.net';
+        $I->sendGET('/en_GB/user/lost-password/' . $email );
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(404);
+        $I->seeResponseMatchesJsonType([
+            'error' => 'string',
+        ]);
+    }
+
+
     public function tryToGetUser(ApiTester $I)
     {
         $I->sendGET('/user/1');
