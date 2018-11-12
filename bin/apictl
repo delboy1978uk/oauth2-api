@@ -55,10 +55,12 @@ $container['service.user'] = $userService;
 $app = new ConsoleApplication();
 
 $userCommand = new UserCommand();
+$userCommand->setName('user:reset-pass');
 $clientCommand = new ClientCommand($container['oauth.service.client'], $userService);
-$clientCommand = new ScopeCreateCommand($container['repository.Scope'], $userService);
+$scopeCommand = new ScopeCreateCommand($container['repository.Scope']);
 
 $app->add($userCommand);
 $app->add($clientCommand);
+$app->add($scopeCommand);
 
 $app->run();

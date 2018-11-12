@@ -19,6 +19,7 @@ class Version20181112164152 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE Scope ADD description VARCHAR(255) NOT NULL');
+        $this->addSql('INSERT INTO `Scope` (`identifier`, `description`) VALUES (\'admin\', \'Trusted client superuser scope\');');
     }
 
     /**

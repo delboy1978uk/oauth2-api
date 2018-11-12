@@ -29,7 +29,7 @@ class ClientCommand extends Command
      */
     private $userService;
 
-    public function __construct(ClientService $clientService, UserService $userService, ?string $name = null)
+    public function __construct(ClientService $clientService, UserService $userService, ?string $name = 'client:create')
     {
         $this->clientService = $clientService;
         $this->userService = $userService;
@@ -41,7 +41,6 @@ class ClientCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('create-client');
         $this->setDescription('Creates a new client.');
         $this->setHelp('Create a new OAuth2 client application');
     }

@@ -60,9 +60,10 @@ class ScopeCreateCommand extends Command
 
         $scope = new Scope();
         $scope->setIdentifier($scopeName);
+        $scope->setDescription($description);
 
         $this->scopeRepository->create($scope);
 
-        $output->writeln('Client created.');
+        $output->writeln('Scope created.');
     }
 }
