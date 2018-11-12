@@ -689,7 +689,7 @@ class UserController extends BaseController
      *         description="password confirmation",
      *         required=true,
      *         default="password"
-     *     )
+     *     ),
      *     @SWG\Parameter(
      *         name="token",
      *         in="path",
