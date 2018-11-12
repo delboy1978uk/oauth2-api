@@ -61,6 +61,12 @@ class AuthCode implements AuthCodeEntityInterface
      */
     protected $id;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    protected $revoked;
+
     public function __construct()
     {
         $this->scopes = new ArrayCollection();
@@ -176,5 +182,21 @@ class AuthCode implements AuthCodeEntityInterface
     public function setRedirectUri($uri)
     {
         $this->redirectUri = $uri;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRevoked(): bool
+    {
+        return $this->revoked;
+    }
+
+    /**
+     * @param bool $revoked
+     */
+    public function setRevoked(bool $revoked): void
+    {
+        $this->revoked = $revoked;
     }
 }

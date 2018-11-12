@@ -4,6 +4,7 @@ namespace OAuth\Repository;
 
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use OAuth\AuthCode;
@@ -41,11 +42,17 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
 
     /**
      * @param string $codeId
-     * @return mixed
+     * @throws Exception
      */
     public function revokeAuthCode($codeId)
     {
-        // TODO: Implement revokeAuthCode() method.
+        /** @var AuthCode $token */
+        $code = $this->find($codeId);
+        if(!$code) {
+            throw new Exception('Token not found', 404);
+        }
+        $code->setRevoked(true);
+        $this->_em->flush($code);
     }
 
     /**
@@ -56,7 +63,7 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
     {
         /** @var AuthCode $code */
         $code = $this->findOneBy(['identifier' => $codeId]);
-        if (!$code || $code->getExpiryDateTime() < new DateTime()) {
+        if (!$code || $code->getExpiryDateTime() < new DateTime() || $code->isRevoked()) {
             return true;
         }
         return false;
