@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20180716193006 extends AbstractMigration
+class Version20181112153501 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -24,9 +24,9 @@ class Version20180716193006 extends AbstractMigration
         $this->addSql('CREATE TABLE AccessToken (identifier VARCHAR(40) NOT NULL, client INT DEFAULT NULL, expiryDateTime DATE DEFAULT NULL, userIdentifier INT NOT NULL, INDEX IDX_B39617F5C7440455 (client), PRIMARY KEY(identifier)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE AccessToken_Scope (token_id VARCHAR(40) NOT NULL, scope_id VARCHAR(40) NOT NULL, INDEX IDX_83FAAB4241DEE7B9 (token_id), INDEX IDX_83FAAB42682B5931 (scope_id), PRIMARY KEY(token_id, scope_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE AuthCode (id INT AUTO_INCREMENT NOT NULL, redirectUri VARCHAR(255) DEFAULT NULL, expiryDateTime DATETIME DEFAULT NULL, identifier LONGTEXT NOT NULL, client INT DEFAULT NULL, UNIQUE INDEX UNIQ_F1D7D177C7440455 (client), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE Client (id INT NOT NULL, name VARCHAR(40) NOT NULL, redirectUri VARCHAR(255) NOT NULL, identifier VARCHAR(40) NOT NULL, secret VARCHAR(40) DEFAULT NULL, confidential TINYINT(1) NOT NULL, UNIQUE INDEX indentifier_idx (identifier), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE Client (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(40) NOT NULL, description VARCHAR(255) NOT NULL, icon VARCHAR(100) NOT NULL, grantType VARCHAR(20) NOT NULL, redirectUri VARCHAR(255) NOT NULL, identifier VARCHAR(40) NOT NULL, secret VARCHAR(40) DEFAULT NULL, confidential TINYINT(1) NOT NULL, UNIQUE INDEX indentifier_idx (identifier), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE Client_Scope (client_id INT NOT NULL, scope_id VARCHAR(40) NOT NULL, INDEX IDX_7A323D9819EB6921 (client_id), INDEX IDX_7A323D98682B5931 (scope_id), PRIMARY KEY(client_id, scope_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE EmailLink (id INT AUTO_INCREMENT NOT NULL, expiry_date DATETIME NOT NULL, token VARCHAR(255) NOT NULL, user_id INT DEFAULT NULL, INDEX IDX_D0C08DD0A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE EmailLink (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, expiry_date DATETIME NOT NULL, token VARCHAR(255) NOT NULL, INDEX IDX_D0C08DD0A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE Person (id INT AUTO_INCREMENT NOT NULL, firstname VARCHAR(60) DEFAULT NULL, middlename VARCHAR(60) DEFAULT NULL, lastname VARCHAR(60) DEFAULT NULL, aka VARCHAR(50) DEFAULT NULL, dob DATE DEFAULT NULL, birthplace VARCHAR(50) DEFAULT NULL, country VARCHAR(3) DEFAULT NULL, image VARCHAR(50) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE RefreshToken ADD CONSTRAINT FK_7142379E350A9822 FOREIGN KEY (accessToken) REFERENCES AccessToken (identifier)');
         $this->addSql('ALTER TABLE User ADD CONSTRAINT FK_2DA17977217BBB47 FOREIGN KEY (person_id) REFERENCES Person (id)');
@@ -35,9 +35,10 @@ class Version20180716193006 extends AbstractMigration
         $this->addSql('ALTER TABLE AccessToken_Scope ADD CONSTRAINT FK_83FAAB42682B5931 FOREIGN KEY (scope_id) REFERENCES Scope (identifier)');
         $this->addSql('ALTER TABLE Client_Scope ADD CONSTRAINT FK_7A323D9819EB6921 FOREIGN KEY (client_id) REFERENCES Client (id)');
         $this->addSql('ALTER TABLE Client_Scope ADD CONSTRAINT FK_7A323D98682B5931 FOREIGN KEY (scope_id) REFERENCES Scope (identifier)');
+        $this->addSql('ALTER TABLE EmailLink ADD CONSTRAINT FK_D0C08DD0A76ED395 FOREIGN KEY (user_id) REFERENCES User (id)');
         $this->addSql('INSERT INTO `Person` (`id`, `firstname`, `middlename`, `lastname`, `aka`, `dob`, `birthplace`, `country`, `image`) VALUES (1, \'Derek\', \'Stephen\', \'McLean\', \'Delboy\', \'1978-02-17\', \'Glasgow\', \'GB\', NULL);');
         $this->addSql('INSERT INTO `User` (`id`, `person_id`, `email`, `password`, `state`, `registrationDate`, `lastLoginDate`, `class`) VALUES (1, 1, \'delboy1978uk@gmail.com\', \'$2y$14$80YHRgTqqOcAWplaBatC8.BGuJW3JDgtE42FyRDw.y4hdPasbMdqu\', 1, \'2018-01-27\', \'2018-01-27\', \'oauthuser\');');
-        $this->addSql('INSERT INTO `Client` (`id`, `identifier`, `name`, `redirectUri`, `secret`) VALUES (1, \'testclient\', \'Test Client\', \'\', \'JDJ5JDEwJDJmd1Nya1FWSDhQaDZydHVuc29jZnV2\');');
+        $this->addSql('INSERT INTO `Client` (`id`, `name`, `description`, `icon`, `grantType`, `redirectUri`, `identifier`, `secret`, `confidential`) VALUES (1, \'BoneMVC App\', \'Official first party web client\', \'https://awesome.scot/img/emails/logo.jpg\', \'authcode\', \'https://awesome.scot/fake-client-callback\', \'ceac682a9a4808bf910ad49134230e0e\', \'JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52\', 0);');
     }
 
     /**
@@ -48,6 +49,7 @@ class Version20180716193006 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('ALTER TABLE EmailLink DROP FOREIGN KEY FK_D0C08DD0A76ED395');
         $this->addSql('ALTER TABLE AccessToken_Scope DROP FOREIGN KEY FK_83FAAB42682B5931');
         $this->addSql('ALTER TABLE Client_Scope DROP FOREIGN KEY FK_7A323D98682B5931');
         $this->addSql('ALTER TABLE RefreshToken DROP FOREIGN KEY FK_7142379E350A9822');

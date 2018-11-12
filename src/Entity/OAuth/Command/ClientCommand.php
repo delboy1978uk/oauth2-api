@@ -9,6 +9,7 @@ use OAuth\OAuthUser as User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
@@ -42,13 +43,12 @@ class ClientCommand extends Command
     {
         $this->setName('create-client');
         $this->setDescription('Creates a new client.');
-        $this->setHelp('This command allows you to create a user...');
+        $this->setHelp('Create a new OAuth2 client application');
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|Client
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -71,6 +71,17 @@ class ClientCommand extends Command
         $question = new Question('Give a name for this application: ', false);
         $name = $helper->ask($input, $output, $question);
 
+        $question = new Question('Give a description: ', false);
+        $description = $helper->ask($input, $output, $question);
+
+        $question = new Question('Give an icon URL: ', false);
+        $icon = $helper->ask($input, $output, $question);
+
+        $question = new ChoiceQuestion('Select the Authorisation Grant type: ',[
+            'authcode', 'implicit', 'password', 'clientcreds'
+        ]);
+        $authGrant = $helper->ask($input, $output, $question);
+
         $question = new Question('Give a redirect URI: ', '');
         $uri = $helper->ask($input, $output, $question);
 
@@ -80,10 +91,12 @@ class ClientCommand extends Command
 
         $client = new Client();
         $client->setName($name);
+        $client->setDescription($description);
+        $client->setIcon($icon);
+        $client->setGrantType($authGrant);
         $client->setIdentifier(md5($name));
         $client->setRedirectUri($uri);
         $client->setConfidential($public);
-        $client->setUser($user);
 
         if ($public === false) {
             $this->clientService->generateSecret($client);
@@ -91,6 +104,6 @@ class ClientCommand extends Command
 
         $this->clientService->getClientRepository()->create($client);
 
-        return $client;
+        $output->writeln('Client created.');
     }
 }

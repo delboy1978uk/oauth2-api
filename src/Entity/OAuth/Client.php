@@ -12,11 +12,11 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
  */
 class Client implements ClientEntityInterface
 {
-
     /**
      * @ORM\Id
      * @var string
      * @ORM\Column(type="integer", length=11)
+     * @ORM\GeneratedValue
      */
     private $id;
 
@@ -25,6 +25,24 @@ class Client implements ClientEntityInterface
      * @ORM\Column(type="string", length=40)
      */
     private $name;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255)
+     */
+    private $description;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=100)
+     */
+    private $icon;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=20)
+     */
+    private $grantType;
 
     /**
      * @var string|string[]
@@ -49,6 +67,11 @@ class Client implements ClientEntityInterface
      * @ORM\Column(type="boolean")
      */
     private $confidential;
+
+    /**
+     * @var OAuthUser $user
+     */
+    private $user;
 
     /**
      * @var ArrayCollection $scopes
@@ -175,6 +198,70 @@ class Client implements ClientEntityInterface
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string $icon
+     */
+    public function setIcon(string $icon): void
+    {
+        $this->icon = $icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGrantType(): string
+    {
+        return $this->grantType;
+    }
+
+    /**
+     * @param string $grantType
+     */
+    public function setGrantType(string $grantType): void
+    {
+        $this->grantType = $grantType;
+    }
+
+    /**
+     * @return OAuthUser
+     */
+    public function getUser(): OAuthUser
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param OAuthUser $user
+     */
+    public function setUser(OAuthUser $user): void
+    {
+        $this->user = $user;
     }
 
     /**
