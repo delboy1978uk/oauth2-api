@@ -14,6 +14,9 @@ use Zend\Diactoros\Stream;
 
 class AuthCodeController extends OAuthController
 {
+    /**
+     * @throws Exception
+     */
     public function init()
     {
         parent::init();

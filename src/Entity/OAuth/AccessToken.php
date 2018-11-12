@@ -58,7 +58,7 @@ class AccessToken implements AccessTokenEntityInterface
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    protected $revoked;
+    protected $revoked = false;
 
     public function __construct()
     {

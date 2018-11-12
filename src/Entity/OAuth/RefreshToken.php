@@ -37,6 +37,12 @@ class RefreshToken implements RefreshTokenEntityInterface
     protected $expiryDateTime;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    protected $revoked = false;
+
+    /**
      * {@inheritdoc}
      */
     public function setAccessToken(AccessTokenEntityInterface $accessToken)
@@ -86,5 +92,21 @@ class RefreshToken implements RefreshTokenEntityInterface
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRevoked(): bool
+    {
+        return $this->revoked;
+    }
+
+    /**
+     * @param bool $revoked
+     */
+    public function setRevoked(bool $revoked): void
+    {
+        $this->revoked = $revoked;
     }
 }

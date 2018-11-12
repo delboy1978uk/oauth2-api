@@ -26,7 +26,6 @@ class OAuthController extends BaseController
             'file://'.APPLICATION_PATH.'/data/keys/private.key',    // path to private key
             'file://'.APPLICATION_PATH.'/data/keys/public.key'      // path to public key
         );
-        $server->setEncryptionKey('1De1boyXJzdk4TYmHkR3st6dJmHuEaneHB');
 
         $this->oauth2Server = $server;
     }
