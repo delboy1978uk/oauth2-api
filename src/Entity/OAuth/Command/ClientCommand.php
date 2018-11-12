@@ -96,6 +96,7 @@ class ClientCommand extends Command
         $client->setIdentifier(md5($name));
         $client->setRedirectUri($uri);
         $client->setConfidential($public);
+        $client->setUser($user);
 
         if ($public === false) {
             $this->clientService->generateSecret($client);
