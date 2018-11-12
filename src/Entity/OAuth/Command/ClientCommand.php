@@ -41,7 +41,7 @@ class ClientCommand extends Command
     protected function configure()
     {
         $this->setName('create-client');
-        $this->setDescription('Creates a new user.');
+        $this->setDescription('Creates a new client.');
         $this->setHelp('This command allows you to create a user...');
     }
 

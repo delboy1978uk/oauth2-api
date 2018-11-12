@@ -1,13 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-define('APPLICATION_PATH', realpath('..'));
+chdir(dirname(__DIR__));
+
+define('APPLICATION_PATH', realpath('.'));
 
 define('APPLICATION_ENV', (getenv('APPLICATION_ENV')
     ? getenv('APPLICATION_ENV')
     : 'production'));
 
-require_once '../vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 use Bone\ConsoleApplication;
 use Del\Console\UserCommand;
@@ -42,11 +44,17 @@ $svc->registerToContainer(new UserPackage());
 $svc->registerToContainer(new OAuthPackage());
 $container = $svc->getContainer();
 
+// Override the Del\Entity\User with our OAuth user class
+/** @var \Del\Service\UserService $userService */
+$userService = $container['service.user'];
+$userService->setUserClass(\OAuth\OAuthUser::class);
+$container['service.user'] = $userService;
+
 // Set up the application
 $app = new ConsoleApplication();
 
 $userCommand = new UserCommand();
-$clientCommand = new ClientCommand($container['oauth.service.client'], $container['service.user']);
+$clientCommand = new ClientCommand($container['oauth.service.client'], $userService);
 
 $app->add($userCommand);
 $app->add($clientCommand);

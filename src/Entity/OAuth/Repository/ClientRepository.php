@@ -11,13 +11,13 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
 {
     /**
      * @param string $clientIdentifier
-     * @param string $grantType
+     * @param null|string $grantType
      * @param null|string|null $clientSecret
      * @param bool $mustValidateSecret
      *
      * @return ClientEntityInterface|null
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
         /** @var Client $client */
         $client = $this->findOneBy([
