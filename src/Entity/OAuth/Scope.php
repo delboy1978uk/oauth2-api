@@ -13,22 +13,17 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 class Scope implements ScopeEntityInterface
 {
     /**
-     * @var string
+     * @var string $identifier
      * @ORM\Id
      * @ORM\Column(type="string", length=40)
      */
     protected $identifier;
 
     /**
-     * @var ArrayCollection $accessTokens
-     * @ORM\ManyToMany(targetEntity="AccessToken", mappedBy="scopes")
+     * @var string $description
+     * @ORM\Column(type="string", length=255)
      */
-    protected $accessTokens;
-
-    public function __construct()
-    {
-        $this->accessTokens = new ArrayCollection();
-    }
+    private $description;
 
     /**
      * @return string
@@ -49,7 +44,23 @@ class Scope implements ScopeEntityInterface
     /**
      * @return string
      */
-    function jsonSerialize()
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function jsonSerialize()
     {
         return $this->getIdentifier();
     }
