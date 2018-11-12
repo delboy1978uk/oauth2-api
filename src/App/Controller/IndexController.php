@@ -61,7 +61,7 @@ class IndexController extends BaseController
     public function fakeClientCallbackAction()
     {
         $request = $this->getRequest();
-        die(var_dump($request));
+        die('YES' . var_dump($request));
     }
 
     public function emailAction()

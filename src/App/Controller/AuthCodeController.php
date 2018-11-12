@@ -117,6 +117,8 @@ class AuthCodeController extends OAuthController
         } else {
             $this->sendResponse($response);
         }
+
+        return $response;
     }
 
 
