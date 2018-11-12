@@ -54,6 +54,12 @@ class AccessToken implements AccessTokenEntityInterface
      */
     protected $identifier;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", default=false)
+     */
+    protected $revoked;
+
     public function __construct()
     {
         $this->scopes = new ArrayCollection();
@@ -167,5 +173,21 @@ class AccessToken implements AccessTokenEntityInterface
     public function setClient(ClientEntityInterface $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRevoked(): bool
+    {
+        return $this->revoked;
+    }
+
+    /**
+     * @param bool $revoked
+     */
+    public function setRevoked(bool $revoked): void
+    {
+        $this->revoked = $revoked;
     }
 }
