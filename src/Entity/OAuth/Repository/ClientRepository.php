@@ -6,6 +6,7 @@ use OAuth\Client;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use OAuth\OAuthUser;
 
 class ClientRepository extends EntityRepository implements ClientRepositoryInterface
 {
@@ -46,8 +47,9 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
      */
     public function create(Client $client)
     {
-        $this->_em->persist($client);
-        $this->_em->flush($client);
+        $em = $this->getEntityManager();
+        $em->merge($client);
+        $em->flush();
         return $client;
     }
 

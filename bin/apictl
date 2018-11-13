@@ -49,7 +49,7 @@ $container = $svc->getContainer();
 /** @var \Del\Service\UserService $userService */
 $userService = $container['service.user'];
 $userService->setUserClass(\OAuth\OAuthUser::class);
-$container['service.user'] = $userService;
+//$container['service.user'] = $userService;
 
 // Set up the application
 $app = new ConsoleApplication();

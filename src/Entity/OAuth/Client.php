@@ -70,8 +70,7 @@ class Client implements ClientEntityInterface
 
     /**
      * @var OAuthUser $user/**
-     * @ORM\ManyToOne(targetEntity="OAuthUser")
-     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="OAuth\OAuthUser")
      */
     private $user;
 
