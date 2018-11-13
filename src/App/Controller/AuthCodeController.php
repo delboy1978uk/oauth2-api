@@ -8,6 +8,7 @@ use Exception;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use OAuth\OAuthUser;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
@@ -29,6 +30,10 @@ class AuthCodeController extends OAuthController
                 $refreshTokenRepository,
                 new DateInterval('PT10M')
             ),
+            new DateInterval('PT1H')
+        );
+        $this->oauth2Server->enableGrantType(
+            new ClientCredentialsGrant(),
             new DateInterval('PT1H')
         );
     }
@@ -53,6 +58,14 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="the client identifier",
      *         required=true,
+     *         default="testclient"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="client_secret",
+     *         in="query",
+     *         type="string",
+     *         description="the client identifier",
+     *         required=false,
      *         default="testclient"
      *     ),
      *     @SWG\Parameter(
