@@ -18,7 +18,7 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenRepos
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): AccessTokenEntityInterface
     {
-        $this->_em->merge($accessTokenEntity);
+        $this->_em->persist($accessTokenEntity);
         $this->_em->flush();
         return $accessTokenEntity;
     }
@@ -60,11 +60,6 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenRepos
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null): AccessToken
     {
         $token =  new AccessToken();
-        $token->setClient($clientEntity);
-        $token->setUserIdentifier($userIdentifier);
-        foreach ($scopes as $scope) {
-            $token->addScope($scope);
-        }
 
         return $token;
     }

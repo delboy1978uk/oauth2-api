@@ -49,14 +49,13 @@ $container = $svc->getContainer();
 /** @var \Del\Service\UserService $userService */
 $userService = $container['service.user'];
 $userService->setUserClass(\OAuth\OAuthUser::class);
-//$container['service.user'] = $userService;
 
 // Set up the application
 $app = new ConsoleApplication();
 
 $userCommand = new UserCommand();
 $userCommand->setName('user:reset-pass');
-$clientCommand = new ClientCommand($container['oauth.service.client'], $userService);
+$clientCommand = new ClientCommand($container['oauth.service.client'], $userService, $container['repository.Scope']);
 $scopeCommand = new ScopeCreateCommand($container['repository.Scope']);
 
 $app->add($userCommand);

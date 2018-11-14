@@ -4,6 +4,8 @@ namespace OAuth\Command;
 
 use Del\Service\UserService;
 use OAuth\Client;
+use OAuth\Repository\ScopeRepository;
+use OAuth\Scope;
 use OAuth\Service\ClientService;
 use OAuth\OAuthUser as User;
 use Symfony\Component\Console\Command\Command;
@@ -29,11 +31,17 @@ class ClientCommand extends Command
      */
     private $userService;
 
-    public function __construct(ClientService $clientService, UserService $userService, ?string $name = 'client:create')
+    /**
+     * @var ScopeRepository $scopeRepository
+     */
+    private $scopeRepository;
+
+    public function __construct(ClientService $clientService, UserService $userService, ScopeRepository $scopeRepository)
     {
         $this->clientService = $clientService;
         $this->userService = $userService;
-        parent::__construct($name);
+        $this->scopeRepository = $scopeRepository;
+        parent::__construct('client:create');
     }
 
     /**
@@ -84,9 +92,23 @@ class ClientCommand extends Command
         $question = new Question('Give a redirect URI: ', '');
         $uri = $helper->ask($input, $output, $question);
 
-        $question = new ConfirmationQuestion('Is this a phone app or JS client ? ', false);
-        $public = $helper->ask($input, $output, $question);
+        $confidential = true;
+        if ($authGrant !== 'client_credentials') {
+            $question = new ConfirmationQuestion('Is this a phone app or JS client ? ', false);
+            $public = $helper->ask($input, $output, $question);
+            $confidential = !$public;
+        }
 
+        $scopes = $this->scopeRepository->findAll();
+        $choices = [];
+        /** @var Scope $scope */
+        foreach($scopes as $index => $scope) {
+            $choices[$index] = $scope->getIdentifier();
+        }
+
+        $question = new ChoiceQuestion('Which scopes would you like to add?', $choices);
+        $question->setMultiselect(true);
+        $scopeChoices = $helper->ask($input, $output, $question);
 
         $client = new Client();
         $client->setName($name);
@@ -95,10 +117,14 @@ class ClientCommand extends Command
         $client->setGrantType($authGrant);
         $client->setIdentifier(md5($name));
         $client->setRedirectUri($uri);
-        $client->setConfidential($public);
+        $client->setConfidential($confidential);
         $client->setUser($user);
+        foreach ($scopeChoices as $scopeIndex => $name) {
+            $scope = $scopes[$scopeIndex];
+            $client->getScopes()->add($scope);
+        }
 
-        if ($public === false) {
+        if ($confidential) {
             $this->clientService->generateSecret($client);
         }
 

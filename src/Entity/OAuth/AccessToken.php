@@ -29,7 +29,7 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var ArrayCollection $scopes
-     * @ORM\ManyToMany(targetEntity="Oauth\Scope")
+     * @ORM\ManyToMany(targetEntity="Oauth\Scope", cascade={"persist"})
      * @ORM\JoinTable(name="AccessToken_Scope")
      */
     protected $scopes;

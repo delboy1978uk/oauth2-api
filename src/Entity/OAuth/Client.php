@@ -70,7 +70,7 @@ class Client implements ClientEntityInterface
 
     /**
      * @var OAuthUser $user/**
-     * @ORM\ManyToOne(targetEntity="OAuth\OAuthUser")
+     * @ORM\ManyToOne(targetEntity="OAuth\OAuthUser", cascade={"merge"})
      */
     private $user;
 

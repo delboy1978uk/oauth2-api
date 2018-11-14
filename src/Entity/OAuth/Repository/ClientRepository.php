@@ -2,6 +2,7 @@
 
 namespace OAuth\Repository;
 
+use Doctrine\ORM\UnitOfWork;
 use OAuth\Client;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -48,7 +49,12 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
     public function create(Client $client)
     {
         $em = $this->getEntityManager();
-        $em->merge($client);
+        $user = $client->getUser();
+        if ($em->getUnitOfWork()->getEntityState($user) !== UnitOfWork::STATE_MANAGED) {
+            $user = $em->merge($user);
+            $client->setUser($user);
+        }
+        $em->persist($client);
         $em->flush();
         return $client;
     }
