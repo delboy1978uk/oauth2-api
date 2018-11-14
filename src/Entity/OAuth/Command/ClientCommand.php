@@ -77,7 +77,7 @@ class ClientCommand extends Command
         $icon = $helper->ask($input, $output, $question);
 
         $question = new ChoiceQuestion('Select the Authorisation Grant type: ',[
-            'authcode', 'implicit', 'password', 'clientcreds'
+            'auth_code', 'implicit', 'password', 'client_credentials'
         ]);
         $authGrant = $helper->ask($input, $output, $question);
 

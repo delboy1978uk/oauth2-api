@@ -25,15 +25,15 @@ class AuthCodeController extends OAuthController
         $authCodeRepository = $container['repository.AuthCode'];
         $refreshTokenRepository = $container['repository.RefreshToken'];
         $this->oauth2Server->enableGrantType(
+            new ClientCredentialsGrant(),
+            new DateInterval('PT1H')
+        );
+        $this->oauth2Server->enableGrantType(
             new AuthCodeGrant(
                 $authCodeRepository,
                 $refreshTokenRepository,
                 new DateInterval('PT10M')
             ),
-            new DateInterval('PT1H')
-        );
-        $this->oauth2Server->enableGrantType(
-            new ClientCredentialsGrant(),
             new DateInterval('PT1H')
         );
     }
@@ -148,7 +148,7 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="the type of grant",
      *         required=true,
-     *         default="authorization_code",
+     *         default="client_credentials",
      *     ),
      *     @SWG\Parameter(
      *         name="client_id",
@@ -156,14 +156,23 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="the client id",
      *         required=true,
-     *         default="testclient"
+     *         default="ceac682a9a4808bf910ad49134230e0e"
      *     ),
      *     @SWG\Parameter(
      *         name="client_secret",
      *         in="formData",
      *         type="string",
      *         description="the client secret",
-     *         required=false
+     *         required=false,
+     *         default="JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="scope",
+     *         in="formData",
+     *         type="string",
+     *         description="the scopes you wish to use",
+     *         required=false,
+     *         default="admin"
      *     ),
      *     @SWG\Parameter(
      *         name="redirect_uri",
@@ -171,15 +180,13 @@ class AuthCodeController extends OAuthController
      *         type="string",
      *         description="with the same redirect URI the user was redirect back to",
      *         required=false,
-     *         default="authorization_code"
      *     ),
      *     @SWG\Parameter(
      *         name="code",
      *         in="formData",
      *         type="string",
      *         description="with the authorization code from the query string",
-     *         required=true,
-     *         default="pastehere"
+     *         required=false,
      *     ),
      * )
      */

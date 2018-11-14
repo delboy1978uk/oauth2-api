@@ -20,7 +20,7 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var ArrayCollection $scopes
-     * @ORM\ManyToMany(targetEntity="Scope", inversedBy="accessTokens")
+     * @ORM\ManyToMany(targetEntity="Oauth\Scope")
      * @ORM\JoinTable(name="AccessToken_Scope",
      *      joinColumns={@ORM\JoinColumn(name="token_id", referencedColumnName="identifier")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="scope_id", referencedColumnName="identifier")}
@@ -36,7 +36,7 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var int
-     * @ORM\Column(type="integer", length=11)
+     * @ORM\Column(type="integer", length=11, nullable=true)
      */
     protected $userIdentifier;
 
@@ -50,7 +50,7 @@ class AccessToken implements AccessTokenEntityInterface
     /**
      * @var string
      * @ORM\Id
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=255)
      */
     protected $identifier;
 
