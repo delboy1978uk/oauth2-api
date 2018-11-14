@@ -18,7 +18,7 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenRepos
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): AccessTokenEntityInterface
     {
-        $this->_em->persist($accessTokenEntity);
+        $this->_em->merge($accessTokenEntity);
         $this->_em->flush();
         return $accessTokenEntity;
     }
