@@ -79,7 +79,7 @@ class Client implements ClientEntityInterface
      * @ORM\ManyToMany(targetEntity="Scope")
      * @ORM\JoinTable(name="Client_Scope",
      *      joinColumns={@ORM\JoinColumn(name="client_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="scope_id", referencedColumnName="identifier")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="scope_id", referencedColumnName="id")}
      *      )
      */
     private $scopes;

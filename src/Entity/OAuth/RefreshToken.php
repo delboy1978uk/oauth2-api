@@ -26,7 +26,7 @@ class RefreshToken implements RefreshTokenEntityInterface
     /**
      * @var AccessTokenEntityInterface
      * @ORM\OneToOne(targetEntity="OAuth\AccessToken")
-     * @ORM\JoinColumn(name="accessToken", referencedColumnName="identifier")
+     * @ORM\JoinColumn(name="accessToken", referencedColumnName="id")
      */
     protected $accessToken;
 

@@ -13,8 +13,15 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 class Scope implements ScopeEntityInterface
 {
     /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @var int|null
+     */
+    private $id;
+
+    /**
      * @var string $identifier
-     * @ORM\Id
      * @ORM\Column(type="string", length=40)
      */
     protected $identifier;
@@ -63,5 +70,13 @@ class Scope implements ScopeEntityInterface
     public function jsonSerialize()
     {
         return $this->getIdentifier();
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }

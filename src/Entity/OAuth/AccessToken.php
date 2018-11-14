@@ -18,13 +18,19 @@ class AccessToken implements AccessTokenEntityInterface
 {
     use AccessTokenTrait;
 
+
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @var int|null
+     */
+    private $id;
+
     /**
      * @var ArrayCollection $scopes
      * @ORM\ManyToMany(targetEntity="Oauth\Scope")
-     * @ORM\JoinTable(name="AccessToken_Scope",
-     *      joinColumns={@ORM\JoinColumn(name="token_id", referencedColumnName="identifier")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="scope_id", referencedColumnName="identifier")}
-     *      )
+     * @ORM\JoinTable(name="AccessToken_Scope")
      */
     protected $scopes;
 
@@ -49,7 +55,6 @@ class AccessToken implements AccessTokenEntityInterface
 
     /**
      * @var string
-     * @ORM\Id
      * @ORM\Column(type="string", length=255)
      */
     protected $identifier;
@@ -189,5 +194,13 @@ class AccessToken implements AccessTokenEntityInterface
     public function setRevoked(bool $revoked): void
     {
         $this->revoked = $revoked;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }
