@@ -41,7 +41,28 @@ class ClientCredentialsCest
         $I->seeResponseCodeIs(401);
         $I->seeResponseMatchesJsonType([
             "error" => 'string',
-            "message" => "integer",
+            "message" => "string",
+        ]);
+    }
+
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToGetAnAccessTokenWithWrongSecret(ApiTester $I)
+    {
+        $I->wantTo('Call the /auth endpoint with a bad secret');
+        $I->sendPOST('/oauth2/access-token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => 'ceac682a9a4808bf910ad49134230e0e',
+            'client_secret' => 'oops',
+            'scope' => 'admin',
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(401);
+        $I->seeResponseMatchesJsonType([
+            "error" => 'string',
+            "message" => "string",
         ]);
     }
 
