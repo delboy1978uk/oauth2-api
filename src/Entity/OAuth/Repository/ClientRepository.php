@@ -7,7 +7,6 @@ use OAuth\Client;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use OAuth\OAuthUser;
 
 class ClientRepository extends EntityRepository implements ClientRepositoryInterface
 {

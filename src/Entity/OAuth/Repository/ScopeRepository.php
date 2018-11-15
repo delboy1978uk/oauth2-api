@@ -30,7 +30,7 @@ class ScopeRepository extends EntityRepository implements ScopeRepositoryInterfa
      */
     public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
     {
-        // we can code in further ACL functionality in here specific to our app
+        /** @todo code in further ACL functionality in here specific to our app */
         return $scopes;
     }
 
