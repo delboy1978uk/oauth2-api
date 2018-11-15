@@ -36,7 +36,7 @@ before_script:
   - migrant generate-proxies data/proxies
   - nohup php -S awesome.scot:8000 public/index.php &
 script:
-  - php vendor/bin/codecept run  --env travis --coverage-xml
+  - php vendor/bin/codecept run --env travis --coverage-xml -vvv
 after_script:
   - phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar
