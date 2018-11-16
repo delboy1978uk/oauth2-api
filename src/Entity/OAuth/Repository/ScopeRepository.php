@@ -3,9 +3,11 @@
 namespace OAuth\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use OAuth\Client;
 use OAuth\Scope;
 
 class ScopeRepository extends EntityRepository implements ScopeRepositoryInterface
@@ -22,16 +24,26 @@ class ScopeRepository extends EntityRepository implements ScopeRepositoryInterfa
     }
 
     /**
-     * @param array|ScopeEntityInterface[] $scopes
+     * @param array $scopes
      * @param string $grantType
      * @param ClientEntityInterface $clientEntity
-     * @param null|string|null $userIdentifier
-     * @return Scope[]
+     * @param null $userIdentifier
+     * @return ScopeEntityInterface[]
+     * @throws Exception
      */
     public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
     {
-        /** @todo code in further ACL functionality in here specific to our app */
-        return $scopes;
+        /** @var Client $clientEntity */
+        $clientScopes = $clientEntity->getScopes()->getValues();
+        $finalScopes = array_uintersect($scopes, $clientScopes, function($a, $b) {
+            return strcmp(spl_object_hash($a), spl_object_hash($b));
+        });
+
+        if (count($finalScopes) < count($scopes)) {
+            throw new Exception('Scopes not authorised.', 403);
+        }
+
+        return $finalScopes;
     }
 
     /**

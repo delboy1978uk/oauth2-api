@@ -3,6 +3,7 @@
 namespace OAuth;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
@@ -75,7 +76,7 @@ class Client implements ClientEntityInterface
     private $user;
 
     /**
-     * @var ArrayCollection $scopes
+     * @var Collection $scopes
      * @ORM\ManyToMany(targetEntity="Scope")
      * @ORM\JoinTable(name="Client_Scope",
      *      joinColumns={@ORM\JoinColumn(name="client_id", referencedColumnName="id")},
@@ -266,18 +267,18 @@ class Client implements ClientEntityInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getScopes(): ArrayCollection
+    public function getScopes(): Collection
     {
         return $this->scopes;
     }
 
     /**
-     * @param ArrayCollection $scopes
+     * @param Collection $scopes
      * @return Client
      */
-    public function setScopes(ArrayCollection $scopes): Client
+    public function setScopes(Collection $scopes): Client
     {
         $this->scopes = $scopes;
         return $this;

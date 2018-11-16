@@ -8,6 +8,8 @@
         }
     ],
     "require": {
+        "php": "^7.1",
+        "ext-json": "*",
         "delboy1978uk/bone": "^2.5.8",
         "delboy1978uk/cdn": "^1.1.2",
         "delboy1978uk/form": "^1.0.0",

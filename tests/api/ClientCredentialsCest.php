@@ -90,4 +90,25 @@ class ClientCredentialsCest
         ]);
     }
 
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToGetAnAccessTokenOutwithScope(ApiTester $I)
+    {
+        $I->wantTo('Ask for a scope the client doesn\'t have');
+        $I->sendPOST('/oauth2/access-token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => self::CLIENT_ID,
+            'client_secret' => self::CLIENT_SECRET,
+            'scope' => 'test_scope',
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(403);
+        $I->seeResponseMatchesJsonType([
+            "error" => 'integer',
+            "message" => "string",
+        ]);
+    }
+
 }

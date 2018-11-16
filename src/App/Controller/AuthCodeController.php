@@ -122,9 +122,9 @@ class AuthCodeController extends OAuthController
 
         $redirectUri = $response->getHeader('Location');
         if (!empty($redirectUri)) {
-            if (substr($redirectUri[0], 0, 1) == '?') {
-                $uri = str_replace('?', '', $redirectUri[0]);
-                parse_str($uri, $vars);
+            if (\substr($redirectUri[0], 0, 1) == '?') {
+                $uri = \str_replace('?', '', $redirectUri[0]);
+                \parse_str($uri, $vars);
                 $this->sendJsonResponse($vars);
             }
         } else {
@@ -201,12 +201,16 @@ class AuthCodeController extends OAuthController
         try {
             // Try to respond to the access token request
             $response = $server->respondToAccessTokenRequest($request, $response);
-        } catch (OAuthServerException $exception) {
-            $response = $exception->generateHttpResponse($response);
-        } catch (Exception $exception) {
-            $body = $response->getBody();
-            $body->write($exception->getMessage());
-            $response = $response->withStatus(500)->withBody($body);
+        } catch (OAuthServerException $e) {
+            $response = $e->generateHttpResponse($response);
+        } catch (Exception $e) {
+            $response = $response
+                ->withStatus($e->getCode())
+                ->withHeader('content-type', 'application/json; charset=UTF-8');
+            $response->getBody()->write(\json_encode([
+                'error' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ]));
         }
         $this->sendResponse($response);
     }
