@@ -7,6 +7,7 @@ use OAuth\Client;
 use Doctrine\ORM\EntityRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use OAuth\OAuthUser;
 
 class ClientRepository extends EntityRepository implements ClientRepositoryInterface
 {
@@ -29,11 +30,7 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
             return null;
         }
 
-        if (
-            $mustValidateSecret === true
-            && $client->isConfidential() === true
-            && $clientSecret != $client->getSecret()
-        ) {
+        if ($mustValidateSecret === true && $client->isConfidential() === true && $clientSecret != $client->getSecret()) {
             return null;
         }
 
@@ -50,6 +47,7 @@ class ClientRepository extends EntityRepository implements ClientRepositoryInter
         $em = $this->getEntityManager();
         $user = $client->getUser();
         if ($em->getUnitOfWork()->getEntityState($user) !== UnitOfWork::STATE_MANAGED) {
+            /** @var OAuthUser $user */
             $user = $em->merge($user);
             $client->setUser($user);
         }
