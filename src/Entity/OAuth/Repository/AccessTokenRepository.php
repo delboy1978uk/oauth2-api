@@ -43,12 +43,12 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenRepos
      */
     public function isAccessTokenRevoked($tokenId)
     {
-        /** @var AccessToken $token */
+        /** @var null|AccessToken $token */
         $token = $this->find($tokenId);
         if(!$token || $token->isRevoked()) {
             return true;
         }
-        return false; // Access token hasn't been revoked
+        return false; 
     }
 
     /**

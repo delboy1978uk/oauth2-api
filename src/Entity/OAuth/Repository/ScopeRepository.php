@@ -27,7 +27,7 @@ class ScopeRepository extends EntityRepository implements ScopeRepositoryInterfa
      * @param array $scopes
      * @param string $grantType
      * @param ClientEntityInterface $clientEntity
-     * @param null $userIdentifier
+     * @param null|string $userIdentifier
      * @return ScopeEntityInterface[]
      * @throws Exception
      */

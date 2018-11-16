@@ -61,15 +61,21 @@ class IndexController extends BaseController
     public function fakeClientCallbackAction()
     {
         $request = $this->getRequest();
-        die('YES' . var_dump($request));
+        /** @todo handle things */
     }
 
+    /**
+     * temporary development view for writing email templates
+     * @return Response
+     */
     public function emailAction()
     {
-        $reg = $this->getViewEngine()->render('emails/user_registration', [
+        $reg = $this->getViewEngine()->render('emails/user_registration/user_registration', [
             'siteUrl' => $this->getServerEnvironment()->getSiteURL(),
             'activationLink' => '/user/activate/fhd@hgf.net/dhfdhfddhfdh',
         ]);
-        echo $reg; exit;
+        $response = new Response();
+        $response->getBody()->write($reg);
+        return $response;
     }
 }
