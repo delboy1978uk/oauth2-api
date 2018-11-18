@@ -60,7 +60,6 @@ class IndexController extends BaseController
 
     public function fakeClientCallbackAction()
     {
-        $request = $this->getRequest();
         /** @todo handle things */
     }
 

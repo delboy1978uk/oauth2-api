@@ -48,7 +48,7 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenRepos
         if(!$token || $token->isRevoked()) {
             return true;
         }
-        return false; 
+        return false;
     }
 
     /**

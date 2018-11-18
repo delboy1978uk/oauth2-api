@@ -9,6 +9,7 @@ use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use OAuth\OAuthUser;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
@@ -34,6 +35,12 @@ class AuthCodeController extends OAuthController
                 $refreshTokenRepository,
                 new DateInterval('PT10M')
             ),
+            new DateInterval('PT1H')
+        );
+        $refreshGrant = new RefreshTokenGrant($refreshTokenRepository);
+        $refreshGrant->setRefreshTokenTTL(new DateInterval('PT1M'));
+        $this->oauth2Server->enableGrantType(
+            $refreshGrant,
             new DateInterval('PT1H')
         );
     }
