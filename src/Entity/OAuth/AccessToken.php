@@ -18,7 +18,6 @@ class AccessToken implements AccessTokenEntityInterface
 {
     use AccessTokenTrait;
 
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

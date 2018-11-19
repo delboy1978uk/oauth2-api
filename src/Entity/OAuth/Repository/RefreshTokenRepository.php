@@ -3,8 +3,10 @@
 namespace OAuth\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\UnitOfWork;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use OAuth\AccessToken;
 use OAuth\RefreshToken;
 
 /**
@@ -28,6 +30,12 @@ class RefreshTokenRepository extends EntityRepository implements RefreshTokenRep
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
+        $accessToken = $refreshTokenEntity->getAccessToken();
+        if ($this->_em->getUnitOfWork()->getEntityState($accessToken) !== UnitOfWork::STATE_MANAGED) {
+            /** @var AccessToken $accessToken */
+            $accessToken = $this->_em->merge($accessToken);
+            $refreshTokenEntity->setAccessToken($accessToken);
+        }
         $this->_em->persist($refreshTokenEntity);
         $this->_em->flush();
 

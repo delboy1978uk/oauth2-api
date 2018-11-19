@@ -14,19 +14,23 @@ use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
  */
 class RefreshToken implements RefreshTokenEntityInterface
 {
-    use RefreshTokenTrait;
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @var int|null
+     */
+    private $id;
 
     /**
      * @var string
-     * @ORM\Id
      * @ORM\Column(type="string", length=40)
      */
     protected $identifier;
 
     /**
      * @var AccessTokenEntityInterface
-     * @ORM\OneToOne(targetEntity="OAuth\AccessToken")
-     * @ORM\JoinColumn(name="accessToken", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="OAuth\AccessToken")
      */
     protected $accessToken;
 
@@ -108,5 +112,13 @@ class RefreshToken implements RefreshTokenEntityInterface
     public function setRevoked(bool $revoked): void
     {
         $this->revoked = $revoked;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }

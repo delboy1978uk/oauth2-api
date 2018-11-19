@@ -47,7 +47,7 @@ class AuthCodeRepository extends EntityRepository implements AuthCodeRepositoryI
     public function revokeAuthCode($codeId)
     {
         /** @var AuthCode $token */
-        $code = $this->find($codeId);
+        $code = $this->findOneBy(['identifier' => $codeId]);
         if(!$code) {
             throw new Exception('Token not found', 404);
         }
