@@ -3,7 +3,7 @@
 class AuthorizationCodeCest
 {
     const CLIENT_ID = '83c44d2a7b80fff51591478a4936fa7d';
-    const REDIRECT_URI = 'https://awesome.scot/fake-client-callback';
+    const REDIRECT_URI = '/fake-client-callback';
 
     /**
      * @param ApiTester $I
@@ -13,17 +13,11 @@ class AuthorizationCodeCest
     {
         $I->wantTo('Call the /auth endpoint and get an access token using authorization code grant');
         $I->sendPOST('/oauth2/authorize', [
-            'grant_type' => 'code',
+            'response_type' => 'code',
             'client_id' => self::CLIENT_ID,
             'redirect_uri' => self::REDIRECT_URI,
             'scope' => 'test_scope',
             'state' => 'xyz',
-        ]);
-        $I->seeResponseIsJson();
-        $I->seeResponseCodeIs(200);
-        $I->seeResponseMatchesJsonType([
-            "code" => 'string',
-            "state" => "integer",
         ]);
         $code = $I->grabDataFromResponseByJsonPath('$.code');
 
