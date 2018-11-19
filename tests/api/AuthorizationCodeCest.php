@@ -12,7 +12,7 @@ class AuthorizationCodeCest
     public function tryToGetAnAccessTokenWithAnAuthCodeGrant(ApiTester $I)
     {
         $I->wantTo('Call the /auth endpoint and get an access token using authorization code grant');
-        $I->sendPOST('/oauth2/auth', [
+        $I->sendPOST('/oauth2/authorize', [
             'grant_type' => 'code',
             'client_id' => self::CLIENT_ID,
             'redirect_uri' => self::REDIRECT_URI,
