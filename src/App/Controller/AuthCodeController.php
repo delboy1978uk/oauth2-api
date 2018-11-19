@@ -211,11 +211,12 @@ class AuthCodeController extends OAuthController
         } catch (OAuthServerException $e) {
             $response = $e->generateHttpResponse($response);
         } catch (Exception $e) {
+            $code = $e->getCode() ?: 500;
             $response = $response
-                ->withStatus($e->getCode())
+                ->withStatus($code)
                 ->withHeader('content-type', 'application/json; charset=UTF-8');
             $response->getBody()->write(\json_encode([
-                'error' => $e->getCode(),
+                'error' => $code,
                 'message' => $e->getMessage(),
             ]));
         }
