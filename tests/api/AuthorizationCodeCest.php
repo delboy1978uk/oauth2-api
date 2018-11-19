@@ -1,6 +1,6 @@
 <?php 
 
-class ClientCredentialsCest
+class AuthorizationCodeCest
 {
     const CLIENT_ID = '83c44d2a7b80fff51591478a4936fa7d';
     const REDIRECT_URI = 'https://awesome.scot/fake-client-callback';
