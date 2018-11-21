@@ -23,12 +23,12 @@ return [
             'params' => [],
         ],
         '/oauth2/authorize' => [
-            'controller' => 'oauth-server',
+            'controller' => 'o-auth-server',
             'action' => 'authorize',
             'params' => [],
         ],
         '/oauth2/access-token' => [
-            'controller' => 'oauth-server',
+            'controller' => 'o-auth-server',
             'action' => 'access-token',
             'params' => [],
         ],
