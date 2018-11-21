@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use DateInterval;
 use Del\Common\ContainerService;
+use Del\Form\Field\Radio;
+use Del\Form\Field\Submit;
+use Del\Form\Form;
 use Exception;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -11,24 +14,41 @@ use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use OAuth\OAuthUser;
+use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\Stream;
 
-class AuthCodeController extends OAuthController
+class OAuthServerController extends BaseController
 {
+    /** @var AuthorizationServer $oauth2Server */
+    protected $oauth2Server;
+
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function init()
     {
-        parent::init();
         $container = ContainerService::getInstance()->getContainer();
+        $clientRepository = $container['repository.Client'];
+        $accessTokenRepository = $container['repository.AccessToken'];
+        $scopeRepository = $container['repository.Scope'];
         $authCodeRepository = $container['repository.AuthCode'];
         $refreshTokenRepository = $container['repository.RefreshToken'];
+
+        // Setup the authorization server
+        $server = new AuthorizationServer($clientRepository, $accessTokenRepository, $scopeRepository,
+            'file://'.APPLICATION_PATH.'/data/keys/private.key',    // path to private key
+            'file://'.APPLICATION_PATH.'/data/keys/public.key'      // path to public key
+        );
+
+        $this->oauth2Server = $server;
+
         $this->oauth2Server->enableGrantType(
             new ClientCredentialsGrant(),
             new DateInterval('PT1H')
         );
+
         $this->oauth2Server->enableGrantType(
             new AuthCodeGrant(
                 $authCodeRepository,
@@ -37,6 +57,7 @@ class AuthCodeController extends OAuthController
             ),
             new DateInterval('PT1H')
         );
+
         $refreshGrant = new RefreshTokenGrant($refreshTokenRepository);
         $refreshGrant->setRefreshTokenTTL(new DateInterval('PT1M'));
         $this->oauth2Server->enableGrantType(
@@ -141,8 +162,6 @@ class AuthCodeController extends OAuthController
         return $response;
     }
 
-
-
     /**
      * @SWG\Post(
      *     path="/oauth2/access-token",
@@ -221,5 +240,37 @@ class AuthCodeController extends OAuthController
             ]));
         }
         $this->sendResponse($response);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     */
+    protected function sendResponse(ResponseInterface $response)
+    {
+        $emitter = new SapiEmitter();
+        $emitter->emit($response);
+        exit;
+    }
+
+    /**
+     * @return Form
+     */
+    private function getForm()
+    {
+        $form = new Form('auth');
+        $radio = new Radio('auth');
+        $radio->setOptions([
+            'yes' => 'Yes',
+            'no' => 'No',
+        ]);
+        $radio->setLabel('Do you authorise TestClient?');
+        $radio->setRenderInline(true);
+        $radio->setRequired(true);
+        $submit = new Submit('submit');
+
+        $form->addField($radio)
+            ->addField($submit);
+
+        return $form;
     }
 }

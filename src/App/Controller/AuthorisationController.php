@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use Del\Form\Field\Radio;
-use Del\Form\Field\Submit;
-use Del\Form\Form;
+
 use OAuth2\Request;
 use OAuth2\Response;
 
-class AuthorisationController extends OAuthController
+class AuthorisationController extends OAuthServerController
 {
 
     public function authAction()
     {
+        /*
         $server = $this->oauth2Server;
 
         $request = Request::createFromGlobals();
@@ -43,27 +42,8 @@ class AuthorisationController extends OAuthController
         $response->setStatusCode(400);
         $response->send();
         exit;
+        */
     }
 
-    /**
-     * @return Form
-     */
-    private function getForm()
-    {
-        $form = new Form('auth');
-        $radio = new Radio('auth');
-        $radio->setOptions([
-            'yes' => 'Yes',
-            'no' => 'No',
-        ]);
-        $radio->setLabel('Do you authorise TestClient?');
-        $radio->setRenderInline(true);
-        $radio->setRequired(true);
-        $submit = new Submit('submit');
 
-        $form->addField($radio)
-            ->addField($submit);
-
-        return $form;
-    }
 }

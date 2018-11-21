@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Form\User\RegistrationForm;
 use Bone\Mvc\Controller;
 
-class FirstPartyWebsiteController extends Controller
+class OfficialWebAppController extends Controller
 {
     public function indexAction()
     {

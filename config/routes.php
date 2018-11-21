@@ -23,12 +23,12 @@ return [
             'params' => [],
         ],
         '/oauth2/authorize' => [
-            'controller' => 'auth-code',
+            'controller' => 'oauth-server',
             'action' => 'authorize',
             'params' => [],
         ],
         '/oauth2/access-token' => [
-            'controller' => 'auth-code',
+            'controller' => 'oauth-server',
             'action' => 'access-token',
             'params' => [],
         ],
@@ -68,7 +68,7 @@ return [
             'params' => [],
         ],
         '/website/register' => [
-            'controller' => 'first-party-website',
+            'controller' => 'official-web-app',
             'action' => 'register',
             'params' => [],
         ],
