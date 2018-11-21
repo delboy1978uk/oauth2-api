@@ -3,30 +3,30 @@
 namespace App\Controller;
 
 use DateTime;
-use Swagger;
+use OpenApi;
 use Zend\Diactoros\Response;
 
 /**
- * @SWG\Swagger(
+ * @OA\OpenApi(
  *     schemes={"https"},
  *     host="awesome.scot",
  *     basePath="/",
- *     @SWG\Info(
+ *     @OA\Info(
  *         version="1.0.0",
  *         title="BONE MVC API",
  *         description="This be a swashbucklin' API."
  *     ),
- *     @SWG\ExternalDocumentation(
+ *     @OA\ExternalDocumentation(
  *         description="By delboy1978uk",
  *         url="https://github.com/delboy1978uk"
  *     ),
- *     @SWG\SecurityScheme(
+ *     @OA\SecurityScheme(
  *         securityDefinition="client_credentials", type="oauth2", description="OAuth2 Client Credentials Grant", flow="client_credentials",
  *         authorizationUrl="https://awesome.scot/oauth2/authorize",
  *         tokenUrl="https://awesome.scot/oauth2/token",
  *         scopes={"admin": "Admin scope.", "test_scope": "Testing scope"}
  *     ),
- *     @SWG\SecurityScheme(
+ *     @OA\SecurityScheme(
  *         securityDefinition="authorization_code", type="oauth2", description="OAuth2 Authorization Code Grant", flow="authorization_code",
  *         authorizationUrl="https://awesome.scot/oauth2/authorize",
  *         tokenUrl="https://awesome.scot/oauth2/token",
@@ -45,10 +45,10 @@ class IndexController extends BaseController
 
     /**
      * Check basic connectivity. Returns a timestamp.
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/ping",
      *     tags={"status"},
-     *     @SWG\Response(response="200", description="Sends a response with the time")
+     *     @OA\Response(response="200", description="Sends a response with the time")
      * )
      *
      */
@@ -63,7 +63,7 @@ class IndexController extends BaseController
      */
     public function apiAction()
     {
-        $swagger = Swagger\scan(APPLICATION_PATH.'/src')->__toString();
+        $swagger = OpenApi\scan(APPLICATION_PATH.'/src')->toJson();
         $response = new Response();
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write($swagger);

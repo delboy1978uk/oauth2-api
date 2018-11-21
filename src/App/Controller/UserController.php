@@ -34,10 +34,10 @@ class UserController extends BaseController
     /**
      * Fetch user details by ID.
      *
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/user/{id}",
      *     tags={"user"},
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         type="integer",
@@ -45,7 +45,7 @@ class UserController extends BaseController
      *         required=false,
      *         default=1
      *     ),
-     *     @SWG\Response(response="200", description="Sends user details"),
+     *     @OA\Response(response="200", description="Sends user details"),
      *     security={{"authorization_code": {"test_scope"}}}
      * )
      *
@@ -73,11 +73,11 @@ class UserController extends BaseController
     /**
      * Activate from the email link token.
      *
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/{locale}/user/activate/{email}/{token}",
      *     tags={"user_registration"},
-     *     @SWG\Response(response="200", description="Registers a new unactivated user"),
-     *     @SWG\Parameter(
+     *     @OA\Response(response="200", description="Registers a new unactivated user"),
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -85,7 +85,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="path",
      *         type="string",
@@ -93,7 +93,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="token",
      *         in="path",
      *         type="string",
@@ -158,10 +158,10 @@ class UserController extends BaseController
     /**
      * Refresh the activation email link token.
      *
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/{locale}/user/activate/resend/{email}",
      *     tags={"user_registration"},
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -169,7 +169,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="path",
      *         type="string",
@@ -177,7 +177,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Response(response="200", description="Sends email link details")
+     *     @OA\Response(response="200", description="Sends email link details")
      * )
      * @throws Exception
      */
@@ -224,10 +224,10 @@ class UserController extends BaseController
     /**
      * Get a lost password email link token.
      *
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/{locale}/user/lost-password/{email}",
      *     tags={"user_registration"},
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -235,7 +235,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="path",
      *         type="string",
@@ -243,7 +243,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Response(response="200", description="Sends email link details")
+     *     @OA\Response(response="200", description="Sends email link details")
      * )
      * @throws Exception
      */
@@ -271,11 +271,11 @@ class UserController extends BaseController
     /**
      * Register as a new user. Returns an email link token.
      *
-     * @SWG\Post(
+     * @OA\Post(
      *     path="/{locale}/user/register",
      *     tags={"user_registration"},
-     *     @SWG\Response(response="200", description="Registers a new unactivated user"),
-     *     @SWG\Parameter(
+     *     @OA\Response(response="200", description="Registers a new unactivated user"),
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -283,7 +283,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="formData",
      *         type="string",
@@ -291,7 +291,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="password",
      *         in="formData",
      *         type="string",
@@ -299,7 +299,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="password"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="confirm",
      *         in="formData",
      *         type="string",
@@ -364,11 +364,11 @@ class UserController extends BaseController
     /**
      * Resets the users password. Requires an email link token.
      *
-     * @SWG\Post(
+     * @OA\Post(
      *     path="/{locale}/user/reset-password/{email}/{token}",
      *     tags={"user_registration"},
-     *     @SWG\Response(response="200", description="Resets a users email"),
-     *     @SWG\Parameter(
+     *     @OA\Response(response="200", description="Resets a users email"),
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -376,7 +376,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="path",
      *         type="string",
@@ -384,7 +384,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="token",
      *         in="path",
      *         type="string",
@@ -392,7 +392,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="r4nd0mT0k3n"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="password",
      *         in="formData",
      *         type="string",
@@ -400,7 +400,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="password"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="confirm",
      *         in="formData",
      *         type="string",
@@ -463,11 +463,11 @@ class UserController extends BaseController
 
 
     /**
-     * @SWG\Post(
+     * @OA\Post(
      *     path="/{locale}/me/change-password/",
      *     tags={"user_profile"},
-     *     @SWG\Response(response="200", description="Changes a users password."),
-     *     @SWG\Parameter(
+     *     @OA\Response(response="200", description="Changes a users password."),
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -475,7 +475,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="path",
      *         type="string",
@@ -483,7 +483,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="token",
      *         in="path",
      *         type="formData",
@@ -491,7 +491,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="r4nd0mT0k3n"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="password",
      *         in="formData",
      *         type="string",
@@ -499,7 +499,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="password"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="confirm",
      *         in="formData",
      *         type="string",
@@ -552,11 +552,11 @@ class UserController extends BaseController
     }
 
     /**
-     * @SWG\Post(
+     * @OA\Post(
      *     path="/{locale}/me/change-email/",
      *     tags={"user_profile"},
-     *     @SWG\Response(response="200", description="Changes a users email."),
-     *     @SWG\Parameter(
+     *     @OA\Response(response="200", description="Changes a users email."),
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -564,7 +564,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="path",
      *         type="string",
@@ -572,7 +572,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="token",
      *         in="path",
      *         type="formData",
@@ -580,7 +580,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="r4nd0mT0k3n"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="password",
      *         in="formData",
      *         type="string",
@@ -588,7 +588,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="password"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="confirm",
      *         in="formData",
      *         type="string",
@@ -669,11 +669,11 @@ class UserController extends BaseController
 
 
     /**
-     * @SWG\Post(
+     * @OA\Post(
      *     path="/{locale}/me/reset-email/",
      *     tags={"user_profile"},
-     *     @SWG\Response(response="200", description="Resets the users email."),
-     *     @SWG\Parameter(
+     *     @OA\Response(response="200", description="Resets the users email."),
+     *     @OA\Parameter(
      *         name="locale",
      *         in="path",
      *         type="string",
@@ -681,7 +681,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="en_GB"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="email",
      *         in="formData",
      *         type="string",
@@ -689,7 +689,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="someone@email.com"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="newemail",
      *         in="formData",
      *         type="string",
@@ -697,7 +697,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="password"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="token",
      *         in="path",
      *         type="string",
@@ -705,7 +705,7 @@ class UserController extends BaseController
      *         required=true,
      *         default="r4nd0mT0k3n"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="password",
      *         in="formData",
      *         type="string",

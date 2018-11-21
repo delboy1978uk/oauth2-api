@@ -66,11 +66,11 @@ class OAuthServerController extends BaseController
 
     /**
      *
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/oauth2/authorize",
-     *     @SWG\Response(response="200", description="An access token"),
+     *     @OA\Response(response="200", description="An access token"),
      *     tags={"auth"},
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="response_type",
      *         in="query",
      *         type="string",
@@ -78,7 +78,7 @@ class OAuthServerController extends BaseController
      *         required=true,
      *         default="code"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="client_id",
      *         in="query",
      *         type="string",
@@ -86,7 +86,7 @@ class OAuthServerController extends BaseController
      *         required=true,
      *         default="testclient"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="client_secret",
      *         in="query",
      *         type="string",
@@ -94,21 +94,21 @@ class OAuthServerController extends BaseController
      *         required=false,
      *         default="testclient"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="redirect_uri",
      *         in="query",
      *         type="string",
      *         description="where to send the response",
      *         required=false
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="state",
      *         in="query",
      *         type="string",
      *         description="with a CSRF token. This parameter is optional but highly recommended.",
      *         required=false,
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="scope",
      *         in="query",
      *         type="string",
@@ -161,12 +161,12 @@ class OAuthServerController extends BaseController
     }
 
     /**
-     * @SWG\Post(
+     * @OA\Post(
      *     path="/oauth2/access-token",
      *     operationId="accessToken",
-     *     @SWG\Response(response="200", description="An access token"),
+     *     @OA\Response(response="200", description="An access token"),
      *     tags={"auth"},
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="grant_type",
      *         in="formData",
      *         type="string",
@@ -174,7 +174,7 @@ class OAuthServerController extends BaseController
      *         required=true,
      *         default="client_credentials",
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="client_id",
      *         in="formData",
      *         type="string",
@@ -182,7 +182,7 @@ class OAuthServerController extends BaseController
      *         required=true,
      *         default="ceac682a9a4808bf910ad49134230e0e"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="client_secret",
      *         in="formData",
      *         type="string",
@@ -190,7 +190,7 @@ class OAuthServerController extends BaseController
      *         required=false,
      *         default="JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="scope",
      *         in="formData",
      *         type="string",
@@ -198,14 +198,14 @@ class OAuthServerController extends BaseController
      *         required=false,
      *         default="admin"
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="redirect_uri",
      *         in="formData",
      *         type="string",
      *         description="with the same redirect URI the user was redirect back to",
      *         required=false,
      *     ),
-     *     @SWG\Parameter(
+     *     @OA\Parameter(
      *         name="code",
      *         in="formData",
      *         type="string",
