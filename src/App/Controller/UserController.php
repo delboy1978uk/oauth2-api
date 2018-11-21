@@ -45,7 +45,8 @@ class UserController extends BaseController
      *         required=false,
      *         default=1
      *     ),
-     *     @SWG\Response(response="200", description="Sends user details")
+     *     @SWG\Response(response="200", description="Sends user details"),
+     *     security={{"authorization_code": {"test_scope"}}}
      * )
      *
      */

@@ -19,6 +19,18 @@ use Zend\Diactoros\Response;
  *     @SWG\ExternalDocumentation(
  *         description="By delboy1978uk",
  *         url="https://github.com/delboy1978uk"
+ *     ),
+ *     @SWG\SecurityScheme(
+ *         securityDefinition="client_credentials", type="oauth2", description="OAuth2 Client Credentials Grant", flow="client_credentials",
+ *         authorizationUrl="https://awesome.scot/oauth2/authorize",
+ *         tokenUrl="https://awesome.scot/oauth2/token",
+ *         scopes={"admin": "Admin scope.", "test_scope": "Testing scope"}
+ *     ),
+ *     @SWG\SecurityScheme(
+ *         securityDefinition="authorization_code", type="oauth2", description="OAuth2 Authorization Code Grant", flow="authorization_code",
+ *         authorizationUrl="https://awesome.scot/oauth2/authorize",
+ *         tokenUrl="https://awesome.scot/oauth2/token",
+ *         scopes={"admin": "Admin scope.", "test_scope": "Testing scope"}
  *     )
  * )
  *
