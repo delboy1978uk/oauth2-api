@@ -8,6 +8,12 @@ use OAuth\Repository\ClientRepository;
 
 class ClientController extends BaseController
 {
+    /**
+     *  We want to extend resource server controller
+     *  And lock down on admin scope
+     *
+     * @return array|void
+     */
     public function indexAction()
     {
         $container = ContainerService::getInstance()->getContainer();
