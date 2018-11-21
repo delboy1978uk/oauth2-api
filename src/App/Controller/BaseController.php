@@ -6,7 +6,9 @@ use Bone\Mvc\Controller;
 use InvalidArgumentException;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response\SapiEmitter;
 
 class BaseController extends Controller
 {
@@ -49,5 +51,15 @@ class BaseController extends Controller
         }
 
         return true;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     */
+    protected function sendResponse(ResponseInterface $response)
+    {
+        $emitter = new SapiEmitter();
+        $emitter->emit($response);
+        exit;
     }
 }

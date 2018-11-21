@@ -14,9 +14,7 @@ use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use OAuth\OAuthUser;
-use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\Stream;
 
 class OAuthServerController extends BaseController
@@ -240,16 +238,6 @@ class OAuthServerController extends BaseController
             ]));
         }
         $this->sendResponse($response);
-    }
-
-    /**
-     * @param ResponseInterface $response
-     */
-    protected function sendResponse(ResponseInterface $response)
-    {
-        $emitter = new SapiEmitter();
-        $emitter->emit($response);
-        exit;
     }
 
     /**

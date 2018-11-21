@@ -14,6 +14,11 @@ use Del\Value\User\State;
 use Exception;
 use Zend\Validator\EmailAddress;
 
+/**
+ * Class UserController
+ * @package App\Controller
+ * @todo get swagger updated with oauth 2 stuff to get header in
+ */
 class UserController extends BaseController
 {
     /** @var UserService */
@@ -21,6 +26,7 @@ class UserController extends BaseController
 
     public function init()
     {
+        parent::init();
         $c = ContainerService::getInstance()->getContainer();
         $this->userService = $c['service.user'];
     }

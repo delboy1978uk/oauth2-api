@@ -2,7 +2,6 @@
 namespace OAuth;
 
 use Del\Common\Container\RegistrationInterface;
-use Del\Service\UserService;
 use Doctrine\ORM\EntityManager;
 use OAuth\Service\ClientService;
 use Pimple\Container;
@@ -18,7 +17,7 @@ class OAuthPackage implements RegistrationInterface
         $function = function ($c) {
             /** @var EntityManager $entityManager */
             $entityManager = $c['doctrine.entity_manager'];
-            $repository = $entityManager->getRepository('OAuth\AccessToken');
+            $repository = $entityManager->getRepository(AccessToken::class);
             return $repository;
         };
         $c['repository.AccessToken'] = $c->factory($function);
@@ -27,7 +26,7 @@ class OAuthPackage implements RegistrationInterface
         $function = function ($c) {
             /** @var EntityManager $entityManager */
             $entityManager = $c['doctrine.entity_manager'];
-            $repository = $entityManager->getRepository('OAuth\AuthCode');
+            $repository = $entityManager->getRepository(AuthCode::class);
             return $repository;
         };
         $c['repository.AuthCode'] = $c->factory($function);
@@ -36,7 +35,7 @@ class OAuthPackage implements RegistrationInterface
         $function = function ($c) {
             /** @var EntityManager $entityManager */
             $entityManager = $c['doctrine.entity_manager'];
-            $repository = $entityManager->getRepository('OAuth\Client');
+            $repository = $entityManager->getRepository(Client::class);
             return $repository;
         };
         $c['repository.Client'] = $c->factory($function);
@@ -52,7 +51,7 @@ class OAuthPackage implements RegistrationInterface
         $function = function ($c) {
             /** @var EntityManager $entityManager */
             $entityManager = $c['doctrine.entity_manager'];
-            $repository = $entityManager->getRepository('OAuth\RefreshToken');
+            $repository = $entityManager->getRepository(RefreshToken::class);
             return $repository;
         };
         $c['repository.RefreshToken'] = $c->factory($function);
@@ -61,7 +60,7 @@ class OAuthPackage implements RegistrationInterface
         $function = function ($c) {
             /** @var EntityManager $entityManager */
             $entityManager = $c['doctrine.entity_manager'];
-            $repository = $entityManager->getRepository('OAuth\Scope');
+            $repository = $entityManager->getRepository(Scope::class);
             return $repository;
         };
         $c['repository.Scope'] = $c->factory($function);
