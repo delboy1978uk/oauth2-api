@@ -74,7 +74,7 @@ window.onload = function() {
   
   // Build a system
   const ui = SwaggerUIBundle({
-    url: "/docs/api.json",
+    url: "/docs/api2.json",
     dom_id: '#swagger-ui',
     deepLinking: true,
     presets: [
@@ -84,10 +84,11 @@ window.onload = function() {
     plugins: [
       SwaggerUIBundle.plugins.DownloadUrl
     ],
-    layout: "StandaloneLayout"
-  })
+    layout: "StandaloneLayout",
+    oauth2RedirectUrl: '/docs/oauth2-redirect.html'
+  });
 
-  window.ui = ui
+  window.ui = ui;
 }
 </script>
 </body>

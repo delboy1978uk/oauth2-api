@@ -1,0 +1,605 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "BONE MVC API",
+    "description": "This be a swashbucklin' API.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/ping": {
+      "get": {
+        "tags": [
+          "status"
+        ],
+        "summary": "Check basic connectivity. Returns a timestamp.",
+        "operationId": "App\\Controller\\IndexController::pingAction",
+        "responses": {
+          "200": {
+            "description": "Sends a response with the time"
+          }
+        }
+      }
+    },
+    "/oauth2/authorize": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "App\\Controller\\OAuthServerController::authorizeAction",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "description": "the type of response",
+            "required": true,
+            "type": "string",
+            "default": "code"
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "description": "the client identifier",
+            "required": true,
+            "type": "string",
+            "default": "testclient"
+          },
+          {
+            "name": "client_secret",
+            "in": "query",
+            "description": "the client identifier",
+            "required": false,
+            "type": "string",
+            "default": "testclient"
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "description": "where to send the response",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "with a CSRF token. This parameter is optional but highly recommended.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "allowed scopes, space separated",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An access token"
+          }
+        }
+      }
+    },
+    "/oauth2/access-token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "accessToken",
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "formData",
+            "description": "the type of grant",
+            "required": true,
+            "type": "string",
+            "default": "client_credentials"
+          },
+          {
+            "name": "client_id",
+            "in": "formData",
+            "description": "the client id",
+            "required": true,
+            "type": "string",
+            "default": "ceac682a9a4808bf910ad49134230e0e"
+          },
+          {
+            "name": "client_secret",
+            "in": "formData",
+            "description": "the client secret",
+            "required": false,
+            "type": "string",
+            "default": "JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52"
+          },
+          {
+            "name": "scope",
+            "in": "formData",
+            "description": "the scopes you wish to use",
+            "required": false,
+            "type": "string",
+            "default": "admin"
+          },
+          {
+            "name": "redirect_uri",
+            "in": "formData",
+            "description": "with the same redirect URI the user was redirect back to",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "formData",
+            "description": "with the authorization code from the query string",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An access token"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Fetch user details by ID.",
+        "operationId": "App\\Controller\\UserController::indexAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the type of response",
+            "required": false,
+            "type": "integer",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sends user details"
+          }
+        },
+        "security": [
+          {
+            "authorization_code": [
+              "test_scope"
+            ]
+          }
+        ]
+      }
+    },
+    "/{locale}/user/activate/{email}/{token}": {
+      "get": {
+        "tags": [
+          "user_registration"
+        ],
+        "summary": "Activate from the email link token.",
+        "operationId": "App\\Controller\\UserController::activateAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "the users email",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "the email link token",
+            "required": true,
+            "type": "string",
+            "default": "r4nd0mT0k3n"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registers a new unactivated user"
+          }
+        }
+      }
+    },
+    "/{locale}/user/activate/resend/{email}": {
+      "get": {
+        "tags": [
+          "user_registration"
+        ],
+        "summary": "Refresh the activation email link token.",
+        "operationId": "App\\Controller\\UserController::resendActivationAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "the email of the user registering",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sends email link details"
+          }
+        }
+      }
+    },
+    "/{locale}/user/lost-password/{email}": {
+      "get": {
+        "tags": [
+          "user_registration"
+        ],
+        "summary": "Get a lost password email link token.",
+        "operationId": "App\\Controller\\UserController::lostPasswordAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "the email of the user",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sends email link details"
+          }
+        }
+      }
+    },
+    "/{locale}/user/register": {
+      "post": {
+        "tags": [
+          "user_registration"
+        ],
+        "summary": "Register as a new user. Returns an email link token.",
+        "operationId": "App\\Controller\\UserController::registerAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "the users email",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "a password for the user",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          },
+          {
+            "name": "confirm",
+            "in": "formData",
+            "description": "password confirmation",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registers a new unactivated user"
+          }
+        }
+      }
+    },
+    "/{locale}/user/reset-password/{email}/{token}": {
+      "post": {
+        "tags": [
+          "user_registration"
+        ],
+        "summary": "Resets the users password. Requires an email link token.",
+        "operationId": "App\\Controller\\UserController::resetPassAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "the email of the user",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "the email link token",
+            "required": true,
+            "type": "string",
+            "default": "r4nd0mT0k3n"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "a password for the user",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          },
+          {
+            "name": "confirm",
+            "in": "formData",
+            "description": "password confirmation",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resets a users email"
+          }
+        }
+      }
+    },
+    "/{locale}/me/change-password/": {
+      "post": {
+        "tags": [
+          "user_profile"
+        ],
+        "operationId": "App\\Controller\\UserController::changePassAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "the email of the user",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "the email link token",
+            "required": true,
+            "type": "formData",
+            "default": "r4nd0mT0k3n"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "a password for the user",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          },
+          {
+            "name": "confirm",
+            "in": "formData",
+            "description": "password confirmation",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changes a users password."
+          }
+        }
+      }
+    },
+    "/{locale}/me/change-email/": {
+      "post": {
+        "tags": [
+          "user_profile"
+        ],
+        "operationId": "App\\Controller\\UserController::changeEmailAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "path",
+            "description": "the email of the user",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "the email link token",
+            "required": true,
+            "type": "formData",
+            "default": "r4nd0mT0k3n"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "a password for the user",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          },
+          {
+            "name": "confirm",
+            "in": "formData",
+            "description": "password confirmation",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changes a users email."
+          }
+        }
+      }
+    },
+    "/{locale}/me/reset-email/": {
+      "post": {
+        "tags": [
+          "user_profile"
+        ],
+        "operationId": "App\\Controller\\UserController::resetEmailAction",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "path",
+            "description": "the locale to use",
+            "required": true,
+            "type": "string",
+            "default": "en_GB"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "the email of the user",
+            "required": true,
+            "type": "string",
+            "default": "someone@email.com"
+          },
+          {
+            "name": "newemail",
+            "in": "formData",
+            "description": "password confirmation",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "the email link token",
+            "required": true,
+            "type": "string",
+            "default": "r4nd0mT0k3n"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "a password for the user",
+            "required": true,
+            "type": "string",
+            "default": "password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resets the users email."
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "By delboy1978uk",
+    "url": "https://github.com/delboy1978uk"
+  },
+  "schemes": [
+    "https"
+  ],
+  "host": "awesome.scot",
+  "basePath": "/",
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "scheme": "bearer",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "/oauth2/authorize",
+            "scopes": {
+              "admin": "admin client scope",
+              "test_scope": "test client scope"
+            }
+          },
+          "password": {
+            "authorizationUrl": "/oauth2/authorize",
+            "tokenUrl": "/oauth2/token",
+            "scopes": {
+              "admin": "admin client scope",
+              "test_scope": "test client scope"
+            }
+          },
+          "clientCredentials": {
+            "authorizationUrl": "/oauth2/authorize",
+            "tokenUrl": "/oauth2/token",
+            "scopes": {
+              "admin": "admin client scope",
+              "test_scope": "test client scope"
+            }
+          },
+          "authorizationCode": {
+            "authorizationUrl": "/oauth2/authorize",
+            "tokenUrl": "/oauth2/token",
+            "scopes": {
+              "admin": "admion client scope",
+              "test_scope": "test client scope"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": {
+    "oauth2": [
+      "admin",
+      "test_scope"
+    ]
+  }
+}

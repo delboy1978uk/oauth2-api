@@ -21,16 +21,16 @@ use Zend\Diactoros\Response;
  *         url="https://github.com/delboy1978uk"
  *     ),
  *     @OA\SecurityScheme(
- *         securityDefinition="client_credentials", type="oauth2", description="OAuth2 Client Credentials Grant", flow="client_credentials",
+ *         securityDefinition="oauth2",
+ *         type="oauth2",
+ *         description="OAuth2 Connectivity",
+ *         flow="implicit",
  *         authorizationUrl="https://awesome.scot/oauth2/authorize",
  *         tokenUrl="https://awesome.scot/oauth2/token",
- *         scopes={"admin": "Admin scope.", "test_scope": "Testing scope"}
- *     ),
- *     @OA\SecurityScheme(
- *         securityDefinition="authorization_code", type="oauth2", description="OAuth2 Authorization Code Grant", flow="authorization_code",
- *         authorizationUrl="https://awesome.scot/oauth2/authorize",
- *         tokenUrl="https://awesome.scot/oauth2/token",
- *         scopes={"admin": "Admin scope.", "test_scope": "Testing scope"}
+ *         scopes={
+ *             admin="Admin scope.",
+ *             test_scope="Test scope."
+ *         }
  *     )
  * )
  *
