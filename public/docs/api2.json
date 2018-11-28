@@ -570,7 +570,7 @@
           },
           "password": {
             "authorizationUrl": "/oauth2/authorize",
-            "tokenUrl": "/oauth2/token",
+            "tokenUrl": "/oauth2/access-token",
             "scopes": {
               "admin": "admin client scope",
               "test_scope": "test client scope"
@@ -578,7 +578,7 @@
           },
           "clientCredentials": {
             "authorizationUrl": "/oauth2/authorize",
-            "tokenUrl": "/oauth2/token",
+            "tokenUrl": "/oauth2/access-token",
             "scopes": {
               "admin": "admin client scope",
               "test_scope": "test client scope"
@@ -586,9 +586,9 @@
           },
           "authorizationCode": {
             "authorizationUrl": "/oauth2/authorize",
-            "tokenUrl": "/oauth2/token",
+            "tokenUrl": "/oauth2/access-token",
             "scopes": {
-              "admin": "admion client scope",
+              "admin": "admin client scope",
               "test_scope": "test client scope"
             }
           }
