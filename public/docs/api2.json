@@ -542,6 +542,35 @@
           }
         }
       }
+    },
+    "/client/{id}": {
+      "get": {
+        "tags": [
+          "client"
+        ],
+        "summary": "Fetch client details.",
+        "operationId": "App\\Controller\\ClientController::indexAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the type of response",
+            "required": false,
+            "type": "integer",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sends client details"
+          }
+        },
+        "security": [
+          {
+            "oauth2": ["admin"]
+          }
+        ]
+      }
     }
   },
   "externalDocs": {

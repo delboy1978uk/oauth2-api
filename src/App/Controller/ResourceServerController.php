@@ -9,6 +9,18 @@ use Zend\Diactoros\Response;
 
 class ResourceServerController extends BaseController
 {
+    /** @var string $accessToken*/
+    protected $accessToken;
+
+    /** @var string $client */
+    protected $client;
+
+    /** @var array $scopes */
+    protected $scopes;
+
+    /** @var null|int $user */
+    protected $user;
+
     /**
      * @throws OAuthServerException
      */
@@ -24,7 +36,12 @@ class ResourceServerController extends BaseController
             $publicKeyPath
         );
         try {
-            $server->validateAuthenticatedRequest($this->getRequest());
+            $request = $server->validateAuthenticatedRequest($this->getRequest());
+            $this->setRequest($request);
+            $this->accessToken = $request->getAttribute('oauth_access_token_id');
+            $this->client = $request->getAttribute('oauth_client_id');
+            $this->scopes = $request->getAttribute('oauth_scopes');
+            $this->user = $request->getAttribute('user');
         } catch (OAuthServerException $e) {
             $response = $e->generateHttpResponse(new Response());
             $this->sendResponse($response);

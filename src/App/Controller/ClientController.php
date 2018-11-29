@@ -6,11 +6,27 @@ use Del\Common\ContainerService;
 use OAuth\Client;
 use OAuth\Repository\ClientRepository;
 
-class ClientController extends BaseController
+class ClientController extends ResourceServerController
 {
     /**
-     *  We want to extend resource server controller
-     *  And lock down on admin scope
+     * Fetch client information - admin clients only
+     *
+     * @OA\Get(
+     *     path="/client/{id}",
+     *     tags={"client"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         type="integer",
+     *         description="the type of response",
+     *         required=false,
+     *         default=1
+     *     ),
+     *     @OA\Response(response="200", description="Sends client details"),
+     *     security={
+     *      {"clientCredentials": {"admin"}}
+     *     }
+     * )
      *
      * @return array|void
      */
@@ -28,6 +44,6 @@ class ClientController extends BaseController
             $this->sendJsonResponse(['No clients found']);
         }
 
-        $this->sendJsonResponse($clients);
+        $this->sendJsonObjectResponse($clients);
     }
 }

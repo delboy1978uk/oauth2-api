@@ -7,10 +7,12 @@ return [
             'action' => 'index',
             'params' => [],
         ],
-        '/client' => [
+        '/client/[:id]' => [
             'controller' => 'client',
             'action' => 'index',
-            'params' => [],
+            'params' => [
+                'scopes' => ['admin']
+            ],
         ],
         '/docs/api.json' => [
             'controller' => 'index',

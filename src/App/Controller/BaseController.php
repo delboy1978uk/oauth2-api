@@ -29,8 +29,8 @@ class BaseController extends Controller
      */
     public function sendJsonObjectResponse($object, $statusCode = 200)
     {
-        if (!is_object($object)) {
-            throw new InvalidArgumentException('You must pass an object.');
+        if (!is_object($object) && !is_array($object)) {
+            throw new InvalidArgumentException('You must pass an object or array.');
         }
         $this->disableLayout();
         $this->disableView();
