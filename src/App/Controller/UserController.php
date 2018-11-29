@@ -46,7 +46,9 @@ class UserController extends BaseController
      *         default=1
      *     ),
      *     @OA\Response(response="200", description="Sends user details"),
-     *     security={{"authorization_code": {"test_scope"}}}
+     *     security={
+     *      {"clientCredentials": {"admin"}}
+     *     }
      * )
      *
      */

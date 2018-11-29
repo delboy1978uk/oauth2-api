@@ -165,9 +165,7 @@
         },
         "security": [
           {
-            "authorization_code": [
-              "test_scope"
-            ]
+            "oauth2": ["admin"]
           }
         ]
       }
@@ -595,11 +593,5 @@
         }
       }
     }
-  },
-  "security": {
-    "oauth2": [
-      "admin",
-      "test_scope"
-    ]
   }
 }
