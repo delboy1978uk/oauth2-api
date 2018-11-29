@@ -5,11 +5,14 @@ namespace App\Controller;
 use Del\Common\ContainerService;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
+use OAuth\AccessToken;
+use OAuth\Exception\OAuthException;
+use OAuth\Repository\AccessTokenRepository;
 use Zend\Diactoros\Response;
 
 class ResourceServerController extends BaseController
 {
-    /** @var string $accessToken*/
+    /** @var AccessToken $accessToken*/
     protected $accessToken;
 
     /** @var string $client */
@@ -29,6 +32,7 @@ class ResourceServerController extends BaseController
         $container = ContainerService::getInstance()->getContainer();
         $container['repository.Client']; // this is a weird doctrine/pimple bug?
         // comment this ^ out and you cant get the repo below! mapping from access token to scope!
+        /** @var AccessTokenRepository $accessTokenRepository */
         $accessTokenRepository = $container['repository.AccessToken'];
         $publicKeyPath = 'file://' . APPLICATION_PATH . '/data/keys/public.key';
         $server = new ResourceServer(
@@ -38,7 +42,7 @@ class ResourceServerController extends BaseController
         try {
             $request = $server->validateAuthenticatedRequest($this->getRequest());
             $this->setRequest($request);
-            $this->accessToken = $request->getAttribute('oauth_access_token_id');
+            $this->accessToken = $accessTokenRepository->findOneBy(['identifier' => $request->getAttribute('oauth_access_token_id')]);
             $this->client = $request->getAttribute('oauth_client_id');
             $this->scopes = $request->getAttribute('oauth_scopes');
             $this->user = $request->getAttribute('user');
@@ -48,4 +52,19 @@ class ResourceServerController extends BaseController
         }
     }
 
+    /**
+     * @param array $scopes
+     * @return bool
+     * @throws OAuthException
+     */
+    protected function scopeCheck(array $scopes): bool
+    {
+        $grantedScopes = $this->scopes;
+        foreach ($scopes as $scope) {
+            if (!in_array($scope, $grantedScopes)) {
+                throw new OAuthException('Required scope has not been granted.');
+            }
+        }
+        return true;
+    }
 }

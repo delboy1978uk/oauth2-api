@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use Del\Common\ContainerService;
 use OAuth\Client;
+use OAuth\Exception\OAuthException;
 use OAuth\Repository\ClientRepository;
 
 class ClientController extends ResourceServerController
 {
+    /** @var ClientRepository $clientRepository */
+    private $clientRepository;
+
     /**
      * Fetch client information - admin clients only
      *
@@ -28,22 +32,26 @@ class ClientController extends ResourceServerController
      *     }
      * )
      *
+     * @throws OAuthException
+     *
      * @return array|void
      */
     public function indexAction()
     {
-        $container = ContainerService::getInstance()->getContainer();
-
-        /** @var ClientRepository $clientRepository */
-        $clientRepository = $container['repository.Client'];
-
-        /** @var Client $user */
-        $clients = $clientRepository->findAll();
+        $this->scopeCheck(['admin']);
+        $clients = $this->clientRepository->findAll();
 
         if (count($clients) == 0) {
             $this->sendJsonResponse(['No clients found']);
         }
 
         $this->sendJsonObjectResponse($clients);
+    }
+
+    public function init()
+    {
+        parent::init();
+        $container = ContainerService::getInstance()->getContainer();
+        $this->clientRepository = $container['repository.Client'];
     }
 }
