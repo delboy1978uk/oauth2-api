@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use InvalidArgumentException;
 use Zend\Diactoros\ServerRequest;
 
 class IndexControllerTest extends \Codeception\TestCase\Test
@@ -13,6 +14,9 @@ class IndexControllerTest extends \Codeception\TestCase\Test
     /** @var IndexController */
     protected $controller;
 
+    /**
+     * @throws \Exception
+     */
     protected function _before()
     {
         if (!defined('APPLICATION_PATH')){
@@ -30,5 +34,11 @@ class IndexControllerTest extends \Codeception\TestCase\Test
     public function testIndexAction()
     {
         $this->assertNull($this->controller->indexAction());
+    }
+
+    public function testSendObjectThrowsException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->controller->sendJsonObjectResponse('oops');
     }
 }
