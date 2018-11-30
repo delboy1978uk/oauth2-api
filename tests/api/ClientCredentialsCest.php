@@ -125,7 +125,7 @@ class ClientCredentialsCest
             'scope' => 'admin',
         ]);
         $token = $I->grabDataFromResponseByJsonPath('$.access_token');
-        $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $token[0]);
         $I->sendGET('/client');
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);
