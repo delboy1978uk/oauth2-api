@@ -3,10 +3,10 @@
 return [
     'apiKeys' => [
         'clientCredentials' => [
-            'apiKey' => 'ceac682a9a4808bf910ad49134230e0e',
-            'apiSecret' => 'JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52',
-            'tokenUrl' => 'https://awesome.scot/oauth2/access-token',
-            'grant_type' => 'client_credentials',
+            'clientId' => 'ceac682a9a4808bf910ad49134230e0e',
+            'clientSecret' => 'JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52',
+            'urlAccessToken' => 'https://apache/oauth2/access-token',
+            'urlResourceOwnerDetails' => 'https://apache/me',
         ],
     ],
 ];
