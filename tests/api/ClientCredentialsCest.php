@@ -111,4 +111,24 @@ class ClientCredentialsCest
         ]);
     }
 
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToGetAccessProtectedResources(ApiTester $I)
+    {
+        $I->wantTo('Call the /client endpoint and get a json list of clients');
+        $I->sendPOST('/oauth2/access-token', [
+            'grant_type' => 'client_credentials',
+            'client_id' => self::CLIENT_ID,
+            'client_secret' => self::CLIENT_SECRET,
+            'scope' => 'admin',
+        ]);
+        $token = $I->grabDataFromResponseByJsonPath('$.access_token');
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+        $I->sendGET('/client');
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+    }
+
 }
