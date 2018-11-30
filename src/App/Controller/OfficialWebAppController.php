@@ -40,8 +40,8 @@ class OfficialWebAppController extends Controller
             'clientSecret'            => $keys['clientSecret'],
             'redirectUri'             => '',
             'urlAuthorize'            => 'http://not-used-with-this-grant',
-            'urlAccessToken'          => $keys['urlAccessToken'],
-            'urlResourceOwnerDetails' => $keys['urlResourceOwnerDetails'],
+            'urlAccessToken'          => $keys['baseURL'] . $keys['urlAccessToken'],
+            'urlResourceOwnerDetails' => $keys['baseURL'] . $keys['urlResourceOwnerDetails'],
             'verify' => false,
         ]);
 
