@@ -18,7 +18,8 @@
         "delboy1978uk/user": "^3.0",
         "league/oauth2-server": "^7.0",
         "zircote/swagger-php": "^3.0",
-        "jms/serializer": "^1.11"
+        "jms/serializer": "^1.11",
+        "league/oauth2-client": "^2.4"
     },
 
     "require-dev": {

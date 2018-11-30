@@ -11,9 +11,16 @@ class OfficialWebAppController extends Controller
     {
 
     }
+
     public function registerAction()
     {
         $form = new RegistrationForm('register');
         $this->view->form = $form;
     }
+
+    public function clientCredentialsExampleAction()
+    {
+
+    }
+
 }
