@@ -13,6 +13,16 @@ class ClientController extends ResourceServerController
     private $clientRepository;
 
     /**
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
+     */
+    public function init()
+    {
+        parent::init();
+        $container = ContainerService::getInstance()->getContainer();
+        $this->clientRepository = $container['repository.Client'];
+    }
+
+    /**
      * Fetch client information - admin clients only
      *
      * @OA\Get(
@@ -39,19 +49,7 @@ class ClientController extends ResourceServerController
     public function indexAction()
     {
         $this->scopeCheck(['admin']);
-        $clients = $this->clientRepository->findAll();
-
-        if (count($clients) == 0) {
-            $this->sendJsonResponse(['No clients found']);
-        }
-
+        $clients = $this->clientRepository->findAll() ?: ['No clients found'];
         $this->sendJsonObjectResponse($clients);
-    }
-
-    public function init()
-    {
-        parent::init();
-        $container = ContainerService::getInstance()->getContainer();
-        $this->clientRepository = $container['repository.Client'];
     }
 }
