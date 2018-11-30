@@ -7,7 +7,7 @@ return [
             'clientSecret' => 'JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52',
             'urlAccessToken' => '/oauth2/access-token',
             'urlResourceOwnerDetails' => '/me',
-            'baseURL' => 'http://awesome.scot'
+            'baseURL' => 'http://awesome.scot:8000'
         ],
     ],
 ];
