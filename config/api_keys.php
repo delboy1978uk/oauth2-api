@@ -5,9 +5,12 @@ return [
         'clientCredentials' => [
             'clientId' => 'ceac682a9a4808bf910ad49134230e0e',
             'clientSecret' => 'JDJ5JDEwJGNEd1J1VEdOY0YxS3QvL0pWQzMxay52',
-            'urlAccessToken' => '/oauth2/access-token',
+            'urlAccessToken' => 'https://apache/oauth2/access-token',
             'urlResourceOwnerDetails' => '/me',
-            'baseUrl' => 'https://apache',
+            'host' => 'https://apache',
+            'redirectUri' => '',
+            'urlAuthorize' => 'http://not-used-with-this-grant',
+            'verify' => false,
         ],
     ],
 ];

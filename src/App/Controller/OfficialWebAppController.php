@@ -6,7 +6,6 @@ use App\Form\User\RegistrationForm;
 use App\OAuth\SelfSignedProvider;
 use Bone\Mvc\Controller;
 use Bone\Mvc\Registry;
-use GuzzleHttp\Client;
 use Zend\Diactoros\Response\JsonResponse;
 
 class OfficialWebAppController extends Controller
@@ -33,33 +32,20 @@ class OfficialWebAppController extends Controller
             // This code fetches your access token
             // The self signed provider is for dev use only!
             $apiKeys = Registry::ahoy()->get('apiKeys');
-            $keys = $apiKeys['clientCredentials'];
+            $options = $apiKeys['clientCredentials'];
 
-            $provider = new SelfSignedProvider([
-                'clientId' => $keys['clientId'],
-                'clientSecret' => $keys['clientSecret'],
-                'redirectUri' => '',
-                'urlAuthorize' => 'http://not-used-with-this-grant',
-                'urlAccessToken' => $keys['baseURL'] . $keys['urlAccessToken'],
-                'urlResourceOwnerDetails' => $keys['baseURL'] . $keys['urlResourceOwnerDetails'],
-                'verify' => false,
-            ]);
+            $provider = new SelfSignedProvider($options);
 
             $accessToken = $provider->getAccessToken('client_credentials', ['scope' => ['admin']]);
+            $request = $provider->getAuthenticatedRequest('GET', $options['host'] . '/client', $accessToken);
+            $response = $provider->getResponse($request);
 
-            // From here on we start calling the API
-            $client = new Client(['verify' => false]);
-            $response = $client->get('https://apache/client', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $accessToken->getToken(),
-                ],
-            ]);
             $data = \json_decode($response->getBody()->getContents());
             $response = new JsonResponse($data);
 
             return $response; // usually the data would be sent to a view for display, but that's outwith the scope
         } catch (\Exception $e) {
-            die(var_dump($e->getCode(), $e->getMessage(), $e->getTraceAsString()));
+            die($e->getCode() . $e->getMessage() .  $e->getTraceAsString());
         }
     }
 
