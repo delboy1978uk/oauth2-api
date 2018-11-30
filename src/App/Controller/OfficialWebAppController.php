@@ -18,6 +18,9 @@ class OfficialWebAppController extends Controller
         $this->view->form = $form;
     }
 
+    /**
+     *  Sample page using client_credentials grant to connect to the API
+     */
     public function clientCredentialsExampleAction()
     {
 
