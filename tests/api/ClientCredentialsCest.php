@@ -131,4 +131,16 @@ class ClientCredentialsCest
         $I->seeResponseCodeIs(200);
     }
 
+    /**
+     * @param ApiTester $I
+     * @throws Exception
+     */
+    public function tryToGetAccessProtectedResourcesWithoutAToken(ApiTester $I)
+    {
+        $I->wantTo('Call the /client endpoint and get refused');
+        $I->sendGET('/client');
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(401);
+    }
+
 }
