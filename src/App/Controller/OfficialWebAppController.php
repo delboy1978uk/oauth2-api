@@ -59,7 +59,7 @@ class OfficialWebAppController extends Controller
 
             return $response; // usually the data would be sent to a view for display, but that's outwith the scope
         } catch (\Exception $e) {
-            die(var_dump($e));
+            die(var_dump($e->getCode(), $e->getMessage(), $e->getTraceAsString()));
         }
     }
 
