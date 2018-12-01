@@ -8,7 +8,6 @@ return [
             'urlAccessToken' => 'http://awesome.scot:8000/oauth2/access-token',
             'urlResourceOwnerDetails' => '/me',
             'host' => 'http://awesome.scot',
-            'port' => 8000,
             'redirectUri' => '',
             'urlAuthorize' => 'http://not-used-with-this-grant',
             'verify' => false,
