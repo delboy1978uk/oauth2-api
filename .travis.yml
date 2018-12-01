@@ -46,3 +46,6 @@ after_script:
   - php ocular.phar code-coverage:upload --format=php-clover tests/_output/coverage.xml
 after_failure:
   - cat /home/travis/build/delboy1978uk/oauth2-api/data/logs/error_log
+
+notifications:
+  irc: "irc.freenode.org#bonemvc"
