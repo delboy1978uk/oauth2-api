@@ -12,7 +12,7 @@ sudo: true
 
 before_install:
   - sudo apt-get install -y golang-go
-  - sudo apt-get install -y stunnel3
+  - sudo apt-get install -y stunnel
   - go get github.com/mailhog/MailHog
   - go get github.com/mailhog/mhsendmail
   - sudo cp /home/travis/gopath/bin/MailHog /usr/local/bin/mailhog
