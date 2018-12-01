@@ -38,7 +38,8 @@ before_script:
   - migrant migrate --no-interaction
   - migrant generate-proxies data/proxies
   - nohup php -S awesome.scot:8000 public/index.php &
-  - stunnel3 -p data/keys/private.key -d 443 -r 8000
+  - openssl req -new -x509 -days 365 -nodes -out stunnel.pem -keyout stunnel.pem
+  - stunnel3 -p stunnel.pem -d 443 -r 8000
 script:
   - php vendor/bin/codecept run --env travis --coverage-xml -vvv
 after_script:
