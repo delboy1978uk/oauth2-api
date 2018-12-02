@@ -2,6 +2,7 @@
 
 namespace OAuth\Command;
 
+use Exception;
 use OAuth\Client;
 use OAuth\Repository\ScopeRepository;
 use OAuth\Scope;
@@ -40,8 +41,8 @@ class ClientScopeCommand extends Command
         $this->scopeRepository = $scopeRepository;
         parent::__construct('client:scope');
         $this->addArgument('operation', InputArgument::REQUIRED, 'list, add, or remove.');
-        $this->addArgument('scope', InputArgument::OPTIONAL, 'The scope name when adding or removing.');
         $this->addArgument('client', InputArgument::OPTIONAL, 'The client identifier.');
+        $this->addArgument('scope', InputArgument::OPTIONAL, 'The scope name when adding or removing.');
     }
 
     /**
@@ -56,7 +57,8 @@ class ClientScopeCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return int|void|null
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -76,6 +78,19 @@ class ClientScopeCommand extends Command
     }
 
     /**
+     * @param string $argName
+     * @param string $value
+     * @throws Exception
+     */
+    private function getArgOrGetUpset(InputInterface $input, string $argName)
+    {
+        $value = $input->getArgument($argName);
+        if (!$value) {
+            throw new Exception('No ' . $argName . ' provided');
+        }
+    }
+
+    /**
      * @param InputInterface $input
      * @param OutputInterface $output
      */
@@ -87,10 +102,13 @@ class ClientScopeCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @throws Exception
      */
     private function addScope(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Add scope for client');
+        $client = $this->getArgOrGetUpset($input, 'client');
+        $scope = $this->getArgOrGetUpset($input, 'scope');
+        $output->writeln('Scope '. $scope . ', client ' . $client);
     }
 
     /**
