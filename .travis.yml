@@ -17,8 +17,7 @@ before_install:
   - go get github.com/mailhog/mhsendmail
   - sudo cp /home/travis/gopath/bin/MailHog /usr/local/bin/mailhog
   - sudo cp /home/travis/gopath/bin/mhsendmail /usr/local/bin/mhsendmail
-  - openssl req -newkey rsa:2048 -new -nodes -keyout key.pem -out csr.pem -subj "/C=GB/ST=Scotland/L=Glasgow/O=McLeanDigital/OU=Development/CN=awesome.scot"
-  - openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out server.crt
+  - openssl req -x509 -nodes -newkey rsa:2048 -keyout key.pem -out cert.pem -subj "/C=GB/ST=Scotland/L=Glasgow/O=McLeanDigital/OU=Development/CN=awesome.scot"
 
 install:
   - mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025 &
@@ -41,7 +40,7 @@ before_script:
   - migrant migrate --no-interaction
   - migrant generate-proxies data/proxies
   - nohup php -S awesome.scot:8000 public/index.php &
-  - stunnel3 -p key.pem -d 443 -r 8000
+  - stunnel3 -p cert.pem -d 443 -r 8000
 script:
   - php vendor/bin/codecept run --env travis --coverage-xml -vvv
 after_script:
