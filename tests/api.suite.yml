@@ -10,6 +10,6 @@ env:
     modules:
       enabled:
       - REST:
-          url: http://awesome.scot:8000
+          url: https://awesome.scot:8000
           depends: PhpBrowser
           part: Json
