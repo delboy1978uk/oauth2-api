@@ -18,7 +18,7 @@ before_install:
   - sudo cp /home/travis/gopath/bin/MailHog /usr/local/bin/mailhog
   - sudo cp /home/travis/gopath/bin/mhsendmail /usr/local/bin/mhsendmail
   - openssl req -newkey rsa:2048 -new -nodes -keyout key.pem -out csr.pem
-  - openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out server.crt
+  - openssl x509 -req -days 365 -in csr.pem -signkey key.pem -out server.crt -subj "/C=GB/ST=Scotland/L=Glasgow/O=McLeanDigital/OU=Development/CN=awesome.scot"
 
 install:
   - mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025 &
