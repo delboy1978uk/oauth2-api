@@ -143,7 +143,7 @@ class ClientCredentialsCest
         $I->seeResponseCodeIs(401);
     }
 
-
+    
 //    public function tryToCallAPIWithClientCredentialsGrant(ApiTester $I)
 //    {
 //        $I->wantTo('Call the /website/client-credentials-example endpoint and get served');

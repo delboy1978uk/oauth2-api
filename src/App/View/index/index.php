@@ -36,7 +36,7 @@
                     <img src="/img/skull_and_crossbones.png" />
                     <h1 class="brand-heading"><?= $this->t('welcome') ;?></h1>
                     <div class="page-scroll">
-                        <a href="/first-party-website" class="btn btn-circle tt" title="1st Party Client Website">
+                        <a href="/website" class="btn btn-circle tt" title="1st Party Client Website">
                             <?= \Del\Icon::MALE; ?>
                         </a>&nbsp;
                         <a href="/third-party-website" class="btn btn-circle tt" title="3rd Party Client">

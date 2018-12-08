@@ -69,6 +69,11 @@ return [
             'action' => 'fake-client-callback',
             'params' => [],
         ],
+        '/website' => [
+            'controller' => 'official-web-app',
+            'action' => 'index',
+            'params' => [],
+        ],
         '/website/register' => [
             'controller' => 'official-web-app',
             'action' => 'register',
