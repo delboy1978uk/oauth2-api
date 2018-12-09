@@ -10,14 +10,58 @@ use Zend\Diactoros\Response\JsonResponse;
 
 class OfficialWebAppController extends Controller
 {
+    /** @var SelfSignedProvider $oAuthClient */
+    private $oAuthClient;
+
+    /** @var string $token */
+    private $token;
+
+    /** @var string $host */
+    private $host;
+
+    /**
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    public function init()
+    {
+        $apiKeys = Registry::ahoy()->get('apiKeys');
+        $options = $apiKeys['clientCredentials'];
+
+        $this->host = $options['host'];
+        $this->oAuthClient = new SelfSignedProvider($options);
+        $this->token = $this->oAuthClient->getAccessToken('client_credentials', ['scope' => ['admin']]);
+    }
+
     public function indexAction()
     {
-        $x;
+
     }
 
     public function registerAction()
     {
         $form = new RegistrationForm('register');
+
+        if ($this->getRequest()->getMethod() == 'POST') {
+
+            $formData = $this->getRequest()->getParsedBody();
+            $form->populate($formData);
+            $values = $form->getValues();
+                $request = $this->oAuthClient->getAuthenticatedRequest(
+                    'POST',
+                    $this->host . '/en_GB/user/register',
+                    $this->token,
+                    [
+                        'email' => $values['email'],
+                        'password' => $values['password'],
+                        'confirm' => $values['confirm'],
+                    ]
+                );
+                $response = $this->oAuthClient->getResponse($request);
+                $data = \json_decode($response->getBody()->getContents());
+                $response = new JsonResponse($data);
+                return $response; // WIP
+        }
+
         $this->view->form = $form;
     }
 
