@@ -12,7 +12,7 @@ class OfficialWebAppController extends Controller
 {
     public function indexAction()
     {
-
+        $x;
     }
 
     public function registerAction()

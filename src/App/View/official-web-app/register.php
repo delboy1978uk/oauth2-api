@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/pwstrength.min.js"></script>
 <section class="intro">
     <div class="">
         <br>
@@ -16,3 +17,13 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $('#regpassword').pwstrength({
+        ui: {
+            showVerdictsInsideProgressBar: true,
+            bootstrap3: true,
+            progressBarEmptyPercentage: 15,
+            progressBarMinPercentage: 15
+        }
+    });
+</script>
