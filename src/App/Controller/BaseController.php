@@ -9,6 +9,7 @@ use JMS\Serializer\SerializerBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\SapiEmitter;
+use Zend\Diactoros\Stream;
 
 class BaseController extends Controller
 {
@@ -61,5 +62,18 @@ class BaseController extends Controller
         $emitter = new SapiEmitter();
         $emitter->emit($response);
         exit;
+    }
+
+    /**
+     * @param $content
+     * @return Stream
+     */
+    public function createStreamFromString($content)
+    {
+        $stream = new Stream('php://memory', 'wb+');
+        $stream->write($content);
+        $stream->rewind();
+
+        return $stream;
     }
 }

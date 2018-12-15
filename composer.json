@@ -26,7 +26,8 @@
         "codeception/codeception": "*",
         "codeception/aspect-mock": "*",
         "flow/jsonpath": "^0.4.0",
-        "codeception/c3": "^2.4"
+        "codeception/c3": "^2.4",
+        "namshi/cuzzle": "^2.0"
     },
     "autoload": {
         "psr-4": {

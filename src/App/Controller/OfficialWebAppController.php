@@ -7,6 +7,7 @@ use App\OAuth\SelfSignedProvider;
 use Bone\Mvc\Controller;
 use Bone\Mvc\Registry;
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Diactoros\Stream;
 
 class OfficialWebAppController extends Controller
 {
@@ -46,20 +47,22 @@ class OfficialWebAppController extends Controller
             $formData = $this->getRequest()->getParsedBody();
             $form->populate($formData);
             $values = $form->getValues();
-                $request = $this->oAuthClient->getAuthenticatedRequest(
-                    'POST',
-                    $this->host . '/en_GB/user/register',
-                    $this->token,
-                    [
-                        'email' => $values['email'],
-                        'password' => $values['password'],
-                        'confirm' => $values['confirm'],
-                    ]
-                );
-                $response = $this->oAuthClient->getResponse($request);
-                $data = \json_decode($response->getBody()->getContents());
-                $response = new JsonResponse($data);
-                return $response; // WIP
+            $request = $this->oAuthClient->getAuthenticatedRequest(
+                'POST',
+                $this->host . '/en_GB/user/register',
+                $this->token
+            );
+            $request = $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
+            $streamData = http_build_query([
+                'email' => $values['email'],
+                'password' => $values['password'],
+                'confirm' => $values['confirm'],
+            ]);
+            $request = $request->withBody($this->createStreamFromString($streamData));
+            $response = $this->oAuthClient->getResponse($request);
+            $data = \json_decode($response->getBody()->getContents());
+            $response = new JsonResponse($data);
+            return $response; // WIP
         }
 
         $this->view->form = $form;
@@ -93,4 +96,17 @@ class OfficialWebAppController extends Controller
         }
     }
 
+
+    /**
+     * @param $content
+     * @return Stream
+     */
+    public function createStreamFromString($content)
+    {
+        $stream = new Stream('php://memory', 'wb+');
+        $stream->write($content);
+        $stream->rewind();
+
+        return $stream;
+    }
 }

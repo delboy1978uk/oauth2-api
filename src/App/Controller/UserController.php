@@ -363,6 +363,8 @@ class UserController extends BaseController
         }
     }
 
+
+
     /**
      * Resets the users password. Requires an email link token.
      *
