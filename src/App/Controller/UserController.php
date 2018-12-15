@@ -12,12 +12,12 @@ use Del\Exception\UserException;
 use Del\Service\UserService;
 use Del\Value\User\State;
 use Exception;
+use Zend\Diactoros\Response\JsonResponse;
 use Zend\Validator\EmailAddress;
 
 /**
  * Class UserController
  * @package App\Controller
- * @todo get swagger updated with oauth 2 stuff to get header in
  */
 class UserController extends BaseController
 {
@@ -314,7 +314,7 @@ class UserController extends BaseController
      */
     public function registerAction()
     {
-        if (!$this->httpMethodCheck('POST')) { return; }
+        if (!$this->httpMethodCheck('POST')) { return null; }
 
         $form = new RegistrationForm('register');
 
@@ -324,8 +324,8 @@ class UserController extends BaseController
             $form->populate($formData);
 
             if ($form->isValid()) {
+                $data = $form->getValues();
                 try {
-                    $data = $form->getValues();
                     $user = $this->userService->registerUser($data);
                     $link = $this->userService->generateEmailLink($user);
                     $mail = $this->getMailService();
@@ -357,11 +357,13 @@ class UserController extends BaseController
                     throw $e;
                 }
             } else {
-                throw new Exception('Invalid request data;', 400);
+                throw new Exception('Invalid request data', 400);
             }
 
         }
     }
+
+
 
     /**
      * Resets the users password. Requires an email link token.

@@ -36,11 +36,11 @@
                     <img src="/img/skull_and_crossbones.png" />
                     <h1 class="brand-heading"><?= $this->t('welcome') ;?></h1>
                     <div class="page-scroll">
-                        <a href="/first-party-website" class="btn btn-circle tt" title="1st Party Client Website">
-                            <?= \Del\Icon::MALE; ?>
+                        <a href="/website" class="btn btn-circle tt" title="1st Party Client Website">
+                            <?= \Del\Icon::GLOBE; ?>
                         </a>&nbsp;
                         <a href="/third-party-website" class="btn btn-circle tt" title="3rd Party Client">
-                            <?= \Del\Icon::CHILD; ?>
+                            <?= \Del\Icon::USERS; ?>
                         </a>&nbsp;
                         <a href="/docs" class="btn btn-circle tt" title="API Docs">
                             <?= \Del\Icon::BOOK; ?>
@@ -53,9 +53,9 @@
 </section>
 
 <!-- Core JavaScript Files -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="js/grayscale.js"></script>
