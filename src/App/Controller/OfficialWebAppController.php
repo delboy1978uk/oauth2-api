@@ -22,6 +22,9 @@ class OfficialWebAppController extends Controller
     /** @var string $host */
     private $host;
 
+    /** @var string $locale */
+    private $locale;
+
     /**
      * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
      */
@@ -32,6 +35,7 @@ class OfficialWebAppController extends Controller
 
         $this->host = $options['host'];
         $this->oAuthClient = new SelfSignedProvider($options);
+        $this->locale = $this->getParam('locale', 'en_GB');
     }
 
     public function indexAction()
@@ -42,6 +46,26 @@ class OfficialWebAppController extends Controller
     public function thanksForRegisteringAction()
     {
 
+    }
+
+    /**
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    public function activateUserAccountAction()
+    {
+        $email = $this->getParam('email');
+        $token = $this->getParam('token');
+        $url = '/' . $this->locale.'/user/activate/' . $email . '/' . $token;
+        $request = $this->getAuthenticatedRequest($url);
+        try {
+            $this->oAuthClient->getResponse($request);
+            $this->view->activated = true;
+            $this->view->message = [Icon::CHECK . ' Email successfully validated.', 'success'];
+        } catch (ClientException $e) {
+            $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
+            $this->view->message = [Icon::WARNING . '&nbsp;' . $data['error'], 'danger'];
+            $this->view->activated = false;
+        }
     }
 
     /**

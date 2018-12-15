@@ -84,6 +84,11 @@ return [
             'action' => 'thanks-for-registering',
             'params' => [],
         ],
+        '/:locale/activate-user-account/:email/:token' => [
+            'controller' => 'official-web-app',
+            'action' => 'activate-user-account',
+            'params' => [],
+        ],
         '/website/client-credentials-example' => [
             'controller' => 'official-web-app',
             'action' => 'client-credentials-example',

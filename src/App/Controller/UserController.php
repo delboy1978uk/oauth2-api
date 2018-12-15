@@ -335,7 +335,7 @@ class UserController extends BaseController
 
                     $message = $this->getViewEngine()->render('emails/user_registration/user_registration', [
                         'siteUrl' => $env->getSiteURL(),
-                        'activationLink' => '/' . $this->getParam('locale') . '/user/activate/' . $email . '/' . $token,
+                        'activationLink' => '/' . $this->getParam('locale') . '/activate-user-account/' . $email . '/' . $token,
                     ]);
 
                     $mail->setFrom('noreply@' . $env->getServerName())
