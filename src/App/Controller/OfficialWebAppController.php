@@ -7,18 +7,17 @@ use App\OAuth\SelfSignedProvider;
 use Bone\Mvc\Controller;
 use Bone\Mvc\Registry;
 use Del\Icon;
-use Exception;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\MultipartStream;
+use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Stream;
 
 class OfficialWebAppController extends Controller
 {
     /** @var SelfSignedProvider $oAuthClient */
     private $oAuthClient;
-
-    /** @var string $token */
-    private $token;
 
     /** @var string $host */
     private $host;
@@ -33,7 +32,6 @@ class OfficialWebAppController extends Controller
 
         $this->host = $options['host'];
         $this->oAuthClient = new SelfSignedProvider($options);
-        $this->token = $this->oAuthClient->getAccessToken('client_credentials', ['scope' => ['admin']]);
     }
 
     public function indexAction()
@@ -41,6 +39,15 @@ class OfficialWebAppController extends Controller
 
     }
 
+    public function thanksForRegisteringAction()
+    {
+
+    }
+
+    /**
+     * @return RedirectResponse
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
     public function registerAction()
     {
         $form = new RegistrationForm('register');
@@ -50,22 +57,20 @@ class OfficialWebAppController extends Controller
             $formData = $this->getRequest()->getParsedBody();
             $form->populate($formData);
             $values = $form->getValues();
-            $request = $this->oAuthClient->getAuthenticatedRequest(
-                'POST',
-                $this->host . '/en_GB/user/register',
-                $this->token
-            );
-            $request = $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
-            $streamData = http_build_query([
+            $request = $this->getAuthenticatedRequest('/en_GB/user/register', 'POST');
+            $request = $this->addMultipartFormData($request, [
                 'email' => $values['email'],
                 'password' => $values['password'],
                 'confirm' => $values['confirm'],
             ]);
-            $request = $request->withBody($this->createStreamFromString($streamData));
+
             try {
-                $response = $this->oAuthClient->getResponse($request);
-                $this->view->message = ['you have been registered redirect to thanks page', 'success'];
+
+                $this->oAuthClient->getResponse($request);
+                return new RedirectResponse('/website/thanks-for-registering');
+
             } catch (ClientException $e) {
+
                 $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
                 $this->view->message = [Icon::WARNING . ' ' . $data['message'], 'danger'];
             }
@@ -81,25 +86,13 @@ class OfficialWebAppController extends Controller
      */
     public function clientCredentialsExampleAction()
     {
-        try {
-            // This code fetches your access token
-            // The self signed provider is for dev use only!
-            $apiKeys = Registry::ahoy()->get('apiKeys');
-            $options = $apiKeys['clientCredentials'];
+        $request = $this->getAuthenticatedRequest('/client');
+        $response = $this->oAuthClient->getResponse($request);
 
-            $provider = new SelfSignedProvider($options);
+        $data = \json_decode($response->getBody()->getContents());
+        $response = new JsonResponse($data);
 
-            $accessToken = $provider->getAccessToken('client_credentials', ['scope' => ['admin']]);
-            $request = $provider->getAuthenticatedRequest('GET', $options['host'] . '/client', $accessToken);
-            $response = $provider->getResponse($request);
-
-            $data = \json_decode($response->getBody()->getContents());
-            $response = new JsonResponse($data);
-
-            return $response; // usually the data would be sent to a view for display, but that's outwith the scope
-        } catch (Exception $e) {
-            die($e->getCode() . $e->getMessage() .  $e->getTraceAsString());
-        }
+        return $response; // usually the data would be sent to a view for display, but that's outwith the scope
     }
 
 
@@ -114,5 +107,57 @@ class OfficialWebAppController extends Controller
         $stream->rewind();
 
         return $stream;
+    }
+
+
+    /**
+     * @param array $data
+     * @return MultipartStream
+     */
+    public function createMultipartStream(array $data)
+    {
+        $elements = [];
+        foreach ($data as $key => $val) {
+            $elements[] = [
+                'name' => $key,
+                'contents' => $val,
+            ];
+        }
+        $stream = new MultipartStream($elements);
+
+        return $stream;
+    }
+
+    /**
+     * @param $url
+     * @param string $method
+     * @return RequestInterface
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    public function getAuthenticatedRequest($url, $method = 'GET')
+    {
+        $token = $this->getAccessToken();
+        $request = $this->oAuthClient->getAuthenticatedRequest($method, $this->host . $url, $token);
+
+        return $request;
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param array $data
+     * @return RequestInterface
+     */
+    public function addMultipartFormData(RequestInterface $request, array $data)
+    {
+        return $request->withBody($this->createMultipartStream($data));
+    }
+
+    /**
+     * @return \League\OAuth2\Client\Token\AccessTokenInterface
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    private function getAccessToken()
+    {
+        return $this->oAuthClient->getAccessToken('client_credentials', ['scope' => ['admin']]);
     }
 }

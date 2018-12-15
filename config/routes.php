@@ -79,6 +79,11 @@ return [
             'action' => 'register',
             'params' => [],
         ],
+        '/website/thanks-for-registering' => [
+            'controller' => 'official-web-app',
+            'action' => 'thanks-for-registering',
+            'params' => [],
+        ],
         '/website/client-credentials-example' => [
             'controller' => 'official-web-app',
             'action' => 'client-credentials-example',
