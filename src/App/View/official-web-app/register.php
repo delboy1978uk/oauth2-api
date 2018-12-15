@@ -6,9 +6,9 @@
         <br>
         <div class="container">
             <div class="row">
-                <?php if ($message) {
+                <?php if (isset($message)) {
                     $box = new AlertBox();
-                    echo $box->alertBox($this->message);
+                    echo $box->alertBox($message);
                 }
                 ?>
                 <div class="col-md-8 col-md-offset-2">

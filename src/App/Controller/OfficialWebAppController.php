@@ -6,6 +6,9 @@ use App\Form\User\RegistrationForm;
 use App\OAuth\SelfSignedProvider;
 use Bone\Mvc\Controller;
 use Bone\Mvc\Registry;
+use Del\Icon;
+use Exception;
+use GuzzleHttp\Exception\ClientException;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\Stream;
 
@@ -59,10 +62,13 @@ class OfficialWebAppController extends Controller
                 'confirm' => $values['confirm'],
             ]);
             $request = $request->withBody($this->createStreamFromString($streamData));
-            $response = $this->oAuthClient->getResponse($request);
-            $data = \json_decode($response->getBody()->getContents());
-            $response = new JsonResponse($data);
-            return $response; // WIP
+            try {
+                $response = $this->oAuthClient->getResponse($request);
+                $this->view->message = ['you have been registered redirect to thanks page', 'success'];
+            } catch (ClientException $e) {
+                $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
+                $this->view->message = [Icon::WARNING . ' ' . $data['message'], 'danger'];
+            }
         }
 
         $this->view->form = $form;
@@ -91,7 +97,7 @@ class OfficialWebAppController extends Controller
             $response = new JsonResponse($data);
 
             return $response; // usually the data would be sent to a view for display, but that's outwith the scope
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             die($e->getCode() . $e->getMessage() .  $e->getTraceAsString());
         }
     }

@@ -135,6 +135,10 @@ a:focus {
     -o-background-size: cover;
 }
 
+.intro .alert {
+    text-align: left;
+}
+
 .intro-body {
     display: table-cell;
     vertical-align: middle;
