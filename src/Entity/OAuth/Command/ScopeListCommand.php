@@ -16,21 +16,16 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 /**
- * Class ClientCommand
+ * Class ScopeListCommand
  * @package OAuth\Command
  */
-class ScopeCreateCommand extends Command
+class ScopeListCommand extends Command
 {
     /**
      * @var ScopeRepository $scopeRepository
      */
     private $scopeRepository;
 
-    /**
-     * ScopeCreateCommand constructor.
-     * @param ScopeRepository $scopeRepository
-     * @param string|null $name
-     */
     public function __construct(ScopeRepository $scopeRepository, ?string $name = null)
     {
         $this->scopeRepository = $scopeRepository;
@@ -42,9 +37,9 @@ class ScopeCreateCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('scope:create');
-        $this->setDescription('Creates a new scope.');
-        $this->setHelp('Create a new OAuth2 client application');
+        $this->setName('scope:list');
+        $this->setDescription('Lists all scopes.');
+        $this->setHelp('Lists available access scopes.');
     }
 
     /**
@@ -54,21 +49,14 @@ class ScopeCreateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Bone API scope creator');
-        $helper = $this->getHelper('question');
-
-        $question = new Question('Name of new scope: ', false);
-        $scopeName = $helper->ask($input, $output, $question);
-
-        $question = new Question('Describe this scope: ', false);
-        $description = $helper->ask($input, $output, $question);
-
-        $scope = new Scope();
-        $scope->setIdentifier($scopeName);
-        $scope->setDescription($description);
-
-        $this->scopeRepository->create($scope);
-
-        $output->writeln('Scope created.');
+        $output->writeln('Listing scopes...');
+        $scopes = $this->scopeRepository->findAll();
+        if (!count($scopes)) {
+            $output->writeln('No scopes found.');
+        }
+        /** @var Scope $scope */
+        foreach ($scopes as $scope) {
+            $output->writeln(' - ' . $scope->getIdentifier());
+        }
     }
 }

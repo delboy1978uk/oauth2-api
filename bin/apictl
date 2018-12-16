@@ -19,6 +19,7 @@ use OAuth\Command\ClientCommand;
 use Del\UserPackage;
 use OAuth\Command\ClientScopeCommand;
 use OAuth\Command\ScopeCreateCommand;
+use OAuth\Command\ScopeListCommand;
 use OAuth\OAuthPackage;
 
 
@@ -57,12 +58,14 @@ $app = new ConsoleApplication();
 $userCommand = new UserCommand();
 $userCommand->setName('user:reset-pass');
 $clientCommand = new ClientCommand($container['oauth.service.client'], $userService, $container['repository.Scope']);
-$scopeCommand = new ScopeCreateCommand($container['repository.Scope']);
+$scopeCreateCommand = new ScopeCreateCommand($container['repository.Scope']);
+$scopeListCommand = new ScopeListCommand($container['repository.Scope']);
 $clientScopeCommand = new ClientScopeCommand($container['oauth.service.client'], $container['repository.Scope']);
 
 $app->add($userCommand);
 $app->add($clientCommand);
-$app->add($scopeCommand);
+$app->add($scopeCreateCommand);
+$app->add($scopeListCommand);
 $app->add($clientScopeCommand);
 
 $app->run();

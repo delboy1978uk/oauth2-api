@@ -2,6 +2,7 @@
 
 namespace OAuth\Command;
 
+use Doctrine\Common\Collections\Collection;
 use Exception;
 use OAuth\Client;
 use OAuth\Repository\ScopeRepository;
@@ -62,6 +63,7 @@ class ClientScopeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln(' ');
         $output->writeln('Client scope administration');
         $operation = $input->getArgument('operation');
         switch ($operation) {
@@ -75,11 +77,13 @@ class ClientScopeCommand extends Command
                 $this->removeScope($input, $output);
                 break;
         }
+        $output->writeln(' ');
     }
 
     /**
+     * @param InputInterface $input
      * @param string $argName
-     * @param string $value
+     * @return string|string[]|null
      * @throws Exception
      */
     private function getArgOrGetUpset(InputInterface $input, string $argName)
@@ -88,6 +92,8 @@ class ClientScopeCommand extends Command
         if (!$value) {
             throw new Exception('No ' . $argName . ' provided');
         }
+
+        return $value;
     }
 
     /**
@@ -96,7 +102,51 @@ class ClientScopeCommand extends Command
      */
     private function listScopes(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('List scopes for client');
+        $clientId = $input->getArgument('client');
+
+        $client = $this->fetchClient($output, $clientId);
+        if (!$client instanceof Client) {
+            $output->writeln('No client found');
+            return;
+        }
+
+        $scopes = $client->getScopes();
+        $this->outputScopes($output, $client, $scopes);
+
+        return;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param Collection $scopes
+     */
+    private function outputScopes(OutputInterface $output, Client $client, Collection $scopes)
+    {
+        $output->writeln('Listing scopes for ' . $client->getName() . '.');
+
+        if ($scopes->count()) {
+            /** @var Scope $scope */
+            foreach ($scopes as $scope) {
+                $output->writeln(' - ' . $scope->getIdentifier());
+            }
+        } else {
+            $output->writeln('No scopes set for ' . $client->getName() . '.');
+        }
+    }
+
+    /**
+     * @param string $id
+     * @return Client
+     */
+    private function fetchClient(OutputInterface $output, string $id)
+    {
+        $output->writeln('Fetching client ' . $id .'...');
+        /** @var Client $client */
+        $client = $this->clientService
+                    ->getClientRepository()
+                    ->getClientEntity( $id, null, null, false);
+
+        return $client;
     }
 
     /**
@@ -106,17 +156,54 @@ class ClientScopeCommand extends Command
      */
     private function addScope(InputInterface $input, OutputInterface $output)
     {
-        $client = $this->getArgOrGetUpset($input, 'client');
-        $scope = $this->getArgOrGetUpset($input, 'scope');
-        $output->writeln('Scope '. $scope . ', client ' . $client);
+        $clientId = $input->getArgument('client');
+        $scopeId = $this->getArgOrGetUpset($input, 'scope');
+
+        $client = $this->fetchClient($output, $clientId);
+        if (!$client instanceof Client) {
+            $output->writeln('No client found');
+            return;
+        }
+
+        $scope = $this->scopeRepository->getScopeEntityByIdentifier($scopeId);
+        if (!$scope instanceof Scope) {
+            $output->writeln('No scope found.');
+            return;
+        }
+
+        $output->writeln('Adding '. $scopeId . ' scope to ' . $client->getName() . '...');
+        $client->getScopes()->add($scope);
+        $this->clientService->getClientRepository()->save($client);
+        $output->writeln($scopeId . ' scope added.');
+
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @throws Exception
      */
     private function removeScope(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Remove scope for client');
+        $clientId = $input->getArgument('client');
+        $scopeId = $this->getArgOrGetUpset($input, 'scope');
+
+        $client = $this->fetchClient($output, $clientId);
+        if (!$client instanceof Client) {
+            $output->writeln('No client found');
+            return;
+        }
+
+        $scopes = $client->getScopes();
+        /** @var Scope $scope */
+        foreach ($scopes as $key => $scope) {
+            if ($scope->getIdentifier() == $scopeId) {
+                $scopes->remove($key);
+                break;
+            }
+        }
+
+        $this->clientService->getClientRepository()->save($client);
+        $output->writeln($scopeId . ' scope removed.');
     }
 }
