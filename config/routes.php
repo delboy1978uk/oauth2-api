@@ -84,6 +84,11 @@ return [
             'action' => 'thanks-for-registering',
             'params' => [],
         ],
+        '/website/resend-activation/:email' => [
+            'controller' => 'official-web-app',
+            'action' => 'resend-activation',
+            'params' => [],
+        ],
         '/:locale/activate-user-account/:email/:token' => [
             'controller' => 'official-web-app',
             'action' => 'activate-user-account',

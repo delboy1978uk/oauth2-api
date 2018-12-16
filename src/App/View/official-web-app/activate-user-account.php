@@ -21,6 +21,8 @@
                 <?php } else { ?>
                     <h1>Oops.</h1>
                     <p class="lead">There was a problem</p>
+                <?php } if (isset($resendLink)) { ?>
+                    <a class="btn btn-warning" href="<?= $resendLink ;?>">Resend activation link</a>
                 <?php } ?>
             </div>
         </div>

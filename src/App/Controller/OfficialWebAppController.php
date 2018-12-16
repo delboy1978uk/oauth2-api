@@ -6,10 +6,12 @@ use App\Form\User\RegistrationForm;
 use App\OAuth\SelfSignedProvider;
 use Bone\Mvc\Controller;
 use Bone\Mvc\Registry;
+use Del\Exception\EmailLinkException;
 use Del\Icon;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\MultipartStream;
 use Psr\Http\Message\RequestInterface;
+use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Stream;
@@ -65,6 +67,32 @@ class OfficialWebAppController extends Controller
             $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
             $this->view->message = [Icon::WARNING . '&nbsp;' . $data['error'], 'danger'];
             $this->view->activated = false;
+            if ($data['error'] ==  EmailLinkException::LINK_EXPIRED) {
+                $this->view->resendLink = '/website/resend-activation/' . $email;
+            }
+        }
+    }
+
+    /**
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    public function resendActivationAction()
+    {
+        $email = $this->getParam('email');
+        $url = '/' . $this->locale . '/user/activate/resend/' . $email;
+        $request = $this->getAuthenticatedRequest($url);
+        try {
+            $this->oAuthClient->getResponse($request);
+            $response = new Response();
+            $html = $this->viewEngine->render('official-web-app/thanks-for-registering');
+            $html = $this->viewEngine->render('layouts/layout', ['content' => $html]);
+            $stream = $this->createStreamFromString($html);
+
+            return $response->withBody($stream);
+
+        } catch (ClientException $e) {
+            $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
+            $this->view->message = [Icon::WARNING . '&nbsp;' . $data['error'], 'danger'];
         }
     }
 
@@ -80,23 +108,25 @@ class OfficialWebAppController extends Controller
 
             $formData = $this->getRequest()->getParsedBody();
             $form->populate($formData);
-            $values = $form->getValues();
-            $request = $this->getAuthenticatedRequest('/en_GB/user/register', 'POST');
-            $request = $this->addMultipartFormData($request, [
-                'email' => $values['email'],
-                'password' => $values['password'],
-                'confirm' => $values['confirm'],
-            ]);
+            if ($form->isValid()) {
+                $values = $form->getValues();
+                $request = $this->getAuthenticatedRequest('/en_GB/user/register', 'POST');
+                $request = $this->addMultipartFormData($request, [
+                    'email' => $values['email'],
+                    'password' => $values['password'],
+                    'confirm' => $values['confirm'],
+                ]);
 
-            try {
+                try {
 
-                $this->oAuthClient->getResponse($request);
-                return new RedirectResponse('/website/thanks-for-registering');
+                    $this->oAuthClient->getResponse($request);
+                    return new RedirectResponse('/website/thanks-for-registering');
 
-            } catch (ClientException $e) {
+                } catch (ClientException $e) {
 
-                $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
-                $this->view->message = [Icon::WARNING . ' ' . $data['message'], 'danger'];
+                    $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
+                    $this->view->message = [Icon::WARNING . ' ' . $data['message'], 'danger'];
+                }
             }
         }
 
