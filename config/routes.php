@@ -94,6 +94,16 @@ return [
             'action' => 'activate-user-account',
             'params' => [],
         ],
+        '/website/login' => [
+            'controller' => 'official-web-app',
+            'action' => 'login',
+            'params' => [],
+        ],
+        '/website/forgot-password/:email' => [
+            'controller' => 'official-web-app',
+            'action' => 'forgot-password',
+            'params' => [],
+        ],
         '/website/client-credentials-example' => [
             'controller' => 'official-web-app',
             'action' => 'client-credentials-example',

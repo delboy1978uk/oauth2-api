@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\User\LoginForm;
 use App\Form\User\RegistrationForm;
 use App\OAuth\SelfSignedProvider;
 use Bone\Mvc\Controller;
@@ -121,6 +122,42 @@ class OfficialWebAppController extends Controller
 
                     $this->oAuthClient->getResponse($request);
                     return new RedirectResponse('/website/thanks-for-registering');
+
+                } catch (ClientException $e) {
+
+                    $data = \json_decode($e->getResponse()->getBody()->getContents(), true);
+                    $this->view->message = [Icon::WARNING . ' ' . $data['message'], 'danger'];
+                }
+            }
+        }
+
+        $this->view->form = $form;
+    }
+
+    /**
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    public function loginAction()
+    {
+        $form = new LoginForm('login');
+
+        if ($this->getRequest()->getMethod() == 'POST') {
+
+            $formData = $this->getRequest()->getParsedBody();
+            $form->populate($formData);
+            if ($form->isValid()) {
+                $values = $form->getValues();
+                $this->view->email = $values['email'];
+                $request = $this->getAuthenticatedRequest('/en_GB/user/login', 'POST');
+                $request = $this->addMultipartFormData($request, [
+                    'email' => $values['email'],
+                    'password' => $values['password'],
+                ]);
+
+                try {
+
+                    $response = $this->oAuthClient->getResponse($request);
+                    die(var_dump($response));
 
                 } catch (ClientException $e) {
 
