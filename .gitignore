@@ -13,3 +13,4 @@ data/proxies/*
 data/cache/*
 tests/_output/*
 cli-config.php
+migrant-cfg.php

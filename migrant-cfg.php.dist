@@ -1,0 +1,14 @@
+<?php
+
+return [
+    'db' => [
+        'host' => '127.0.0.1',
+        'driver' => 'pdo_mysql',
+        'dbname' => '',
+        'user' => '',
+        'password' => '',
+    ],
+    'packages' => [
+        'delboy1978uk/user',
+    ],
+];
