@@ -2,7 +2,7 @@ actor: ApiTester
 modules:
   enabled:
   - REST:
-      url: https://apache
+      url: https://awesome.scot
       depends: PhpBrowser
       part: Json
 env:
